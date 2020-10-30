@@ -118,6 +118,11 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		BaseClass.Holster( skiplocal );
 	}
 
+	private void FireWeapon()
+	{
+		
+	}
+
 	void PrimaryAttack()
 	{
 
