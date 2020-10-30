@@ -125,7 +125,12 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void PrimaryAttack()
 	{
-
+		if( self.m_iClip <= 0 )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM_SINGLE;
+			return;
+		}
 	}
 
 	void SecondaryAttack()
