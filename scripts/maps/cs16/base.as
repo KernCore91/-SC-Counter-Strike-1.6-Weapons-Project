@@ -60,9 +60,18 @@ edict_t@ ENT( const entvars_t@ pev )
 	return pev.pContainingEntity;
 }
 
+//Sound files
+const string EMPTY_PISTOL_S 	= "cs16/dryfire_pistol.wav";
+const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
+
 mixin class WeaponBase
 {
 	protected m_iShotsFired = 0;
+
+	protected float WeaponTimeBase() // map time
+	{
+		return g_Engine.time;
+	}
 
 	void CommonSpawn( const string worldModel, const int GiveDefaultAmmo ) // things that are commonly executed in spawn
 	{
