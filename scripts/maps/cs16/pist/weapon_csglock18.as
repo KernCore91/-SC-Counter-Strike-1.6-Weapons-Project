@@ -37,6 +37,7 @@ string W_MODEL  	= "models/cs16/g18/w_glock18.mdl";
 string V_MODEL  	= "models/cs16/g18/v_glock18.mdl";
 string P_MODEL  	= "models/cs16/g18/p_glock18.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
+int MAG_BDYGRP  	= 0;
 // Sounds
 string SHOOT_S  	= "cs16/g18/shoot.wav";
 // Information
@@ -186,6 +187,26 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		self.SendWeaponAnim( IDLE1, 0, GetBodygroup() );
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
+	}
+}
+
+class CSGLOCK18_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
+{
+	void Spawn()
+	{
+		Precache();
+
+		CommonSpawn( A_MODEL, MAG_BDYGRP );
+	}
+
+	void Precache()
+	{
+		g_Game.PrecacheModel( A_MODEL );
+	}
+
+	bool AddAmmo( CBaseEntity@ pOther )
+	{
+		return CommonAddAmmo( pOther, MAX_CLIP, (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_9MM, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
 	}
 }
 

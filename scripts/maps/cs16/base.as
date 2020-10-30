@@ -122,7 +122,22 @@ mixin class WeaponBase
 
 mixin class AmmoBase
 {
+	void CommonSpawn( const string worldModel, const int iBodygroup ) // things that are commonly executed in spawn
+	{
+		g_EntityFuncs.SetModel( self, worldModel );
+		self.pev.body = iBodygroup;
+		BaseClass.Spawn();
+	}
 
+	bool CommonAddAmmo( CBaseEntity& inout pOther, int& in iAmmoClip, int& in iAmmoCarry, string& in iAmmoType )
+	{
+		if( pOther.GiveAmmo( iAmmoClip, iAmmoType, iAmmoCarry ) != -1 )
+		{
+			g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_ITEM, string_t(), 1, ATTN_NORM, 0, 95 + Math.RandomLong( 0, 0xa ) );
+			return true;
+		}
+		return false;
+	}
 }
 
 } // Namespace end
