@@ -110,6 +110,11 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		return Deploy( V_MODEL, P_MODEL, DRAW, "onehanded", GetBodygroup(), (49.0/45.0) );
 	}
 
+	bool PlayEmptySound()
+	{
+		return CommonPlayEmptySound( CS16BASE::EMPTY_PISTOL_S );
+	}
+
 	void Holster( int skiplocal = 0 )
 	{
 		m_iBurstLeft = 0;
@@ -135,12 +140,37 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void SecondaryAttack()
 	{
-
+		switch( WeaponFireMode )
+		{
+			case CS16BASE::MODE_NORMAL:
+			{
+				WeaponFireMode = CS16BASE::MODE_BURST;
+				g_EngineFuncs.ClientPrintf( m_pPlayer, print_center, "Switched to Burst Fire\n" );
+				break;
+			}
+			case CS16BASE::MODE_BURST:
+			{
+				WeaponFireMode = CS16BASE::MODE_NORMAL;
+				g_EngineFuncs.ClientPrintf( m_pPlayer, print_center, "Switched to Semi Auto\n" );
+				break;
+			}
+		}
+		self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.3f;
 	}
 
 	void ItemPostFrame()
 	{
 		BaseClass.ItemPostFrame();
+	}
+
+	void Reload()
+	{
+		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
+			return;
+
+		Reload( MAX_CLIP, RELOAD, (75.0/35.0), GetBodygroup() );
+
+		BaseClass.Reload();
 	}
 
 	void WeaponIdle()
@@ -150,6 +180,9 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		if( self.m_flNextPrimaryAttack < g_Engine.time )
 			m_iShotsFired = 0;
+
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
 
 		self.SendWeaponAnim( IDLE1, 0, GetBodygroup() );
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );

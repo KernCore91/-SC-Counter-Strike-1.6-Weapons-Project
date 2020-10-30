@@ -60,6 +60,13 @@ edict_t@ ENT( const entvars_t@ pev )
 	return pev.pContainingEntity;
 }
 
+//Weapon Fire Modes
+enum CS16_FIREMODE_OPTIONS
+{
+	MODE_NORMAL = 0,
+	MODE_BURST
+}
+
 //Sound files
 const string EMPTY_PISTOL_S 	= "cs16/dryfire_pistol.wav";
 const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
@@ -67,6 +74,7 @@ const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
 mixin class WeaponBase
 {
 	protected m_iShotsFired = 0;
+	protected WeaponFireMode;
 
 	protected float WeaponTimeBase() // map time
 	{
