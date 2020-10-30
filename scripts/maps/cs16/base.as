@@ -61,7 +61,7 @@ edict_t@ ENT( const entvars_t@ pev )
 }
 
 //Weapon Fire Modes
-enum CS16_FIREMODE_OPTIONS
+enum FIREMODE_OPTIONS
 {
 	MODE_NORMAL = 0,
 	MODE_BURST
