@@ -47,7 +47,7 @@ int MAX_CARRY   	= 120;
 int MAX_CLIP    	= 20;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
-int FLAGS       	= 0;
+int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 39;
 uint SLOT       	= 1;
 uint POSITION   	= 5;
@@ -144,6 +144,45 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
 
 		ShellEject( m_pPlayer, m_iShell, Vector( 21, 10, -7 ), true, false );
+
+		if( WeaponFireMode == CS16BASE::MODE_NORMAL )
+		{
+			if( m_pPlayer.pev.velocity.Length2D() > 0 )
+			{
+				m_pPlayer.pev.punchangle.x = Math.RandomFloat( -3, -2 );
+			}
+			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+			{
+				m_pPlayer.pev.punchangle.x = Math.RandomLong( -5, -4 );
+			}
+			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+			{
+				m_pPlayer.pev.punchangle.x = Math.RandomFloat( -1.5f, -1.4f );
+			}
+			else
+			{
+				m_pPlayer.pev.punchangle.x = Math.RandomFloat( -2, -1.9f );
+			}
+		}
+		else if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			if( m_pPlayer.pev.velocity.Length2D() > 0 )
+			{
+				KickBack( 1.5, 0.45, 0.225, 0.05, 6.5, 2.5, 7 );
+			}
+			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+			{
+				KickBack( 2.0, 1.0, 0.5, 0.35, 9.0, 6.0, 5 );
+			}
+			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+			{
+				KickBack( 0.9, 0.35, 0.15, 0.025, 5.5, 1.5, 9 );
+			}
+			else
+			{
+				KickBack( 1.0, 0.375, 0.175, 0.0375, 5.75, 1.75, 8 );
+			}
+		}
 	}
 
 	void PrimaryAttack()
