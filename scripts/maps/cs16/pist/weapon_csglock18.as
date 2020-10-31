@@ -262,7 +262,10 @@ class CSGLOCK18_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 	void Precache()
 	{
+		//Models
 		g_Game.PrecacheModel( A_MODEL );
+		//Sounds
+		CommonPrecache();
 	}
 
 	bool AddAmmo( CBaseEntity@ pOther )

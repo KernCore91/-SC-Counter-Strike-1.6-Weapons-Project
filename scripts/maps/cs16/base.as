@@ -85,6 +85,8 @@ const string SHELL_SHOTGUN  	= "models/hlclassic/shotgunshell.mdl";
 //Sound files
 const string EMPTY_PISTOL_S 	= "cs16/dryfire_pistol.wav";
 const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
+const string AMMO_PICKUP_S  	= "cs16/misc/ammo.wav";
+const string ZOOM_SOUND     	= "cs16/misc/zoom.wav";
 //Main Sprite Folder
 const string MAIN_SPRITE_DIR 	= "sprites/";
 const string MAIN_CSTRIKE_DIR 	= "cs16/";
@@ -259,11 +261,16 @@ mixin class AmmoBase
 		BaseClass.Spawn();
 	}
 
+	void CommonPrecache()
+	{
+		PrecacheSound( AMMO_PICKUP_S );
+	}
+
 	bool CommonAddAmmo( CBaseEntity& inout pOther, int& in iAmmoClip, int& in iAmmoCarry, string& in iAmmoType )
 	{
 		if( pOther.GiveAmmo( iAmmoClip, iAmmoType, iAmmoCarry ) != -1 )
 		{
-			g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_ITEM, string_t(), 1, ATTN_NORM, 0, 95 + Math.RandomLong( 0, 0xa ) );
+			g_SoundSystem.EmitSoundDyn( self.edict(), CHAN_ITEM, AMMO_PICKUP_S, 1, ATTN_NORM, 0, 95 + Math.RandomLong( 0, 0xa ) );
 			return true;
 		}
 		return false;
