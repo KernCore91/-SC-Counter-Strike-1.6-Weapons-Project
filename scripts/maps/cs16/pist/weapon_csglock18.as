@@ -33,13 +33,15 @@ enum CS16_Glock18_Animations
 };
 
 // Models
-string W_MODEL  	= "models/cs16/g18/w_glock18.mdl";
-string V_MODEL  	= "models/cs16/g18/v_glock18.mdl";
-string P_MODEL  	= "models/cs16/g18/p_glock18.mdl";
+string W_MODEL  	= "models/cs16/wpn/g18/w_glock18.mdl";
+string V_MODEL  	= "models/cs16/wpn/g18/v_glock18.mdl";
+string P_MODEL  	= "models/cs16/wpn/g18/p_glock18.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
 int MAG_BDYGRP  	= 0;
+// Sprites
+string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds
-string SHOOT_S  	= "cs16/g18/shoot.wav";
+string SHOOT_S  	= "cs16/glock18-2.wav";
 // Information
 int MAX_CARRY   	= 120;
 int MAX_CLIP    	= 20;
@@ -49,8 +51,8 @@ int FLAGS       	= 0;
 uint DAMAGE     	= 39;
 uint SLOT       	= 1;
 uint POSITION   	= 5;
-float RPM_SINGLE 	= 0.15f;
-float RPM_BURST 	= 0.1f;
+float RPM_SINGLE 	= 0.1f;
+float RPM_BURST 	= 0.05f;
 string AMMO_TYPE 	= "cs16_9x19mm";
 
 class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
@@ -81,8 +83,14 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheModel( W_MODEL );
 		g_Game.PrecacheModel( V_MODEL );
 		g_Game.PrecacheModel( P_MODEL );
+		g_Game.PrecacheModel( A_MODEL );
+		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_PISTOL );
+		//Entity
+		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
+		//Sprites
+		g_Game.PrecacheGeneric( CS16BASE::MAIN_SPRITE_DIR + SPR_CAT + self.pev.classname + ".txt" );
 	}
 
 	bool GetItemInfo( ItemInfo& out info )
@@ -126,7 +134,14 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	private void FireWeapon()
 	{
-		
+		ShootWeapon( SHOOT_S, 1, VECTOR_CONE_1DEGREES, 8192, DAMAGE );
+
+		self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT3 : SHOOTEMPTY, 0, GetBodygroup() );
+
+		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
+		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
+
+		ShellEject( m_pPlayer, m_iShell, Vector( 21, 10, -7 ), true, false );
 	}
 
 	void PrimaryAttack()
@@ -137,6 +152,24 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM_SINGLE;
 			return;
 		}
+
+		if( WeaponFireMode == CS16BASE::MODE_NORMAL && m_pPlayer.m_afButtonPressed & IN_ATTACK == 0 )
+		{
+			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
+			return;
+		}
+		else if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			//Fire at most 3 bullets.
+			m_iBurstCount = Math.min( 3, self.m_iClip );
+			m_iBurstLeft = m_iBurstCount - 1;
+
+			m_flNextBurstFireTime = WeaponTimeBase() + RPM_BURST;
+			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.5;
+		}
+
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		FireWeapon();
 	}
 
 	void SecondaryAttack()
@@ -161,6 +194,33 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void ItemPostFrame()
 	{
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			if( m_iBurstLeft > 0 )
+			{
+				if( m_flNextBurstFireTime < WeaponTimeBase() )
+				{
+					if( self.m_iClip <= 0 )
+					{
+						m_iBurstLeft = 0;
+						return;
+					}
+					else
+						--m_iBurstLeft;
+
+					FireWeapon();
+
+					if( m_iBurstLeft > 0 )
+						m_flNextBurstFireTime = WeaponTimeBase() + RPM_BURST;
+					else
+						m_flNextBurstFireTime = 0;
+				}
+
+				//While firing a burst, don't allow reload or any other weapon actions. Might be best to let some things run though.
+				return;
+			}
+		}
+
 		BaseClass.ItemPostFrame();
 	}
 
@@ -208,6 +268,22 @@ class CSGLOCK18_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 	{
 		return CommonAddAmmo( pOther, MAX_CLIP, (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_9MM, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
 	}
+}
+
+string GetAmmoName()
+{
+	return "ammo_csglock18";
+}
+
+string GetName()
+{
+	return "weapon_csglock18";
+}
+
+void Register()
+{
+	CS16BASE::RegisterCWEntity( "CS16_GLOCK18::", "weapon_csglock18", GetName(), GetAmmoName(), "CSGLOCK18_MAG", 
+		CS16BASE::MAIN_SPRITE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
 }
 
 }
