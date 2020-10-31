@@ -62,7 +62,7 @@ edict_t@ ENT( const entvars_t@ pev )
 
 //Register Custom weapon entities along with custom ammo entity
 void RegisterCWEntity( const string szNameSpace, const string szWeaponClass, const string szWeaponName, const string szAmmoName, const string szAmmoClass, 
-	const string szSpriteDir, const string szAmmoType1
+	const string& in szSpriteDir, const string szAmmoType1
 	/*const string szAmmoType2 = "", const string szAmmoEntity2 = ""*/ )
 {
 	g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szWeaponClass, szWeaponName ); // Register the weapon entity
@@ -86,7 +86,8 @@ const string SHELL_SHOTGUN  	= "models/hlclassic/shotgunshell.mdl";
 const string EMPTY_PISTOL_S 	= "cs16/dryfire_pistol.wav";
 const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
 //Main Sprite Folder
-const string MAIN_SPRITE_DIR	= "sprites/cs16/";
+const string MAIN_SPRITE_DIR 	= "sprites/";
+const string MAIN_CSTRIKE_DIR 	= "cs16/";
 
 mixin class WeaponBase
 {
@@ -114,6 +115,14 @@ mixin class WeaponBase
 		self.pev.scale = 1.4;
 
 		self.FallInit();
+	}
+
+	void CommonSpritePrecache()
+	{
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud1.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud4.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud7.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "crosshairs.spr" );
 	}
 
 	bool CommonAddToPlayer( CBasePlayer@ pPlayer ) // adds a weapon to the player
