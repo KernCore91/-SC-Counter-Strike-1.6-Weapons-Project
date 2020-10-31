@@ -89,6 +89,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
+		CS16BASE::PrecacheSound( CS16BASE::EMPTY_PISTOL_S );
 		//Sprites
 		CommonSpritePrecache();
 		g_Game.PrecacheGeneric( CS16BASE::MAIN_SPRITE_DIR + CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT + self.pev.classname + ".txt" );

@@ -83,8 +83,8 @@ const string SHELL_RIFLE    	= "models/cs16/shells/rshell.mdl";
 const string SHELL_SNIPER   	= "models/cs16/shells/rshell_big.mdl";
 const string SHELL_SHOTGUN  	= "models/hlclassic/shotgunshell.mdl";
 //Sound files
-const string EMPTY_PISTOL_S 	= "cs16/dryfire_pistol.wav";
-const string EMPTY_RIFLE_S  	= "cs16/dryfire_rifle.wav";
+const string EMPTY_PISTOL_S 	= "cs16/misc/emptyp.wav";
+const string EMPTY_RIFLE_S  	= "cs16/misc/emptyr.wav";
 const string AMMO_PICKUP_S  	= "cs16/misc/ammo.wav";
 const string ZOOM_SOUND     	= "cs16/misc/zoom.wav";
 //Main Sprite Folder
@@ -147,12 +147,12 @@ mixin class WeaponBase
 		return true;
 	}
 
-	bool CommonPlayEmptySound( const string emptySound = string_t() ) // plays a empty sound when the player has no ammo left in the magazine
+	bool CommonPlayEmptySound( const string szEmptySound ) // plays a empty sound when the player has no ammo left in the magazine
 	{
 		if( self.m_bPlayEmptySound )
 		{
 			self.m_bPlayEmptySound = false;
-			g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_STREAM, emptySound, 0.9, 1.5, 0, PITCH_NORM );
+			g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_STREAM, szEmptySound, 0.9, 1.5, 0, PITCH_NORM );
 		}
 
 		return false;
