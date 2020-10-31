@@ -85,7 +85,7 @@ const string SHELL_SHOTGUN  	= "models/hlclassic/shotgunshell.mdl";
 //Sound files
 const string EMPTY_PISTOL_S 	= "cs16/misc/emptyp.wav";
 const string EMPTY_RIFLE_S  	= "cs16/misc/emptyr.wav";
-const string AMMO_PICKUP_S  	= "cs16/misc/ammo.wav";
+const string AMMO_PICKUP_S  	= "hlclassic/items/9mmclip1.wav";
 const string ZOOM_SOUND     	= "cs16/misc/zoom.wav";
 //Main Sprite Folder
 const string MAIN_SPRITE_DIR 	= "sprites/";
