@@ -17,13 +17,13 @@ namespace CS16_M3
 // Animations
 enum CS16_M3_Animations
 {
-	M3_IDLE = 0,
-	M3_SHOOT1,
-	M3_SHOOT2,
-	M3_INSERT,
-	M3_AFTER_RELOAD,
-	M3_START_RELOAD,
-	M3_DRAW
+	IDLE = 0,
+	SHOOT1,
+	SHOOT2,
+	INSERT,
+	AFTER_RELOAD,
+	START_RELOAD,
+	DRAW
 };
 
 // Models
