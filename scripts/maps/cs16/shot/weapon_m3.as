@@ -155,7 +155,7 @@ class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	}
 }
 
-class CSGLOCK18_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
+class CSM3_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 {
 	void Spawn()
 	{
@@ -178,6 +178,20 @@ class CSGLOCK18_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 	}
 }
 
+string GetAmmoName()
+{
+	return "ammo_m3";
+}
 
+string GetName()
+{
+	return "weapon_m3";
+}
+
+void Register()
+{
+	CS16BASE::RegisterCWEntity( "CS16_M3::", "weapon_m3", GetName(), GetAmmoName(), "CSM3_MAG", 
+		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_BUCK );
+}
 
 }
