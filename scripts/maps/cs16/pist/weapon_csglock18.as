@@ -5,7 +5,7 @@
 / Animations: Valve
 / Sounds: Valve
 / Sprites: Valve
-/ Misc: Valve
+/ Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */
 
@@ -41,6 +41,12 @@ int MAG_BDYGRP  	= 0;
 // Sprites
 string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds
+array<string> 		WeaponSoundEvents = {
+					"cs16/clipout1.wav",
+					"cs16/clipin1.wav",
+					"cs16/sliderelease1.wav",
+					"cs16/slideback1.wav"
+};
 string SHOOT_S  	= "cs16/glock18-2.wav";
 // Information
 int MAX_CARRY   	= 120;
@@ -90,6 +96,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
 		CS16BASE::PrecacheSound( CS16BASE::EMPTY_PISTOL_S );
+		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
 		CommonSpritePrecache();
 		g_Game.PrecacheGeneric( CS16BASE::MAIN_SPRITE_DIR + CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT + self.pev.classname + ".txt" );

@@ -64,9 +64,18 @@ edict_t@ ENT( const entvars_t@ pev )
 void RegisterCWEntity( const string szNameSpace, const string szWeaponClass, const string szWeaponName, const string szAmmoName, const string szAmmoClass, 
 	const string& in szSpriteDir, const string szAmmoType1 /*, const string szAmmoType2 = "", const string szAmmoEntity2 = ""*/ )
 {
-	g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szWeaponClass, szWeaponName ); // Register the weapon entity
-	g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szAmmoClass, szAmmoName ); // Register the ammo entity
-	g_ItemRegistry.RegisterWeapon( szWeaponName, szSpriteDir, szAmmoType1, "", szAmmoName/*, szAmmoEntity2*/ ); // Register the weapon
+	// Check if the Ammo Entity Name doesn't exist yet
+	if( !g_CustomEntityFuncs.IsCustomEntity( szAmmoName ) )
+	{
+		g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szAmmoClass, szAmmoName ); // Register the ammo entity
+	}
+
+	// Check if the Weapon Entity Name doesn't exist yet
+	if( !g_CustomEntityFuncs.IsCustomEntity( szWeaponName ) )
+	{
+		g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szWeaponClass, szWeaponName ); // Register the weapon entity
+		g_ItemRegistry.RegisterWeapon( szWeaponName, szSpriteDir, szAmmoType1, "", szAmmoName/*, szAmmoEntity2*/ ); // Register the weapon
+	}
 }
 
 //Weapon Fire Modes
