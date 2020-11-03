@@ -42,12 +42,12 @@ int MAG_BDYGRP  	= 0;
 string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/clipout1.wav",
-					"cs16/clipin1.wav",
-					"cs16/sliderelease1.wav",
-					"cs16/slideback1.wav"
+					"cs16/g18/magout.wav",
+					"cs16/g18/magin.wav",
+					"cs16/g18/sldrel.wav",
+					"cs16/g18/sldbck.wav"
 };
-string SHOOT_S  	= "cs16/glock18-2.wav";
+string SHOOT_S  	= "cs16/g18/shoot.wav";
 // Information
 int MAX_CARRY   	= 120;
 int MAX_CLIP    	= 20;
