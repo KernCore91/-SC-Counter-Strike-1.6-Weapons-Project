@@ -35,12 +35,12 @@ int MAG_BDYGRP  	= 2;
 string SPR_CAT  	= "smg/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/mac10_clipout.wav",
-					"cs16/mac10_clipin.wav",
-					"cs16/mac10/boltpull.wav",
+					"cs16/mac10/magout.wav",
+					"cs16/mac10/magin.wav",
+					"cs16/mac10/bltbk.wav",
 					"hlclassic/items/cliprelease1.wav"
 };
-string SHOOT_S  	= "cs16/mac10-1.wav";
+string SHOOT_S  	= "cs16/mac10/shoot.wav";
 // Information
 int MAX_CARRY   	= 100;
 int MAX_CLIP    	= 30;
