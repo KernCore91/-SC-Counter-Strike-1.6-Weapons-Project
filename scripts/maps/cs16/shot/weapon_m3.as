@@ -31,7 +31,7 @@ string W_MODEL  	= "models/cs16/wpn/m3/w_m3.mdl";
 string V_MODEL  	= "models/cs16/wpn/m3/v_m3.mdl";
 string P_MODEL  	= "models/cs16/wpn/m3/p_m3.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 0;
+int MAG_BDYGRP  	= 1;
 // Sprites
 string SPR_CAT  	= "shot/"; //Weapon category used to get the sprite's location
 // Sounds
@@ -162,6 +162,7 @@ class CSM3_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
+		self.pev.scale = 0.7;
 	}
 
 	void Precache()
