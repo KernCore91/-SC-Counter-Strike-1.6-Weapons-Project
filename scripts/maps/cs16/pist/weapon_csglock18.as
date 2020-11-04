@@ -44,8 +44,8 @@ string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 array<string> 		WeaponSoundEvents = {
 					"cs16/g18/magout.wav",
 					"cs16/g18/magin.wav",
-					"cs16/g18/sldrel.wav",
-					"cs16/g18/sldbck.wav"
+					"cs16/g18/sldrl.wav",
+					"cs16/g18/sldbk.wav"
 };
 string SHOOT_S  	= "cs16/g18/shoot.wav";
 // Information
