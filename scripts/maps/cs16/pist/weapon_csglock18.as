@@ -59,6 +59,7 @@ uint SLOT       	= 1;
 uint POSITION   	= 5;
 float RPM_SINGLE 	= 0.1f;
 float RPM_BURST 	= 0.05f;
+uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_9x19mm";
 
 class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
@@ -183,7 +184,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			}
 		}
 
-		ShootWeapon( SHOOT_S, 1, vecSpread, 8192, DAMAGE );
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 
 		self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT3 : SHOOTEMPTY, 0, GetBodygroup() );
 
