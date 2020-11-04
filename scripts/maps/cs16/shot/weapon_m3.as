@@ -46,9 +46,9 @@ int MAX_CLIP    	= 8;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 8;
+uint DAMAGE     	= 10;
 uint SLOT       	= 2;
-uint POSITION   	= 10;
+uint POSITION   	= 4;
 float RPM_PUMP  	= 0.875f;
 uint MAX_SHOOT_DIST	= 3000;
 string AMMO_TYPE 	= "cs16_12gauge";
@@ -171,10 +171,21 @@ class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void ItemPostFrame()
 	{
-		if( m_pPlayer.pev.button & IN_ATTACK != 0 && m_fShotgunReload && m_flNextReload <= g_Engine.time && self.m_iClip != 0 )
+		if( m_fShotgunReload )
 		{
-			self.m_flTimeWeaponIdle = g_Engine.time + m_flNextReload;
-			m_fShotgunReload = false;
+			if( (m_pPlayer.pev.button & IN_ATTACK != 0) && m_flNextReload <= g_Engine.time )
+			{
+				self.m_flTimeWeaponIdle = g_Engine.time + m_flNextReload;
+				m_fShotgunReload = false;
+			}
+			else if( (self.m_iClip >= MAX_CLIP && m_pPlayer.pev.button & (IN_RELOAD | IN_ATTACK2 | IN_ALT1) != 0) && m_flNextReload <= g_Engine.time )
+			{
+				// reload debounce has timed out
+				self.SendWeaponAnim( AFTER_RELOAD, 0, GetBodygroup() );
+
+				m_fShotgunReload = false;
+				self.m_flTimeWeaponIdle = g_Engine.time + 1.5f;
+			}
 		}
 		BaseClass.ItemPostFrame();
 	}
