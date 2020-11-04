@@ -86,7 +86,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
-		CS16BASE::PrecacheSound( CS16BASE::EMPTY_PISTOL_S );
+		CS16BASE::PrecacheSound( CS16BASE::EMPTY_RIFLE_S );
 		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
 		CommonSpritePrecache();
@@ -121,7 +121,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool PlayEmptySound()
 	{
-		return CommonPlayEmptySound( CS16BASE::EMPTY_PISTOL_S );
+		return CommonPlayEmptySound( CS16BASE::EMPTY_RIFLE_S );
 	}
 
 	void Holster( int skiplocal = 0 )
@@ -133,7 +133,42 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void PrimaryAttack()
 	{
+		if( self.m_iClip <= 0 )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+			return;
+		}
 
+		Vector vecSpread;
+
+		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
+
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
+
+		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			KickBack( 1.3, 0.55, 0.4, 0.05, 4.75, 3.75, 5 );
+		}
+		else if( m_pPlayer.pev.velocity.Length2D() > 0 )
+		{
+			KickBack( 0.9, 0.45, 0.25, 0.035, 3.5, 2.75, 7 );
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			KickBack( 0.75, 0.4, 0.175, 0.03, 2.75, 2.5, 10 );
+		}
+		else
+		{
+			KickBack( 0.775, 0.425, 0.2, 0.03, 3.0, 2.75, 9 );
+		}
+
+		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
+		m_pPlayer.m_iWeaponFlash = BRIGHT_GUN_FLASH;
+
+		ShellEject( m_pPlayer, m_iShell, Vector( 13, 7, -5 ), true, false );
 	}
 
 	void Reload()
