@@ -145,7 +145,26 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	private void FireWeapon()
 	{
 		Vector vecSpread;
-		if( WeaponFireMode == CS16BASE::MODE_NORMAL )
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			if( m_pPlayer.pev.velocity.Length2D() > 0 )
+			{
+				vecSpread = VECTOR_CONE_2DEGREES * 1.185f;
+			}
+			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+			{
+				vecSpread = VECTOR_CONE_2DEGREES * 2.2f;
+			}
+			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+			{
+				vecSpread = VECTOR_CONE_2DEGREES * 1.095f;
+			}
+			else
+			{
+				vecSpread = VECTOR_CONE_2DEGREES * 1.3f;
+			}
+		}
+		else
 		{
 			if( m_pPlayer.pev.velocity.Length2D() > 0 )
 			{
@@ -153,7 +172,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			}
 			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
 			{
-				vecSpread = VECTOR_CONE_1DEGREES * 2.0f;
+				vecSpread = VECTOR_CONE_2DEGREES * 2.0f;
 			}
 			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
 			{
@@ -164,25 +183,8 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 				vecSpread = VECTOR_CONE_1DEGREES * 1.1f;
 			}
 		}
-		else if( WeaponFireMode == CS16BASE::MODE_BURST )
-		{
-			if( m_pPlayer.pev.velocity.Length2D() > 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.185f;
-			}
-			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 2.2f;
-			}
-			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.095f;
-			}
-			else
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.3f;
-			}
-		}
+
+		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
 
 		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 
@@ -289,7 +291,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.ResetEmptySound();
 		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
 
-		if( self.m_flNextPrimaryAttack < g_Engine.time )
+		if( self.m_flNextPrimaryAttack + 0.2 < g_Engine.time ) // wait 0.2 seconds before reseting how many shots the player fired
 			m_iShotsFired = 0;
 
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )

@@ -119,7 +119,7 @@ class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, DRAW, "onehanded", GetBodygroup(), (30.0/30.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "shotgun", GetBodygroup(), (30.0/30.0) );
 	}
 
 	bool PlayEmptySound()
