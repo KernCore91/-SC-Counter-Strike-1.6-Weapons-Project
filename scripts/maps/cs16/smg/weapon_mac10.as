@@ -142,6 +142,17 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		Vector vecSpread;
 
+		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 0.375f * 0.15f;
+			vecSpread = vecSpread * (m_iShotsFired * 0.3f);
+		}
+		else
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 0.03f * 0.15f;
+			vecSpread = vecSpread * (m_iShotsFired * 0.2f);
+		}
+
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
 
