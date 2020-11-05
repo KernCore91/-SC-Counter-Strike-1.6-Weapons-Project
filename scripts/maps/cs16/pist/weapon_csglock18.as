@@ -205,12 +205,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			return;
 		}
 
-		if( WeaponFireMode == CS16BASE::MODE_NORMAL && m_pPlayer.m_afButtonPressed & IN_ATTACK == 0 )
-		{
-			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
-			return;
-		}
-		else if( WeaponFireMode == CS16BASE::MODE_BURST )
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
 		{
 			//Fire at most 3 bullets.
 			m_iBurstCount = Math.min( 3, self.m_iClip );
@@ -218,6 +213,13 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 			m_flNextBurstFireTime = WeaponTimeBase() + RPM_BURST;
 			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.5;
+		}
+		else
+		{
+			if( m_pPlayer.m_afButtonPressed & IN_ATTACK == 0 )
+				return;
+
+			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
 		}
 
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
