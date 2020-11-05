@@ -48,7 +48,7 @@ uint DAMAGE     	= 21;
 uint SLOT       	= 5;
 uint POSITION   	= 5;
 float RPM_SINGLE 	= 0.0825;
-float RPM_BURST  	= 0.0825;
+float RPM_BURST  	= 0.05f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_5.56x45mm";
 
@@ -71,6 +71,7 @@ class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
+		self.pev.scale = 1;
 	}
 
 	void Precache()
@@ -130,6 +131,143 @@ class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		CommonHolster();
 
 		BaseClass.Holster( skiplocal );
+	}
+
+	private void FireWeapon()
+	{
+		Vector vecSpread;
+		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
+
+		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
+
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+
+		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
+		m_pPlayer.m_iWeaponFlash = BRIGHT_GUN_FLASH;
+
+		if( m_pPlayer.pev.velocity.Length2D() > 0 )
+		{
+			KickBack( 1.0, 0.45, 0.275, 0.05, 4.0, 2.5, 7 );
+		}
+		else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			KickBack( 1.25, 0.45, 0.22, 0.18, 5.5, 4.0, 5 );
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			KickBack( 0.575, 0.325, 0.2, 0.011, 3.25, 2.0, 8 );
+		}
+		else
+		{
+			KickBack( 0.625, 0.375, 0.25, 0.0125, 3.5, 2.25, 8 );
+		}
+
+		ShellEject( m_pPlayer, m_iShell, Vector( 19, 15, -12 ), false, false );
+	}
+
+	void PrimaryAttack()
+	{
+		if( self.m_iClip <= 0 || m_pPlayer.pev.waterlevel == WATERLEVEL_HEAD )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + 0.15f;
+			return;
+		}
+
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			//Fire at most 3 bullets.
+			m_iBurstCount = Math.min( 3, self.m_iClip );
+			m_iBurstLeft = m_iBurstCount - 1;
+
+			m_flNextBurstFireTime = WeaponTimeBase() + RPM_BURST;
+			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.55f;
+		}
+		else
+		{
+			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
+		}
+
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		FireWeapon();
+	}
+
+	void ItemPostFrame()
+	{
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			if( m_iBurstLeft > 0 )
+			{
+				if( m_flNextBurstFireTime < WeaponTimeBase() )
+				{
+					if( self.m_iClip <= 0 )
+					{
+						m_iBurstLeft = 0;
+						return;
+					}
+					else
+						--m_iBurstLeft;
+
+					FireWeapon();
+
+					if( m_iBurstLeft > 0 )
+						m_flNextBurstFireTime = WeaponTimeBase() + RPM_BURST;
+					else
+						m_flNextBurstFireTime = 0;
+				}
+
+				//While firing a burst, don't allow reload or any other weapon actions. Might be best to let some things run though.
+				return;
+			}
+		}
+
+		BaseClass.ItemPostFrame();
+	}
+
+	void SecondaryAttack()
+	{
+		switch( WeaponFireMode )
+		{
+			case CS16BASE::MODE_NORMAL:
+			{
+				WeaponFireMode = CS16BASE::MODE_BURST;
+				g_EngineFuncs.ClientPrintf( m_pPlayer, print_center, " Switched to Burst Fire \n" );
+				break;
+			}
+			case CS16BASE::MODE_BURST:
+			{
+				WeaponFireMode = CS16BASE::MODE_NORMAL;
+				g_EngineFuncs.ClientPrintf( m_pPlayer, print_center, " Switched to Full Auto \n" );
+				break;
+			}
+		}
+		self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.3f;
+	}
+
+	void Reload()
+	{
+		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
+			return;
+
+		Reload( MAX_CLIP, RELOAD, (90.0/30.0), GetBodygroup() );
+
+		BaseClass.Reload();
+	}
+
+	void WeaponIdle()
+	{	
+		self.ResetEmptySound();
+		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
+
+		if( self.m_flNextPrimaryAttack < g_Engine.time )
+			m_iShotsFired = 0;
+
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
+
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
 }
 

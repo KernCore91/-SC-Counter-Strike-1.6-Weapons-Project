@@ -222,7 +222,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
 		}
 
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 5.0f;
 		FireWeapon();
 	}
 
