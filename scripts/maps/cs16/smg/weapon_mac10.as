@@ -1,4 +1,4 @@
-// Counter-Strike 1.6 Leone 12 Gauge Super
+// Counter-Strike 1.6 Ingram MAC-10
 /* Model Credits
 / Model: Valve
 / Textures: Valve
