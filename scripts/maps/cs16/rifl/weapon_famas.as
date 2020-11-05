@@ -13,7 +13,7 @@ namespace CS16_FAMAS
 {
 
 // Animations
-enum FAMASAnimation
+enum CS16_Famas_Animations
 {
 	IDLE = 0,
 	RELOAD,
