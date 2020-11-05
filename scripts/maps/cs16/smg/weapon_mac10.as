@@ -117,7 +117,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, DRAW, "onehanded", GetBodygroup(), (49.0/45.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "onehanded", GetBodygroup(), (30.0/33.0) );
 	}
 
 	bool PlayEmptySound()
@@ -149,7 +149,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		}
 		else
 		{
-			vecSpread = VECTOR_CONE_2DEGREES * 0.5f * 1.65f;
+			vecSpread = VECTOR_CONE_2DEGREES * 0.45f * 1.65f;
 		}
 
 		vecSpread = vecSpread * (m_iShotsFired * 0.3f);
