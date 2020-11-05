@@ -71,6 +71,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
+		self.pev.scale = 1;
 	}
 
 	void Precache()
@@ -215,6 +216,7 @@ class MAC10_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
+		self.pev.scale = 1;
 	}
 
 	void Precache()
