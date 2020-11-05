@@ -78,6 +78,18 @@ void RegisterCWEntity( const string szNameSpace, const string szWeaponClass, con
 	}
 }
 
+//Same purpose as the one above, but this one assumes you'll be using Exhaustible weapons with the weapon acting as the ammo
+void RegisterCWEntityEX( const string szNameSpace, const string szWeaponClass, const string szWeaponName, const string szAmmoName, const string& in szSpriteDir, 
+	const string szAmmoType1 )
+{
+	// Check if the Weapon Entity Name doesn't exist yet
+	if( !g_CustomEntityFuncs.IsCustomEntity( szWeaponName ) )
+	{
+		g_CustomEntityFuncs.RegisterCustomEntity( szNameSpace + szWeaponClass, szWeaponName ); // Register the weapon entity
+		g_ItemRegistry.RegisterWeapon( szWeaponName, szSpriteDir, szAmmoType1, "", szAmmoName ); // Register the weapon
+	}
+}
+
 //Weapon Fire Modes
 enum FIREMODE_OPTIONS
 {

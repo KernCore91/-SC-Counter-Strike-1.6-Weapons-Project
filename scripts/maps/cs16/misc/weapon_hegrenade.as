@@ -54,4 +54,9 @@ string GetName()
 	return "weapon_hegrenade";
 }
 
+void Register()
+{
+	CS16BASE::RegisterCWEntityEX( "CS16_HEGRENADE::", "weapon_hegrenade", GetName(), GetName(), CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, AMMO_TYPE );
+}
+
 }
