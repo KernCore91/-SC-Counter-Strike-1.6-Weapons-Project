@@ -162,7 +162,7 @@ class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			KickBack( 0.625, 0.375, 0.25, 0.0125, 3.5, 2.25, 8 );
 		}
 
-		ShellEject( m_pPlayer, m_iShell, Vector( 19, 15, -12 ), false, false );
+		ShellEject( m_pPlayer, m_iShell, Vector( 14, 15, -12 ), false, false );
 	}
 
 	void PrimaryAttack()
