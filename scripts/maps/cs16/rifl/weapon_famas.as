@@ -168,7 +168,7 @@ string GetName()
 
 void Register()
 {
-	CS16BASE::RegisterCWEntity( "CS16_FAMAS::", "weapon_famas", GetName(), GetAmmoName(), "MAC10_MAG", 
+	CS16BASE::RegisterCWEntity( "CS16_FAMAS::", "weapon_famas", GetName(), GetAmmoName(), "FAMAS_MAG", 
 		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_556 );
 }
 
