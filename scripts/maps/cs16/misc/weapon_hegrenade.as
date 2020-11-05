@@ -29,9 +29,7 @@ string P_MODEL  	= "models/cs16/wpn/he/p_he.mdl";
 string SPR_CAT  	= "misc/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/famas/magout.wav",
-					"cs16/famas/magin.wav",
-					"cs16/famas/bltbk.wav"
+					"cs16/pinpull.wav"
 };
 string SHOOT_S  	= "cs16/famas/shoot.wav";
 // Information
@@ -43,14 +41,17 @@ int FLAGS       	= ITEM_FLAG_LIMITINWORLD | ITEM_FLAG_EXHAUSTIBLE;
 uint DAMAGE     	= 150;
 uint SLOT       	= 4;
 uint POSITION   	= 4;
-float RPM_SINGLE 	= 0.0825;
-float RPM_BURST  	= 0.0825;
-uint MAX_SHOOT_DIST	= 8192;
-string AMMO_TYPE 	= "cs16_5.56x45mm";
+string AMMO_TYPE 	= GetName();
+float TIMER      	= 1.5;
 
 class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 
+}
+
+string GetName()
+{
+	return "weapon_hegrenade";
 }
 
 }
