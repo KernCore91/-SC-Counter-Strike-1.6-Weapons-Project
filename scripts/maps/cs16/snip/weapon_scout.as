@@ -27,9 +27,9 @@ string W_MODEL  	= "models/cs16/wpn/scout/w_scout.mdl";
 string V_MODEL  	= "models/cs16/wpn/scout/v_scout.mdl";
 string P_MODEL  	= "models/cs16/wpn/scout/p_scout.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 3;
+int MAG_BDYGRP  	= 4;
 // Sprites
-string SPR_CAT  	= "rifl/"; //Weapon category used to get the sprite's location
+string SPR_CAT  	= "snip/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
 					"cs16/scout/blt.wav",
