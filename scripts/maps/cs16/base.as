@@ -146,6 +146,8 @@ mixin class WeaponBase
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud1.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud4.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud7.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud12.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud13.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud14.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud15.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud17.spr" );
