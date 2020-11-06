@@ -26,6 +26,7 @@ enum CS16_Scout_Animations
 string W_MODEL  	= "models/cs16/wpn/scout/w_scout.mdl";
 string V_MODEL  	= "models/cs16/wpn/scout/v_scout.mdl";
 string P_MODEL  	= "models/cs16/wpn/scout/p_scout.mdl";
+string S_MODEL  	= "models/cs16/wpn/scope.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
 int MAG_BDYGRP  	= 4;
 // Sprites
@@ -76,6 +77,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheModel( W_MODEL );
 		g_Game.PrecacheModel( V_MODEL );
 		g_Game.PrecacheModel( P_MODEL );
+		g_Game.PrecacheModel( S_MODEL );
 		g_Game.PrecacheModel( A_MODEL );
 		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_RIFLE );
 		//Entity
@@ -135,13 +137,16 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 				WeaponZoomMode = CS16BASE::MODE_FOV_ZOOM;
 
 				ApplyFoVSniper( CS16BASE::DEFAULT_ZOOM_VALUE, 220 );
+				m_pPlayer.pev.viewmodel = S_MODEL;
 				m_pPlayer.m_szAnimExtension = "sniperscope";
 				break;
 			}
 			case CS16BASE::MODE_FOV_ZOOM:
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_2X_ZOOM;
-				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 150 );
+
+				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 200 );
+				m_pPlayer.pev.viewmodel = S_MODEL;
 				m_pPlayer.m_szAnimExtension = "sniperscope";
 				break;
 			}
@@ -149,9 +154,9 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
 
-				ToggleZoom( CS16BASE::RESET_ZOOM_VALUE );
-				m_pPlayer.m_szAnimExtension = "sniper";
+				m_pPlayer.pev.viewmodel = V_MODEL;
 				ResetFoV();
+				m_pPlayer.m_szAnimExtension = "sniper";
 				break;
 			}
 		}

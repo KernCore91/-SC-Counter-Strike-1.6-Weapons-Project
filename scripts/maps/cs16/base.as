@@ -234,14 +234,18 @@ mixin class WeaponBase
 
 	void ApplyFoVSniper( int& in iValue, int& in iMaxSpeed )
 	{
+		m_pPlayer.SetVModelPos( Vector( 0, 0, 0 ) );
 		ToggleZoom( iValue );
+
 		m_pPlayer.pev.maxspeed = iMaxSpeed;
 		//m_pPlayer.SetMaxSpeedOverride( iMaxSpeed );
 	}
 
 	void ResetFoV()
 	{
+		m_pPlayer.ResetVModelPos();
 		ToggleZoom( RESET_ZOOM_VALUE );
+
 		m_pPlayer.pev.maxspeed = 0;
 		//m_pPlayer.SetMaxSpeedOverride( -1 );
 	}
