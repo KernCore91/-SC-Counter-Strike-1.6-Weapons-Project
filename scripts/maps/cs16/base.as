@@ -105,7 +105,15 @@ enum ZOOM_OPTIONS
 	MODE_FOV_2X_ZOOM
 };
 
+enum CS16_Scope_Animations
+{
+	SCP_IDLE_DEFAULT = 0,
+	SCP_IDLE_FOV40,
+	SCP_IDLE_FOV15
+};
+
 //Model files
+string SCOPE_MODEL      	= "models/cs16/wpn/scope.mdl";
 string SHELL_PISTOL     	= "models/cs16/shells/pshell.mdl";
 string SHELL_RIFLE      	= "models/cs16/shells/rshell.mdl";
 string SHELL_SNIPER     	= "models/cs16/shells/rshell_big.mdl";
