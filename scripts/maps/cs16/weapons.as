@@ -6,6 +6,8 @@
 #include "smg/weapon_mac10"
 //Assault Rifles
 #include "rifl/weapon_famas"
+//Sniper Rifles
+#include "snip/weapon_scout"
 
 void RegisterAll()
 {
@@ -17,4 +19,6 @@ void RegisterAll()
 	CS16_MAC10::Register();
 	//Assault Rifles
 	CS16_FAMAS::Register();
+	//Sniper Rifles
+	CS16_SCOUT::Register();
 }
