@@ -15,12 +15,11 @@ namespace CS16_SCOUT
 // Animations
 enum CS16_Scout_Animations
 {
-	IDLE = 0,
-	RELOAD,
-	DRAW,
+	IDLE1 = 0,
 	SHOOT1,
 	SHOOT2,
-	SHOOT3
+	RELOAD,
+	DRAW
 };
 
 // Models
@@ -133,12 +132,12 @@ class SCOUT_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 string GetAmmoName()
 {
-	return "ammo_famas";
+	return "ammo_scout";
 }
 
 string GetName()
 {
-	return "weapon_famas";
+	return "weapon_scout";
 }
 
 void Register()
