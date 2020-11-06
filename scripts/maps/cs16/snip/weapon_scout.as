@@ -104,6 +104,43 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		return true;
 	}
+
+	bool Deploy()
+	{
+		return Deploy( V_MODEL, P_MODEL, DRAW, "sniper", GetBodygroup(), (49.0/45.0) );
+	}
+
+	void SecondaryAttack()
+	{
+		self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.3f;
+		switch( WeaponZoomMode )
+		{
+			case CS16BASE::MODE_FOV_NORMAL:
+			{
+				WeaponZoomMode = CS16BASE::MODE_FOV_ZOOM;
+
+				ApplyFoVSniper( CS16BASE::DEFAULT_ZOOM_VALUE, 220 );
+				m_pPlayer.m_szAnimExtension = "sniperscope";
+				break;
+			}
+			case CS16BASE::MODE_FOV_ZOOM:
+			{
+				WeaponZoomMode = CS16BASE::MODE_FOV_2X_ZOOM;
+				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 150 );
+				m_pPlayer.m_szAnimExtension = "sniperscope";
+				break;
+			}
+			case CS16BASE::MODE_FOV_2X_ZOOM:
+			{
+				WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
+
+				ToggleZoom( CS16BASE::RESET_ZOOM_VALUE );
+				m_pPlayer.m_szAnimExtension = "sniper";
+				ApplyFoVSniper( CS16BASE::RESET_ZOOM_VALUE, 0 /*-1*/ );
+				break;
+			}
+		}
+	}
 }
 
 class SCOUT_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase

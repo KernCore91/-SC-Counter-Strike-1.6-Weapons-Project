@@ -97,24 +97,38 @@ enum FIREMODE_OPTIONS
 	MODE_BURST
 };
 
+//Weapon Zoom Modes
+enum ZOOM_OPTIONS
+{
+	MODE_FOV_NORMAL = 0,
+	MODE_FOV_ZOOM,
+	MODE_FOV_2X_ZOOM
+};
+
 //Model files
-const string SHELL_PISTOL   	= "models/cs16/shells/pshell.mdl";
-const string SHELL_RIFLE    	= "models/cs16/shells/rshell.mdl";
-const string SHELL_SNIPER   	= "models/cs16/shells/rshell_big.mdl";
-const string SHELL_SHOTGUN  	= "models/hlclassic/shotgunshell.mdl";
+string SHELL_PISTOL     	= "models/cs16/shells/pshell.mdl";
+string SHELL_RIFLE      	= "models/cs16/shells/rshell.mdl";
+string SHELL_SNIPER     	= "models/cs16/shells/rshell_big.mdl";
+string SHELL_SHOTGUN    	= "models/hlclassic/shotgunshell.mdl";
 //Sound files
-const string EMPTY_PISTOL_S 	= "cs16/misc/emptyp.wav";
-const string EMPTY_RIFLE_S  	= "cs16/misc/emptyr.wav";
-const string AMMO_PICKUP_S  	= "hlclassic/items/9mmclip1.wav";
-const string ZOOM_SOUND     	= "cs16/misc/zoom.wav";
+string EMPTY_PISTOL_S   	= "cs16/misc/emptyp.wav";
+string EMPTY_RIFLE_S    	= "cs16/misc/emptyr.wav";
+string AMMO_PICKUP_S    	= "hlclassic/items/9mmclip1.wav";
+string ZOOM_SOUND       	= "cs16/misc/zoom.wav";
 //Main Sprite Folder
-const string MAIN_SPRITE_DIR 	= "sprites/";
-const string MAIN_CSTRIKE_DIR 	= "cs16/";
+string MAIN_SPRITE_DIR  	= "sprites/";
+string MAIN_CSTRIKE_DIR 	= "cs16/";
+//Zoom information
+int RESET_ZOOM_VALUE     	= 0;
+int DEFAULT_AUG_SG_ZOOM 	= 55;
+int DEFAULT_ZOOM_VALUE  	= 40;
+int DEFAULT_2X_ZOOM_VALUE 	= 15;
 
 mixin class WeaponBase
 {
 	protected int m_iShotsFired = 0;
 	protected int WeaponFireMode;
+	protected int WeaponZoomMode;
 	protected int m_iShell;
 	private bool m_iDirection = true;
 	private string g_watersplash_spr = "sprites/wep_smoke_01.spr";
@@ -191,8 +205,46 @@ mixin class WeaponBase
 	{
 		self.m_fInReload = false;
 		SetThink( null );
+
 		m_iShotsFired = 0;
 		m_pPlayer.pev.fuser4 = 0;
+
+		WeaponZoomMode = MODE_FOV_NORMAL;
+		ResetFoV();
+
+		m_pPlayer.pev.maxspeed = 0;
+		//m_pPlayer.SetMaxSpeedOverride( -1 );
+	}
+
+	//Sets the Player's FOV
+	void SetFOV( int fov )
+	{
+		m_pPlayer.pev.fov = m_pPlayer.m_iFOV = fov;
+	}
+	
+	//Toggles it
+	void ToggleZoom( int zoomedFOV )
+	{
+		if ( self.m_fInZoom == true )
+		{
+			SetFOV( 0 ); // 0 means reset to default fov
+		}
+		else if ( self.m_fInZoom == false )
+		{
+			SetFOV( zoomedFOV );
+		}
+	}
+
+	void ApplyFoVSniper( int& in iValue, int& in iMaxSpeed )
+	{
+		ToggleZoom( iValue );
+		m_pPlayer.pev.maxspeed = iMaxSpeed;
+		//m_pPlayer.SetMaxSpeedOverride( iMaxSpeed );
+	}
+
+	void ResetFoV()
+	{
+		ToggleZoom( RESET_ZOOM_VALUE );
 	}
 
 	// Precise shell casting
