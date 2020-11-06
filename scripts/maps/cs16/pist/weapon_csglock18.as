@@ -194,6 +194,8 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
 
 		ShellEject( m_pPlayer, m_iShell, Vector( 21, 10, -7 ), true, false );
+
+		self.m_flTimeWeaponIdle = (self.m_iClip <= 0) ? WeaponTimeBase() + 10.0f : WeaponTimeBase() + 1.0f;
 	}
 
 	void PrimaryAttack()
@@ -202,6 +204,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		{
 			self.PlayEmptySound();
 			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM_SINGLE;
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 10.0f;
 			return;
 		}
 
@@ -222,7 +225,6 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM_SINGLE;
 		}
 
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 5.0f;
 		FireWeapon();
 	}
 

@@ -139,8 +139,6 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 				m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
 				self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV40, 0, GetBodygroup() );
-
-				m_pPlayer.m_szAnimExtension = "sniperscope";
 				break;
 			}
 			case CS16BASE::MODE_FOV_ZOOM:
@@ -149,9 +147,8 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 200 );
 
+				m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
 				self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV15, 0, GetBodygroup() );
-
-				m_pPlayer.m_szAnimExtension = "sniperscope";
 				break;
 			}
 			case CS16BASE::MODE_FOV_2X_ZOOM:
@@ -160,7 +157,6 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 				m_pPlayer.pev.viewmodel = V_MODEL;
 				ResetFoV();
-				m_pPlayer.m_szAnimExtension = "sniper";
 				break;
 			}
 		}
@@ -168,7 +164,18 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	void Reload()
 	{
+		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
+			return;
 
+		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL )
+		{
+			m_pPlayer.pev.viewmodel = V_MODEL;
+			ResetFoV();
+		}
+
+		Reload( MAX_CLIP, RELOAD, (60.0/30.0), GetBodygroup() );
+
+		BaseClass.Reload();
 	}
 
 	void WeaponIdle()

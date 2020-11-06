@@ -240,22 +240,26 @@ mixin class WeaponBase
 		}
 	}
 
-	void ApplyFoVSniper( int& in iValue, int& in iMaxSpeed )
+	void ApplyFoVSniper( int& in iValue, int& in iMaxSpeed, string& in szAnimExtension = "sniperscope" )
 	{
 		m_pPlayer.SetVModelPos( Vector( 0, 0, 0 ) );
 		ToggleZoom( iValue );
 
 		m_pPlayer.pev.maxspeed = iMaxSpeed;
 		//m_pPlayer.SetMaxSpeedOverride( iMaxSpeed );
+
+		m_pPlayer.m_szAnimExtension = szAnimExtension;
 	}
 
-	void ResetFoV()
+	void ResetFoV( string& in szAnimExtension = "sniper" )
 	{
 		m_pPlayer.ResetVModelPos();
 		ToggleZoom( RESET_ZOOM_VALUE );
 
 		m_pPlayer.pev.maxspeed = 0;
 		//m_pPlayer.SetMaxSpeedOverride( -1 );
+
+		m_pPlayer.m_szAnimExtension = szAnimExtension;
 	}
 
 	// Precise shell casting
