@@ -136,7 +136,37 @@ class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	private void FireWeapon()
 	{
 		Vector vecSpread;
-		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
+		if( WeaponFireMode == CS16BASE::MODE_BURST )
+		{
+			if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.33 * (0.125 + (m_iShotsFired * 0.2));
+			}
+			else if( m_pPlayer.pev.velocity.Length2D() > 140 )
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.13 * (0.07 + (m_iShotsFired * 0.125));
+			}
+			else
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.15;
+			}
+		}
+		else
+		{
+			if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.31 * (0.12 + (m_iShotsFired * 0.2));
+			}
+			else if( m_pPlayer.pev.velocity.Length2D() > 140 )
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.12 * (0.07 + (m_iShotsFired * 0.125));
+			}
+			else
+			{
+				vecSpread = VECTOR_CONE_1DEGREES * 1.1;
+			}
+		}
+		vecSpread = vecSpread * (m_iShotsFired * 0.195); // do vector math calculations here to make the Spread worse
 
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
 
@@ -278,6 +308,7 @@ class FAMAS_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
+		self.pev.scale = 1.1;
 	}
 
 	void Precache()
