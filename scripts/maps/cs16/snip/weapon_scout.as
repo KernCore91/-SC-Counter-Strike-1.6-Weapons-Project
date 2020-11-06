@@ -149,7 +149,6 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 200 );
 
-				m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
 				self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV15, 0, GetBodygroup() );
 
 				m_pPlayer.m_szAnimExtension = "sniperscope";
@@ -183,7 +182,8 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
 			return;
 
-		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+		if( WeaponZoomMode == CS16BASE::MODE_FOV_NORMAL )
+			self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
 
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
