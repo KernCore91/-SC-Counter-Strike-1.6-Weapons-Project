@@ -15,7 +15,7 @@ namespace CS16_SCOUT
 // Animations
 enum CS16_Scout_Animations
 {
-	IDLE1 = 0,
+	IDLE = 0,
 	SHOOT1,
 	SHOOT2,
 	RELOAD,
@@ -82,6 +82,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
+		CS16BASE::PrecacheSound( CS16BASE::ZOOM_SOUND );
 		CS16BASE::PrecacheSound( CS16BASE::EMPTY_RIFLE_S );
 		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
@@ -110,9 +111,23 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		return Deploy( V_MODEL, P_MODEL, DRAW, "sniper", GetBodygroup(), (49.0/45.0) );
 	}
 
+	void Holster( int skiplocal = 0 )
+	{
+		CommonHolster();
+
+		BaseClass.Holster( skiplocal );
+	}
+
+	void PrimaryAttack()
+	{
+
+	}
+
 	void SecondaryAttack()
 	{
 		self.m_flNextSecondaryAttack = WeaponTimeBase() + 0.3f;
+		g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_ITEM, CS16BASE::ZOOM_SOUND, 0.9, ATTN_NORM, 0, PITCH_NORM );
+
 		switch( WeaponZoomMode )
 		{
 			case CS16BASE::MODE_FOV_NORMAL:
@@ -136,10 +151,31 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 				ToggleZoom( CS16BASE::RESET_ZOOM_VALUE );
 				m_pPlayer.m_szAnimExtension = "sniper";
-				ApplyFoVSniper( CS16BASE::RESET_ZOOM_VALUE, 0 /*-1*/ );
+				ResetFoV();
 				break;
 			}
 		}
+	}
+
+	void Reload()
+	{
+
+	}
+
+	void WeaponIdle()
+	{
+		self.ResetEmptySound();
+		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
+
+		if( self.m_flNextPrimaryAttack < g_Engine.time )
+			m_iShotsFired = 0;
+
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
+
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
 }
 

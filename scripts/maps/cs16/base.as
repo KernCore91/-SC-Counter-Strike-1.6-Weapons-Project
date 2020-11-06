@@ -211,9 +211,6 @@ mixin class WeaponBase
 
 		WeaponZoomMode = MODE_FOV_NORMAL;
 		ResetFoV();
-
-		m_pPlayer.pev.maxspeed = 0;
-		//m_pPlayer.SetMaxSpeedOverride( -1 );
 	}
 
 	//Sets the Player's FOV
@@ -245,6 +242,8 @@ mixin class WeaponBase
 	void ResetFoV()
 	{
 		ToggleZoom( RESET_ZOOM_VALUE );
+		m_pPlayer.pev.maxspeed = 0;
+		//m_pPlayer.SetMaxSpeedOverride( -1 );
 	}
 
 	// Precise shell casting
