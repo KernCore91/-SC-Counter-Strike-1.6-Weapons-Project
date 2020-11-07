@@ -240,12 +240,12 @@ mixin class WeaponBase
 		}
 	}
 
-	void ApplyFoVSniper( int& in iValue, int& in iMaxSpeed, string& in szAnimExtension = "sniperscope" )
+	void ApplyFoVSniper( int& in iValue, float& in flMaxSpeed, string& in szAnimExtension = "sniperscope" )
 	{
 		m_pPlayer.SetVModelPos( Vector( 0, 0, 0 ) );
 		ToggleZoom( iValue );
 
-		m_pPlayer.pev.maxspeed = iMaxSpeed;
+		m_pPlayer.pev.maxspeed = flMaxSpeed;
 		//m_pPlayer.SetMaxSpeedOverride( iMaxSpeed );
 
 		m_pPlayer.m_szAnimExtension = szAnimExtension;

@@ -47,7 +47,9 @@ uint DAMAGE     	= 21;
 uint SLOT       	= 6;
 uint POSITION   	= 4;
 uint MAX_SHOOT_DIST	= 8192;
+float RPM       	= 1.25f;
 string AMMO_TYPE 	= "cs16_7.62x39mm";
+float AIM_SPEED 	= 220;
 
 class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
@@ -57,6 +59,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		set       	{ self.m_hPlayer = EHandle( @value ); }
 	}
 	private int m_iShell;
+	private CScheduledFunction@ CSRemoveBullet = null; //2 think functions can't work at the same time on the same object
 	private int GetBodygroup()
 	{
 		return 0;
@@ -66,7 +69,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
-		self.pev.scale = 1;
+		self.pev.scale = 1.15;
 	}
 
 	void Precache()
@@ -78,7 +81,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheModel( P_MODEL );
 		g_Game.PrecacheModel( CS16BASE::SCOPE_MODEL );
 		g_Game.PrecacheModel( A_MODEL );
-		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_RIFLE );
+		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_SNIPER );
 		//Entity
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
@@ -107,21 +110,86 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		return true;
 	}
 
+	bool AddToPlayer( CBasePlayer@ pPlayer )
+	{
+		return CommonAddToPlayer( pPlayer );
+	}
+
+	bool PlayEmptySound()
+	{
+		return CommonPlayEmptySound( CS16BASE::EMPTY_RIFLE_S );
+	}
+
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, DRAW, "sniper", GetBodygroup(), (49.0/45.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "sniper", GetBodygroup(), (30.0/30.0) );
 	}
 
 	void Holster( int skiplocal = 0 )
 	{
+		g_Scheduler.RemoveTimer( CSRemoveBullet );
+		@CSRemoveBullet = @null;
+
 		CommonHolster();
 
 		BaseClass.Holster( skiplocal );
 	}
 
+	void ReApplyFoVThink()
+	{
+		SetThink( null );
+
+		if( self.m_iClip <= 0 )
+			return;
+
+		m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
+
+		if( WeaponZoomMode == CS16BASE::MODE_FOV_ZOOM )
+		{
+			ApplyFoVSniper( CS16BASE::DEFAULT_ZOOM_VALUE, AIM_SPEED );
+			self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV40, 0, GetBodygroup() );
+		}
+		else if( WeaponZoomMode == CS16BASE::MODE_FOV_2X_ZOOM )
+		{
+			ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, AIM_SPEED );
+			self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV15, 0, GetBodygroup() );
+		}
+	}
+
 	void PrimaryAttack()
 	{
+		if( self.m_iClip <= 0 )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + 0.15f;
+			return;
+		}
 
+		Vector vecSpread;
+
+		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL && self.m_iClip > 0 )
+		{
+			SetThink( null );
+
+			m_pPlayer.pev.viewmodel = V_MODEL;
+			ResetFoV();
+			SetThink( ThinkFunction( this.ReApplyFoVThink ) );
+			self.pev.nextthink = g_Engine.time + (45.0/35.0);
+		}
+
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 1 ), 0, GetBodygroup() );
+
+		self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM;
+
+		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.56f );
+	}
+
+	void BrassEjectThink()
+	{
+		g_Scheduler.RemoveTimer( CSRemoveBullet );
+		@CSRemoveBullet = @null;
+		ShellEject( m_pPlayer, m_iShell, Vector( 13, 9, -8 ), true, false );
 	}
 
 	void SecondaryAttack()
@@ -135,7 +203,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_ZOOM;
 
-				ApplyFoVSniper( CS16BASE::DEFAULT_ZOOM_VALUE, 220 );
+				ApplyFoVSniper( CS16BASE::DEFAULT_ZOOM_VALUE, AIM_SPEED );
 
 				m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
 				self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV40, 0, GetBodygroup() );
@@ -145,7 +213,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_2X_ZOOM;
 
-				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, 200 );
+				ApplyFoVSniper( CS16BASE::DEFAULT_2X_ZOOM_VALUE, AIM_SPEED );
 
 				m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
 				self.SendWeaponAnim( CS16BASE::SCP_IDLE_FOV15, 0, GetBodygroup() );
