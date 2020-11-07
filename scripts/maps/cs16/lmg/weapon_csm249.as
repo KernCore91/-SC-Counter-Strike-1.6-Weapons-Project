@@ -142,6 +142,24 @@ class weapon_csm249 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		Vector vecSpread;
 
+		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 3.545f * (m_iShotsFired * 0.5);
+		}
+		else if( m_pPlayer.pev.velocity.Length2D() > 140 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 2.14f * (m_iShotsFired * 0.3);
+		}
+		else
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.93f * (m_iShotsFired * 0.2);
+		}
+
+		vecSpread = vecSpread * (m_iShotsFired * 0.35f);
+
+		if( m_iShotsFired > 10 )
+			m_iShotsFired = 10;
+
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
 
@@ -206,7 +224,6 @@ class M249_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		self.pev.scale = 1.1;
 	}
 
 	void Precache()
