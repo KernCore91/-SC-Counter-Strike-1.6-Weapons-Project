@@ -8,6 +8,8 @@
 #include "rifl/weapon_famas"
 //Sniper Rifles
 #include "snip/weapon_scout"
+//Light Machine Guns
+#include "lmg/weapon_csm249"
 
 void RegisterAll()
 {
@@ -21,4 +23,6 @@ void RegisterAll()
 	CS16_FAMAS::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
+	//Light Machine Guns
+	CS16_M249::Register();
 }

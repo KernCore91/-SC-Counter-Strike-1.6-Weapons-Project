@@ -202,6 +202,9 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 2.0f;
 
+		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
+		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
+
 		m_pPlayer.pev.punchangle.x -= 2;
 
 		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.56f );
