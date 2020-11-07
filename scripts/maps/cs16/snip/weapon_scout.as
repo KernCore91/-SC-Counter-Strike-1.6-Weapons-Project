@@ -43,7 +43,7 @@ int MAX_CLIP    	= 10;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 21;
+uint DAMAGE     	= 63;
 uint SLOT       	= 6;
 uint POSITION   	= 4;
 uint MAX_SHOOT_DIST	= 8192;
@@ -181,6 +181,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 1 ), 0, GetBodygroup() );
 
 		self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM;
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 2.0f;
 
 		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.56f );
 	}
@@ -224,6 +225,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 				WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
 
 				m_pPlayer.pev.viewmodel = V_MODEL;
+				self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
 				ResetFoV();
 				break;
 			}
@@ -237,6 +239,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL )
 		{
+			WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
 			m_pPlayer.pev.viewmodel = V_MODEL;
 			ResetFoV();
 		}
@@ -271,7 +274,7 @@ class SCOUT_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		self.pev.scale = 1;
+		self.pev.scale = 1.1;
 	}
 
 	void Precache()
