@@ -407,7 +407,7 @@ mixin class WeaponBase
 		}
 	}
 
-	void ShootWeapon( const string szSound, const uint uiNumShots, const Vector& in CONE, const float flMaxDist, const int iDamage )
+	void ShootWeapon( const string szSound, const uint uiNumShots, const Vector& in CONE, const float flMaxDist, const int iDamage, const int DmgType = DMG_GENERIC )
 	{
 		if( szSound != string_t() || szSound != "" )
 		{
@@ -446,6 +446,15 @@ mixin class WeaponBase
 				{
 					CBaseEntity@ pHit = g_EntityFuncs.Instance( tr.pHit );
 
+					if( DmgType != DMG_GENERIC )
+					{
+						if( pHit !is null )
+						{
+							g_WeaponFuncs.ClearMultiDamage();
+							pHit.TraceAttack( m_pPlayer.pev, iDamage * 0.2, vecEnd, tr, DmgType );
+							g_WeaponFuncs.ApplyMultiDamage( m_pPlayer.pev, self.pev );
+						}
+					}
 					g_SoundSystem.PlayHitSound( tr, vecSrc, vecSrc + (vecEnd - vecSrc) * 2, BULLET_PLAYER_CUSTOMDAMAGE );
 
 					//w00tguy - play water sprite

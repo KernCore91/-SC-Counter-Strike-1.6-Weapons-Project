@@ -46,7 +46,7 @@ int MAX_CLIP    	= 8;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 10;
+uint DAMAGE     	= 9;
 uint SLOT       	= 2;
 uint POSITION   	= 4;
 float RPM_PUMP  	= 0.875f;
@@ -148,7 +148,7 @@ class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
 
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 1 ), 0, GetBodygroup() );
-		ShootWeapon( SHOOT_S, PELLETS, CONE, MAX_SHOOT_DIST, DAMAGE );
+		ShootWeapon( SHOOT_S, PELLETS, CONE, MAX_SHOOT_DIST, DAMAGE, DMG_LAUNCH );
 
 		if( m_pPlayer.pev.flags & FL_ONGROUND != 0 )
 			m_pPlayer.pev.punchangle.x -= g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed + 1, 4, 6 );
