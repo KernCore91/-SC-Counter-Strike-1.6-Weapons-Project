@@ -195,7 +195,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		ShellEject( m_pPlayer, m_iShell, Vector( 21, 10, -7 ), true, false );
 
-		self.m_flTimeWeaponIdle = (self.m_iClip <= 0) ? WeaponTimeBase() + 10.0f : WeaponTimeBase() + 1.0f;
+		self.m_flTimeWeaponIdle = (self.m_iClip > 0) ? WeaponTimeBase() + 1.0f : WeaponTimeBase() + 10.0f;
 	}
 
 	void PrimaryAttack()
