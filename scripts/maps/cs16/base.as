@@ -483,7 +483,158 @@ mixin class WeaponBase
 
 mixin class MeleeWeaponBase
 {
+	protected TraceResult m_trHit;
+	protected int m_iSwing = 0;
 
+	bool Swing( float flDamage, string szSwingSound, string szHitFleshSound, string szHitWallSound, int& in iAnimAtk1, int& in iAnimAtk2, int& in iBodygroup, 
+		float flHitDist = 48.0f, float flMissNextPriAtk = 0.35f, float flHitNextPriAtk = 0.4f, float flNextSecAtk = 0.5f )
+	{
+		TraceResult tr;
+		bool fDidHit = false;
+
+		Math.MakeVectors( m_pPlayer.pev.v_angle );
+		Vector vecSrc	= m_pPlayer.GetGunPosition();
+		Vector vecEnd	= vecSrc + g_Engine.v_forward * flHitDist;
+
+		g_Utility.TraceLine( vecSrc, vecEnd, dont_ignore_monsters, m_pPlayer.edict(), tr );
+
+		if( tr.flFraction >= 1.0 )
+		{
+			g_Utility.TraceHull( vecSrc, vecEnd, dont_ignore_monsters, head_hull, m_pPlayer.edict(), tr );
+			if( tr.flFraction < 1.0 )
+			{
+				// Calculate the point of intersection of the line (or hull) and the object we hit
+				// This is and approximation of the "best" intersection
+				CBaseEntity@ pHit = g_EntityFuncs.Instance( tr.pHit );
+				if( pHit is null || pHit.IsBSPModel() == true )
+					g_Utility.FindHullIntersection( vecSrc, tr, tr, VEC_DUCK_HULL_MIN, VEC_DUCK_HULL_MAX, m_pPlayer.edict() );
+
+				vecEnd = tr.vecEndPos;	// This is the point on the actual surface (the hull could have hit space)
+			}
+		}
+
+		if( tr.flFraction >= 1.0 ) //Missed
+		{
+			switch( (m_iSwing++) % 2 )
+			{
+				case 0:
+				{
+					self.SendWeaponAnim( iAnimAtk1, 0, iBodygroup );
+					break;
+				}
+
+				case 1:
+				{
+					self.SendWeaponAnim( iAnimAtk2, 0, iBodygroup );
+					break;
+				}
+			}
+
+			self.m_flNextPrimaryAttack = g_Engine.time + flMissNextPriAtk;
+			self.m_flNextSecondaryAttack = g_Engine.time + flNextSecAtk;
+			self.m_flTimeWeaponIdle = g_Engine.time + 2.0f;
+
+			// play wiff or swish sound
+			g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_WEAPON, szSwingSound, 1, ATTN_NORM, 0, 94 + Math.RandomLong( 0,0xF ) );
+			m_pPlayer.SetAnimation( PLAYER_ATTACK1 ); // player "shoot" animation
+		}
+		else
+		{
+			// hit
+			fDidHit = true;
+			CBaseEntity@ pEntity = g_EntityFuncs.Instance( tr.pHit );
+
+			switch( (m_iSwing++) % 2 )
+			{
+				case 0:
+				{
+					self.SendWeaponAnim( iAnimAtk1, 0, iBodygroup );
+					break;
+				}
+
+				case 1:
+				{
+					self.SendWeaponAnim( iAnimAtk2, 0, iBodygroup );
+					break;
+				}
+			}
+
+			self.m_flNextPrimaryAttack = g_Engine.time + flHitNextPriAtk;
+			self.m_flNextSecondaryAttack = g_Engine.time + flNextSecAtk;
+			self.m_flTimeWeaponIdle = g_Engine.time + 2.0f;
+
+			// player "shoot" animation
+			m_pPlayer.SetAnimation( PLAYER_ATTACK1 );
+
+			// AdamR: Custom damage option
+			if( self.m_flCustomDmg > 0 )
+				flDamage = self.m_flCustomDmg;
+			// AdamR: End
+
+			g_WeaponFuncs.ClearMultiDamage();
+
+			if( self.m_flNextPrimaryAttack + 0.4f < g_Engine.time )
+				pEntity.TraceAttack( m_pPlayer.pev, flDamage, g_Engine.v_forward, tr, DMG_SLASH | DMG_CLUB ); // first swing does full damage
+			else
+				pEntity.TraceAttack( m_pPlayer.pev, flDamage * 0.75, g_Engine.v_forward, tr, DMG_SLASH | DMG_CLUB ); // subsequent swings do 75% (Changed -Sniper)
+
+			g_WeaponFuncs.ApplyMultiDamage( m_pPlayer.pev, m_pPlayer.pev );
+
+			// play thwack, smack, or dong sound
+			float flVol = 1.0;
+			bool fHitWorld = true;
+
+			if( pEntity !is null )
+			{
+				if( pEntity.Classify() != CLASS_NONE && pEntity.Classify() != CLASS_MACHINE && pEntity.BloodColor() != DONT_BLEED )
+				{
+					if( pEntity.IsPlayer() ) // aone: lets pull them
+					{
+						pEntity.pev.velocity = pEntity.pev.velocity + (self.pev.origin - pEntity.pev.origin).Normalize() * 120;
+					} // aone: end
+
+					// play thwack or smack sound
+					g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_WEAPON, szHitFleshSound, 1, ATTN_NORM, 0, 94 + Math.RandomLong( 0,0xF ) );
+					m_pPlayer.m_iWeaponVolume = 128;
+
+					if( !pEntity.IsAlive() )
+						return true;
+					else
+						flVol = 0.1;
+
+					fHitWorld = false;
+				}
+			}
+
+			// play texture hit sound
+			// UNDONE: Calculate the correct point of intersection when we hit with the hull instead of the line
+
+			if( fHitWorld )
+			{
+				float fvolbar = g_SoundSystem.PlayHitSound( tr, vecSrc, vecSrc + ( vecEnd - vecSrc ) * 2, BULLET_PLAYER_CROWBAR );
+				//self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = g_Engine.time + 0.35; //0.25
+
+				fvolbar = 1;
+
+				// also play melee strike
+				g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_WEAPON, szHitWallSound, fvolbar, ATTN_NORM, 0, 98 + Math.RandomLong( 0, 3 ) );
+			}
+
+			// delay the decal a bit
+			m_trHit = tr;
+			SetThink( ThinkFunction( Smack ) );
+			self.pev.nextthink = g_Engine.time + 0.2;
+
+			m_pPlayer.m_iWeaponVolume = int(flVol * 512);
+		}
+
+		return fDidHit;
+	}
+
+	void Smack()
+	{
+		g_WeaponFuncs.DecalGunshot( m_trHit, BULLET_PLAYER_CROWBAR );
+	}
 }
 
 mixin class AmmoBase

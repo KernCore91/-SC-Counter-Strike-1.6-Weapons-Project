@@ -52,11 +52,12 @@ int MAX_CARRY   	= -1;
 int MAX_CLIP    	= WEAPON_NOCLIP;
 int DEFAULT_GIVE 	= 0;
 int WEIGHT      	= 5;
-int FLAGS       	= 0;
-uint DAMAGE     	= 23;
+int FLAGS       	= -1;
+uint DAMAGE     	= 20;
 uint SLOT       	= 0;
 uint POSITION   	= 5;
 string AMMO_TYPE 	= "";
+float SLASH_DIST 	= 48.0f;
 
 class weapon_csknife : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::MeleeWeaponBase
 {
@@ -121,6 +122,29 @@ class weapon_csknife : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16B
 	{
 		g_SoundSystem.EmitSound( m_pPlayer.edict(), CHAN_ITEM, DEPLOY_S, 1, ATTN_NORM );
 		return Deploy( V_MODEL, P_MODEL, DRAW, "crowbar", GetBodygroup(), (45.0/45.0) );
+	}
+
+	void Holster( int skiplocal = 0 )
+	{
+		CommonHolster();
+
+		BaseClass.Holster( skiplocal );
+	}
+
+	void PrimaryAttack()
+	{
+		Swing( DAMAGE, KnifeSlashSounds[Math.RandomLong( 0, KnifeSlashSounds.length() - 1)], KnifeHitFleshSounds[Math.RandomLong( 0, KnifeHitFleshSounds.length() - 1)], HITWALL_S,
+			MIDSLASH1, MIDSLASH2, GetBodygroup(), SLASH_DIST );
+	}
+
+	void WeaponIdle()
+	{
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
+
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + (150.0/12.0);
 	}
 }
 
