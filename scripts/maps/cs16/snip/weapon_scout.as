@@ -43,7 +43,7 @@ int MAX_CLIP    	= 10;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 63;
+uint DAMAGE     	= 56;
 uint SLOT       	= 6;
 uint POSITION   	= 4;
 uint MAX_SHOOT_DIST	= 8192;
@@ -167,6 +167,25 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		Vector vecSpread;
 
+		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_4DEGREES * 2.2f * (m_iShotsFired * 0.75f);
+		}
+		else if( m_pPlayer.pev.velocity.Length2D() > 170 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 2.075f * (m_iShotsFired * 0.45f);
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES;
+		}
+		else
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.07f * (m_iShotsFired * 0.4f);
+		}
+
+		vecSpread = vecSpread * (m_iShotsFired * 0.15f);
+
 		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL && self.m_iClip > 0 )
 		{
 			SetThink( null );
@@ -182,6 +201,8 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 2.0f;
+
+		m_pPlayer.pev.punchangle.x -= 2;
 
 		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.56f );
 	}
@@ -254,7 +275,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.ResetEmptySound();
 		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
 
-		if( self.m_flNextPrimaryAttack < g_Engine.time )
+		if( self.m_flNextPrimaryAttack + 1.0f < g_Engine.time )
 			m_iShotsFired = 0;
 
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
