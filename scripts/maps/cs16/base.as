@@ -170,6 +170,8 @@ mixin class WeaponBase
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud4.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud6.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud7.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud10.spr" );
+		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud11.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud12.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud13.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud14.spr" );
@@ -477,6 +479,11 @@ mixin class WeaponBase
 		m_iShotsFired = 0;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + flTimer;
 	}
+}
+
+mixin class MeleeWeaponBase
+{
+
 }
 
 mixin class AmmoBase

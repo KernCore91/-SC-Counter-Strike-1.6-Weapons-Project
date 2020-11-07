@@ -1,3 +1,5 @@
+//Melees
+#include "melee/weapon_csknife"
 //Pistols and Handguns
 #include "pist/weapon_csglock18"
 //Shotguns
@@ -13,6 +15,8 @@
 
 void RegisterAll()
 {
+	//Melees
+	CS16_KNIFE::Register();
 	//Pistols and Handguns
 	CS16_GLOCK18::Register();
 	//Shotguns

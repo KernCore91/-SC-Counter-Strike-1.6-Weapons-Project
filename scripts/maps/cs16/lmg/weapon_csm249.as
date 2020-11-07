@@ -13,7 +13,7 @@ namespace CS16_M249
 {
 
 // Animations
-enum M249Animation
+enum CS16_M249_Animation
 {
 	IDLE = 0,
 	SHOOT1,
@@ -70,7 +70,6 @@ class weapon_csm249 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
-		//self.pev.scale = 1.15;
 	}
 
 	void Precache()
@@ -157,8 +156,8 @@ class weapon_csm249 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		vecSpread = vecSpread * (m_iShotsFired * 0.35f);
 
-		if( m_iShotsFired > 10 )
-			m_iShotsFired = 10;
+		if( m_iShotsFired > 7 )
+			m_iShotsFired = 7;
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
