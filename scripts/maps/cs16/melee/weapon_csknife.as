@@ -53,11 +53,13 @@ int MAX_CLIP    	= WEAPON_NOCLIP;
 int DEFAULT_GIVE 	= 0;
 int WEIGHT      	= 5;
 int FLAGS       	= -1;
-uint DAMAGE     	= 20;
+uint DAMAGE_SLASH 	= 20;
+uint DAMAGE_STAB 	= 65;
 uint SLOT       	= 0;
 uint POSITION   	= 5;
 string AMMO_TYPE 	= "";
 float SLASH_DIST 	= 48.0f;
+float STAB_DIST  	= 32.0f;
 
 class weapon_csknife : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::MeleeWeaponBase
 {
@@ -133,8 +135,13 @@ class weapon_csknife : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16B
 
 	void PrimaryAttack()
 	{
-		Swing( DAMAGE, KnifeSlashSounds[Math.RandomLong( 0, KnifeSlashSounds.length() - 1)], KnifeHitFleshSounds[Math.RandomLong( 0, KnifeHitFleshSounds.length() - 1)], HITWALL_S,
+		Swing( DAMAGE_SLASH, KnifeSlashSounds[Math.RandomLong( 0, KnifeSlashSounds.length() - 1)], KnifeHitFleshSounds[Math.RandomLong( 0, KnifeHitFleshSounds.length() - 1)], HITWALL_S,
 			MIDSLASH1, MIDSLASH2, GetBodygroup(), SLASH_DIST );
+	}
+
+	void SecondaryAttack()
+	{
+		Stab( DAMAGE_STAB, KnifeSlashSounds[Math.RandomLong( 0, KnifeSlashSounds.length() - 1)], STAB_S, HITWALL_S, STABMISS, STAB, GetBodygroup(), STAB_DIST );
 	}
 
 	void WeaponIdle()
