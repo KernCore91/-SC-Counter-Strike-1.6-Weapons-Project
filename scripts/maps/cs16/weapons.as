@@ -6,6 +6,8 @@
 #include "shot/weapon_m3"
 //Submachine guns
 #include "smg/weapon_mac10"
+//Explosives and Equipment
+#include "misc/weapon_hegrenade"
 //Assault Rifles
 #include "rifl/weapon_famas"
 //Sniper Rifles
@@ -23,6 +25,8 @@ void RegisterAll()
 	CS16_M3::Register();
 	//Submachine guns
 	CS16_MAC10::Register();
+	//Explosives and Equipment
+	CS16_HEGRENADE::Register();
 	//Assault Rifles
 	CS16_FAMAS::Register();
 	//Sniper Rifles

@@ -43,7 +43,7 @@ uint POSITION   	= 4;
 string AMMO_TYPE 	= GetName();
 float TIMER      	= 1.5;
 
-class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
+class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::GrenadeWeaponExplode
 {
 	private CBasePlayer@ m_pPlayer
 	{
@@ -63,6 +63,7 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		self.pev.dmg = DAMAGE;
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
+		self.pev.scale = 1;
 	}
 
 	void Precache()
@@ -108,7 +109,7 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	bool Deploy()
 	{
 		m_iAmmoSave = 0; // Zero out the ammo save
-		return Deploy( V_MODEL, P_MODEL, HEGRENADE_DRAW, "gren", GetBodygroup(), (20.0/30.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "gren", GetBodygroup(), (20.0/30.0) );
 	}
 
 	bool CanHolster()
@@ -155,6 +156,92 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		}
 
 		BaseClass.Holster( skipLocal );
+	}
+
+	void PrimaryAttack()
+	{
+		if( m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0  )
+			return;
+
+		if( m_fAttackStart < 0 || m_fAttackStart > 0 )
+			return;
+
+		self.m_flNextPrimaryAttack = WeaponTimeBase() + (40.0/41.0);
+		self.SendWeaponAnim( PULLPIN, 0, GetBodygroup() );
+
+		m_bInAttack = true;
+		m_fAttackStart = g_Engine.time + (40.0/41.0);
+
+		self.m_flTimeWeaponIdle = g_Engine.time + (40.0/41.0) + (23.0/30.0);
+	}
+
+	void LaunchThink()
+	{
+		//g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_VOICE, SHOOT_S, VOL_NORM, ATTN_NORM, 0, PITCH_NORM );
+		Vector angThrow = m_pPlayer.pev.v_angle + m_pPlayer.pev.punchangle;
+
+		if ( angThrow.x < 0 )
+			angThrow.x = -10 + angThrow.x * ( (90 - 10) / 90.0 );
+		else
+			angThrow.x = -10 + angThrow.x * ( (90 + 10) / 90.0 );
+
+		float flVel = (90.0f - angThrow.x) * 6;
+
+		if ( flVel > 750.0f )
+			flVel = 750.0f;
+
+		Math.MakeVectors( angThrow );
+
+		Vector vecSrc = m_pPlayer.pev.origin + m_pPlayer.pev.view_ofs + g_Engine.v_forward * 16;
+		Vector vecThrow = g_Engine.v_forward * flVel + m_pPlayer.pev.velocity;
+
+		CBaseEntity@ pGrenade = g_EntityFuncs.ShootTimed( m_pPlayer.pev, vecSrc, vecThrow, TIMER );
+		g_EntityFuncs.SetModel( pGrenade, W_MODEL );
+
+		m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType, m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) - 1 );
+		m_fAttackStart = 0;
+	}
+
+	void ItemPreFrame()
+	{
+		if( m_fAttackStart == 0 && m_bThrown == true && m_bInAttack == false && self.m_flTimeWeaponIdle - 0.1 < g_Engine.time )
+		{
+			if( m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) == 0 )
+			{
+				self.Holster();
+			}
+			else
+			{
+				self.Deploy();
+				m_bThrown = false;
+				m_bInAttack = false;
+				m_fAttackStart = 0;
+				m_flStartThrow = 0;
+			}
+		}
+
+		if( !m_bInAttack || CheckButton() || g_Engine.time < m_fAttackStart )
+			return;
+
+		self.m_flTimeWeaponIdle = self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = self.m_flNextTertiaryAttack = WeaponTimeBase() + (22.0/30.0);
+		self.SendWeaponAnim( THROW, 0, GetBodygroup() );
+		m_bThrown = true;
+		m_bInAttack = false;
+		m_pPlayer.SetAnimation( PLAYER_ATTACK1 );
+
+		SetThink( ThinkFunction( this.LaunchThink ) );
+		self.pev.nextthink = g_Engine.time + 0.2;
+
+		BaseClass.ItemPreFrame();
+	}
+
+	void WeaponIdle()
+	{
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
+
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
 }
 

@@ -479,6 +479,21 @@ mixin class WeaponBase
 		m_iShotsFired = 0;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + flTimer;
 	}
+
+	bool CheckButton() // returns which key the player is pressing (that might interrupt the reload)
+	{
+		return m_pPlayer.pev.button & (IN_ATTACK | IN_ATTACK2 | IN_ALT1) != 0;
+	}
+}
+
+mixin class GrenadeWeaponExplode
+{
+	void DestroyThink() // destroys the item
+	{
+		SetThink( null );
+		self.DestroyItem();
+		//g_Game.AlertMessage( at_console, "Item Destroyed.\n" );
+	}
 }
 
 mixin class MeleeWeaponBase
@@ -768,13 +783,6 @@ mixin class MeleeWeaponBase
 		}
 
 		return fDidHit;
-	}
-
-	void DestroyThink() // destroys the item
-	{
-		SetThink( null );
-		self.DestroyItem();
-		//g_Game.AlertMessage( at_console, "Item Destroyed.\n" );
 	}
 }
 
