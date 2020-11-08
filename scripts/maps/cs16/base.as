@@ -769,6 +769,13 @@ mixin class MeleeWeaponBase
 
 		return fDidHit;
 	}
+
+	void DestroyThink() // destroys the item
+	{
+		SetThink( null );
+		self.DestroyItem();
+		//g_Game.AlertMessage( at_console, "Item Destroyed.\n" );
+	}
 }
 
 mixin class AmmoBase

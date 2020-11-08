@@ -92,6 +92,70 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		return true;
 	}
+
+	bool AddToPlayer( CBasePlayer@ pPlayer )
+	{
+		return CommonAddToPlayer( pPlayer );
+	}
+
+	// Better ammo extraction --- Anggara_nothing
+	bool CanHaveDuplicates()
+	{
+		return true;
+	}
+
+	private int m_iAmmoSave;
+	bool Deploy()
+	{
+		m_iAmmoSave = 0; // Zero out the ammo save
+		return Deploy( V_MODEL, P_MODEL, HEGRENADE_DRAW, "gren", GetBodygroup(), (20.0/30.0) );
+	}
+
+	bool CanHolster()
+	{
+		if( m_fAttackStart != 0 )
+			return false;
+
+		return true;
+	}
+
+	bool CanDeploy()
+	{
+		if( m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType) == 0 )
+			return false;
+
+		return true;
+	}
+
+	private CBasePlayerItem@ DropItem()
+	{
+		m_iAmmoSave = m_pPlayer.AmmoInventory( self.m_iPrimaryAmmoType ); //Save the player's ammo pool in case it has any in DropItem
+
+		return self;
+	}
+
+	void Holster( int skipLocal = 0 )
+	{
+		m_bThrown = false;
+		m_bInAttack = false;
+		m_fAttackStart = 0;
+		m_flStartThrow = 0;
+
+		CommonHolster();
+
+		if( m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) > 0 ) //Save the player's ammo pool in case it has any in Holster
+		{
+			m_iAmmoSave = m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType );
+		}
+
+		if( m_iAmmoSave <= 0 )
+		{
+			SetThink( ThinkFunction( DestroyThink ) );
+			self.pev.nextthink = g_Engine.time + 0.1;
+		}
+
+		BaseClass.Holster( skipLocal );
+	}
 }
 
 string GetName()
