@@ -1,7 +1,7 @@
 //Counter-Strike 1.6's Specific BuyMenu
 //Author: KernCore, Original script by Solokiller, improved by Zodemon
 
-#include "../base"
+#include "base"
 
 BuyMenu::BuyMenu g_CS16Menu;
 
@@ -154,6 +154,20 @@ final class BuyMenuCVARS
 
 		return HOOK_CONTINUE;
 	}
+
+	HookReturnCode CS16_ClientSay( SayParameters@ pParams )
+	{
+		CBasePlayer@ pPlayer = pParams.GetPlayer();
+		const CCommand@ args = pParams.GetArguments();
+
+		if( args.ArgC() == 1 && FirstArgChecker( args ) )
+		{
+			pParams.ShouldHide = true;
+			g_CS16Menu.Show( pPlayer );
+		}
+
+		return HOOK_CONTINUE;
+	}
 }
 
 void RegisterBuyMenuCCVars()
@@ -167,17 +181,25 @@ void RegisterBuyMenuCCVars()
 	}
 }
 
-//Delegate Object 
+//Delegate Object
 HookReturnCode PlayerPostThink( CBasePlayer@ pPlayer )
 {
-	BuyMenu::BuyMenuCVARS g_CS16MenuHooks;
+	BuyMenu::BuyMenuCVARS@ g_CS16MenuHooks = @BuyMenu::BuyMenuCVARS();
 	return g_CS16MenuHooks.CS16_PlayerPostThink( pPlayer );
 }
 
+//Delegate Object
 HookReturnCode ClientPutInServer( CBasePlayer@ pPlayer )
 {
 	BuyMenu::BuyMenuCVARS@ g_CS16MenuHooks = @BuyMenu::BuyMenuCVARS();
 	return g_CS16MenuHooks.CS16_ClientPutInServer( pPlayer );
+}
+
+//Delegate Object
+HookReturnCode ClientSay( SayParameters@ pParams )
+{
+	BuyMenu::BuyMenuCVARS@ g_CS16MenuHooks = @BuyMenu::BuyMenuCVARS();
+	return g_CS16MenuHooks.CS16_ClientSay( pParams );
 }
 
 void MoneyInit()
@@ -185,13 +207,24 @@ void MoneyInit()
 	BuyPoints.deleteAll(); //Comment out to keep the points in map change
 	OldScore.deleteAll();  //Comment out to keep the points in map change
 
-	g_Game.PrecacheModel( "sprites/" + BuyMenu::MoneySignSpr );
+	g_Game.PrecacheModel( CS16BASE::MAIN_SPRITE_DIR + BuyMenu::MoneySignSpr );
 
 	g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 	g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
-	//g_Hooks.RegisterHook( Hooks::Player::ClientSay, @INS2_ClientSay );
+	//g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
 
 	//g_Game.AlertMessage( at_console, "Hooks Registered\n" );
+}
+
+CClientCommand _buy( "buy", "Opens the BuyMenu", @CS16_Buy );
+
+void CS16_Buy( const CCommand@ args )
+{
+	CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+	if( args.ArgC() == 1 )
+	{
+		g_CS16Menu.Show( pPlayer );
+	}
 }
 
 final class BuyableItem
@@ -233,7 +266,7 @@ final class BuyableItem
 		set { m_uiCost = value; }
 	}
 
-	BuyableItem( const string& in szDescription, const string& in szEntityName, const uint uiCost, string sCategory, string sSubCategory )
+	BuyableItem( const string& in szDescription, const string& in szEntityName, const uint uiCost, string sCategory, string sSubCategory = "" )
 	{
 		m_szDescription = "$" + string(uiCost) + " " + szDescription;
 		m_szEntityName = szEntityName;
@@ -251,7 +284,6 @@ final class BuyableItem
 	{
 		if( uint(BuyPoints[g_CS16MenuHooks.PlayerID( pPlayer )]) < m_uiCost )
 		{
-
 			g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + m_szEntityName + " - Cost: $" +  m_uiCost + "\n" );
 			return;
 		}
@@ -298,54 +330,24 @@ final class BuyableItem
 	}
 }
 
-//Primary
-const string sSmg	= "Sub Machine Guns";
-const string sCbn	= "Carbines";
-const string sShg	= "Shotguns";
-const string sAsr	= "Assault Rifles";
-const string sRfl	= "Rifles";
-const string sLmg	= "Light Machine Guns";
-const string sLcr	= "Launchers";
-//Secondary
-const string sMle	= "Melees";
-const string sPtl	= "Pistols";
-const string sRvl	= "Revolvers";
-//Text
-const string sChoose	= "Choose";
-const string sAmmo  	= "Ammo";
-
 final class BuyMenu
 {
 	array<BuyableItem@> m_Items;
 
+	//First Menu Object
 	private CTextMenu@ m_pMenu      	= null;
+	//First Menu Items
+	private string szOpenPrimWeapMenu 	= "Melees";
+	private string szOpenSecoWeapMenu 	= "Pistols";
+	private string szOpenTercWeapMenu 	= "Shotguns";
+	private string szOpenQuatWeapMenu 	= "Submachine Guns";
+	private string szOpenQuinWeapMenu 	= "Rifles";
+	private string szOpenSenaWeapMenu 	= "Machine Guns";
+	private string szOpenEquiWeapMenu 	= "Equipment";
+	private string szOpenAmmoWeapMenu 	= "Ammo";
 	//Primary Menu
-	private CTextMenu@ m_pPrimaryMenu 	= null;
-	private CTextMenu@ m_pSMGMenu   	= null;
-	private CTextMenu@ m_pCARBINEMenu 	= null;
-	private CTextMenu@ m_pSHOTGUNMenu 	= null;
-	private CTextMenu@ m_pASSAULTMenu 	= null;
-	private CTextMenu@ m_pRIFLEMenu 	= null;
-	private CTextMenu@ m_pLMGMenu   	= null;
-	private CTextMenu@ m_pLAUNCHERMenu 	= null;
-	//Secondary Menu
-	private CTextMenu@ m_pSecondaryMenu	= null;
-	private CTextMenu@ m_pPISTOLMenu 	= null;
-	private CTextMenu@ m_pREVOLVERMenu 	= null;
-	private CTextMenu@ m_pMELEEMenu 	= null;
-	//Equipment Menu
-	private CTextMenu@ m_pEquipmentMenu	= null;
-	//Ammo Menu
-	private CTextMenu@ m_pAmmoMenu  	= null;
-	private CTextMenu@ m_pAmPISTOL  	= null;
-	private CTextMenu@ m_pAmREVOLVER 	= null;
-	private CTextMenu@ m_pAmSMG     	= null;
-	private CTextMenu@ m_pAmCARBINE 	= null;
-	private CTextMenu@ m_pAmSHOTGUN 	= null;
-	private CTextMenu@ m_pAmASSAULT 	= null;
-	private CTextMenu@ m_pAmRIFLE   	= null;
-	private CTextMenu@ m_pAmLMG     	= null;
-	private CTextMenu@ m_pAmLAUNCHER 	= null;
+	private CTextMenu@ m_pFirstMenu  	= null;
+	private CTextMenu@ m_pSecondMenu 	= null;
 
 	void RemoveItems()
 	{
@@ -380,176 +382,42 @@ final class BuyMenu
 
 	private void CreateMenu()
 	{
+		//This is the first menu you'll see when opening the Buy Menu Command
 		@m_pMenu = CTextMenu( TextMenuPlayerSlotCallback( this.MainCallback ) );
-		m_pMenu.SetTitle( "Choose action: " );
-		m_pMenu.AddItem( "Buy primary weapon", null );
-		m_pMenu.AddItem( "Buy secondary weapon", null );
-		m_pMenu.AddItem( "Buy equipment", null );
-		m_pMenu.AddItem( "Buy ammo" );
+		m_pMenu.SetTitle( "Shop by Category\n" );
+		m_pMenu.AddItem( szOpenPrimWeapMenu );
+		m_pMenu.AddItem( szOpenSecoWeapMenu );
+		m_pMenu.AddItem( szOpenTercWeapMenu );
+		m_pMenu.AddItem( szOpenQuatWeapMenu );
+		m_pMenu.AddItem( szOpenQuinWeapMenu );
+		m_pMenu.AddItem( szOpenSenaWeapMenu );
+		m_pMenu.AddItem( szOpenEquiWeapMenu );
+		m_pMenu.AddItem( szOpenAmmoWeapMenu );
 		m_pMenu.Register();
 
-		@m_pPrimaryMenu = CTextMenu( TextMenuPlayerSlotCallback( this.PrimaryCallback ) );
-		m_pPrimaryMenu.SetTitle( sChoose + " primary weapon category: " );
-		m_pPrimaryMenu.AddItem( sSmg, null );
-		m_pPrimaryMenu.AddItem( sCbn, null );
-		m_pPrimaryMenu.AddItem( sShg, null );
-		m_pPrimaryMenu.AddItem( sAsr, null );
-		m_pPrimaryMenu.AddItem( sRfl, null );
-		m_pPrimaryMenu.AddItem( sLmg, null );
-		m_pPrimaryMenu.AddItem( sLcr, null );
-		m_pPrimaryMenu.Register();
+		//First sub menu to be opened by the player
+		@m_pFirstMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pFirstMenu.SetTitle( "Choose Melee (Secondary Weapon)\n" );
 
-		@m_pSecondaryMenu = CTextMenu( TextMenuPlayerSlotCallback( this.SecondaryCallback ) );
-		m_pSecondaryMenu.SetTitle( sChoose + " secondary weapon category: " );
-		m_pSecondaryMenu.AddItem( sMle, null );
-		m_pSecondaryMenu.AddItem( sPtl, null );
-		m_pSecondaryMenu.AddItem( sRvl, null );
-		m_pSecondaryMenu.Register();
-
-	// Equipment
-		@m_pEquipmentMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pEquipmentMenu.SetTitle( sChoose + " equipment: " );
-	// Ammo
-		@m_pAmmoMenu = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCatCallBack ) );
-		m_pAmmoMenu.SetTitle( sChoose + " Ammo: " );
-		m_pAmmoMenu.AddItem( sPtl );
-		m_pAmmoMenu.AddItem( sRvl );
-		m_pAmmoMenu.AddItem( sSmg );
-		m_pAmmoMenu.AddItem( sCbn );
-		m_pAmmoMenu.AddItem( sShg );
-		m_pAmmoMenu.AddItem( sAsr );
-		m_pAmmoMenu.AddItem( sRfl );
-		m_pAmmoMenu.AddItem( sLmg );
-		m_pAmmoMenu.AddItem( sLcr );
-	//Primary Menu
-		// SMG
-		@m_pSMGMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pSMGMenu.SetTitle( sChoose + " " + sSmg + ": " );
-		@m_pAmSMG = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmSMG.SetTitle( sChoose + " " + sSmg + " " + sAmmo + ": " );
-		// Carbine
-		@m_pCARBINEMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pCARBINEMenu.SetTitle( sChoose + " " + sCbn + ": " );
-		@m_pAmCARBINE = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmCARBINE.SetTitle( sChoose + " " + sCbn + " " + sAmmo + ": " );
-		// Shotgun
-		@m_pSHOTGUNMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pSHOTGUNMenu.SetTitle( sChoose + " " + sShg + ": " );
-		@m_pAmSHOTGUN = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmSHOTGUN.SetTitle( sChoose + " " + sShg + " " + sAmmo + ": " );
-		// Assault Rifle
-		@m_pASSAULTMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pASSAULTMenu.SetTitle( sChoose + " " + sAsr + ": " );
-		@m_pAmASSAULT = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmASSAULT.SetTitle( sChoose + " " + sAsr + " " + sAmmo + ": " );
-		// Rifle (Bolt Action/Semi Auto/Sniper)
-		@m_pRIFLEMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pRIFLEMenu.SetTitle( sChoose + " " + sRfl + ": " );
-		@m_pAmRIFLE = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmRIFLE.SetTitle( sChoose + " " + sRfl + " " + sAmmo + ": " );
-		// Light Machine Gun
-		@m_pLMGMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pLMGMenu.SetTitle( sChoose + " " + sLmg + ": " );
-		@m_pAmLMG = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmLMG.SetTitle( sChoose + " " + sLmg + " " + sAmmo + ": " );
-		// Launchers (Anti-Tank, Grenade Launcher, Bazooka)
-		@m_pLAUNCHERMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pLAUNCHERMenu.SetTitle( sChoose + " " + sLcr + ": " );
-		@m_pAmLAUNCHER = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmLAUNCHER.SetTitle( sChoose + " " + sLcr + " " + sAmmo + ": " );
-	//Secondary menu
-		// Melee
-		@m_pMELEEMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pMELEEMenu.SetTitle( sChoose + " " + sMle + ": " );
-		// Pistol
-		@m_pPISTOLMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pPISTOLMenu.SetTitle( sChoose + " " + sPtl + ": " );
-		@m_pAmPISTOL = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmPISTOL.SetTitle( sChoose + " " + sPtl + " " + sAmmo + ": " );
-		// Revolver
-		@m_pREVOLVERMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
-		m_pREVOLVERMenu.SetTitle( sChoose + " " + sRvl + ": " );
-		@m_pAmREVOLVER = CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallBack ) );
-		m_pAmREVOLVER.SetTitle( sChoose + " " + sRvl + " " + sAmmo + ": " );
+		//Second sub menu to be opened by the player
+		@m_pSecondMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pSecondMenu.SetTitle( "Choose Handgun (Secondary Weapon)\n" );
 
 		for( uint i = 0; i < m_Items.length(); i++ )
 		{
 			BuyableItem@ pItem = m_Items[i];
-			if( pItem.Category == "primary" )
+			if( pItem.Category == "melee" )
 			{
-				if( pItem.SubCategory == "smg" )
-					m_pSMGMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "carbine" )
-					m_pCARBINEMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "shotgun" )
-					m_pSHOTGUNMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "assault" )
-					m_pASSAULTMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "rifle" || pItem.SubCategory == "sniper" )
-					m_pRIFLEMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "lmg" )
-					m_pLMGMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "launcher" )
-					m_pLAUNCHERMenu.AddItem( pItem.Description, any(@pItem) );
+				m_pFirstMenu.AddItem( pItem.Description, any(@pItem) );
 			}
-			else if( pItem.Category == "secondary" )
+			else if( pItem.Category == "handgun" )
 			{
-				if( pItem.SubCategory == "melee" )
-					m_pMELEEMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "pistol" )
-					m_pPISTOLMenu.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "revolver" )
-					m_pREVOLVERMenu.AddItem( pItem.Description, any(@pItem) );
-			}
-			else if( pItem.Category == "equipment" )
-				m_pEquipmentMenu.AddItem( pItem.Description, any(@pItem) );
-			else if( pItem.Category == "ammo" )
-			{
-				if( pItem.SubCategory == "pistol" )
-					m_pAmPISTOL.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "revolver" )
-					m_pAmREVOLVER.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "smg" )
-					m_pAmSMG.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "carbine" )
-					m_pAmCARBINE.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "shotgun" )
-					m_pAmSHOTGUN.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "assault" )
-					m_pAmASSAULT.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "rifle" || pItem.SubCategory == "sniper" )
-					m_pAmRIFLE.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "lmg" )
-					m_pAmLMG.AddItem( pItem.Description, any(@pItem) );
-				else if( pItem.SubCategory == "launcher" )
-					m_pAmLAUNCHER.AddItem( pItem.Description, any(@pItem) );
+				m_pSecondMenu.AddItem( pItem.Description, any(@pItem) );
 			}
 		}
 
-		m_pEquipmentMenu.Register();
-		m_pAmmoMenu.Register();
-		//Primary
-		m_pSMGMenu.Register();
-		m_pCARBINEMenu.Register();
-		m_pSHOTGUNMenu.Register();
-		m_pASSAULTMenu.Register();
-		m_pRIFLEMenu.Register();
-		m_pLMGMenu.Register();
-		m_pLAUNCHERMenu.Register();
-		//Secondary
-		m_pMELEEMenu.Register();
-		m_pPISTOLMenu.Register();
-		m_pREVOLVERMenu.Register();
-		//Ammo categories
-		m_pAmPISTOL.Register();
-		m_pAmREVOLVER.Register();
-		m_pAmSMG.Register();
-		m_pAmCARBINE.Register();
-		m_pAmSHOTGUN.Register();
-		m_pAmASSAULT.Register();
-		m_pAmRIFLE.Register();
-		m_pAmLMG.Register();
-		m_pAmLAUNCHER.Register();
+		m_pFirstMenu.Register();
+		m_pSecondMenu.Register();
 	}
 
 	private void MainCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
@@ -557,92 +425,37 @@ final class BuyMenu
 		if( pItem !is null )
 		{
 			string sChoice = pItem.m_szName;
-			if( sChoice == "Buy primary weapon" )
-				m_pPrimaryMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == "Buy secondary weapon" )
-				m_pSecondaryMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == "Buy equipment" )
-				m_pEquipmentMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == "Buy ammo" )
-				m_pAmmoMenu.Open( 0, 0, pPlayer );
-		}
-	}
-
-	private void PrimaryCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
-	{
-		if( pItem !is null )
-		{
-			string sChoice = pItem.m_szName;
-			if( sChoice == sSmg )
-				m_pSMGMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sCbn )
-				m_pCARBINEMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sShg )
-				m_pSHOTGUNMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sAsr )
-				m_pASSAULTMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sRfl )
-				m_pRIFLEMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sLmg )
-				m_pLMGMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sLcr )
-				m_pLAUNCHERMenu.Open( 0, 0, pPlayer );
-		}
-	}
-
-	private void SecondaryCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
-	{
-		if( pItem !is null )
-		{
-			string sChoice = pItem.m_szName;
-			if( sChoice == sMle )
-				m_pMELEEMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sPtl )
-				m_pPISTOLMenu.Open( 0, 0, pPlayer );
-			else if( sChoice == sRvl )
-				m_pREVOLVERMenu.Open( 0, 0, pPlayer );
-		}
-	}
-
-	private void AmmoCatCallBack( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
-	{
-		if( pItem !is null )
-		{
-			string sChoice = pItem.m_szName;
-
-			if( sChoice == sPtl )
-				m_pAmPISTOL.Open( 0, 0, pPlayer );
-			else if( sChoice == sRvl )
-				m_pAmREVOLVER.Open( 0, 0, pPlayer );
-			else if( sChoice == sSmg )
-				m_pAmSMG.Open( 0, 0, pPlayer );
-			else if( sChoice == sCbn )
-				m_pAmCARBINE.Open( 0, 0, pPlayer );
-			else if( sChoice == sShg )
-				m_pAmSHOTGUN.Open( 0, 0, pPlayer );
-			else if( sChoice == sAsr )
-				m_pAmASSAULT.Open( 0, 0, pPlayer );
-			else if( sChoice == sRfl )
-				m_pAmRIFLE.Open( 0, 0, pPlayer );
-			else if( sChoice == sLmg )
-				m_pAmLMG.Open( 0, 0, pPlayer );
-			else if( sChoice == sLcr )
-				m_pAmLAUNCHER.Open( 0, 0, pPlayer );
-		}
-	}
-
-	private void AmmoCallBack( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
-	{
-		if( pItem !is null )
-		{
-			BuyableItem@ pBuyItem = null;
-
-			pItem.m_pUserData.retrieve( @pBuyItem );
-
-			if( pBuyItem !is null )
+			if( sChoice == szOpenPrimWeapMenu )
 			{
-				pBuyItem.Buy( pPlayer );
-				menu.Open( 0, 0, pPlayer );
+				m_pFirstMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenSecoWeapMenu )
+			{
+				m_pSecondMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenTercWeapMenu )
+			{
+				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenQuatWeapMenu )
+			{
+				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenQuinWeapMenu )
+			{
+				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenSenaWeapMenu )
+			{
+				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenEquiWeapMenu )
+			{
+				//m_pEquipmentMenu.Open( 0, 0, pPlayer );
+			}
+			else if( sChoice == szOpenAmmoWeapMenu )
+			{
+				//m_pAmmoMenu.Open( 0, 0, pPlayer );
 			}
 		}
 	}
