@@ -31,7 +31,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 		SetThink( ThinkFunction( this.TumbleThink ) );
 		self.pev.nextthink = g_Engine.time + 0.1;
 
-		g_EntityFuncs.SetSize( self.pev, Vector( -0.2, -0.2, -0.2 ), Vector( 0.2, 0.2, 0.2 ) );
+		g_EntityFuncs.SetSize( self.pev, Vector( -1, -1, -1 ), Vector( 1, 1, 1 ) );
 	}
 
 	void Precache()
@@ -65,11 +65,11 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 			m_flNextAttack = g_Engine.time + 1.0; // debounce
 		}
 
-		if( pOther.pev.ClassNameIs( "func_breakable" ) && pOther.pev.rendermode != kRenderNormal )
+		/*if( pOther.pev.ClassNameIs( "func_breakable" ) && pOther.pev.rendermode != kRenderNormal )
 		{
 			self.pev.velocity = self.pev.velocity * -2.0f;
 			return;
-		}
+		}*/
 
 		Vector vecTestVelocity;
 		// this is my heuristic for modulating the grenade velocity because grenades dropped purely vertical
@@ -92,11 +92,12 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 		if( self.pev.flags & FL_ONGROUND != 0 )
 		{
 			self.pev.velocity = self.pev.velocity * 0.8f;
-			self.pev.sequence = 1;
+			self.pev.sequence = 1;//Math.RandomLong( 1, 3 );
 		}
 		else
 		{
 			BounceSounds();
+			self.pev.flags |= EF_NOINTERP;
 		}
 
 		self.pev.framerate = self.pev.velocity.Length() / 200.0f;
@@ -147,13 +148,15 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 		{
 			self.pev.velocity = self.pev.velocity * 0.5;
 			self.pev.framerate = 0.2;
+
+			self.pev.angles = Math.VecToAngles( self.pev.velocity );
 		}
 	}
 
 	void ExplodeMsg( Vector& in origin, float scale, int framerate )
 	{
 		int iContents = g_EngineFuncs.PointContents( origin );
-		NetworkMessage exp_msg( MSG_PAS, NetworkMessages::SVC_TEMPENTITY, null );
+		NetworkMessage exp_msg( MSG_PAS, NetworkMessages::SVC_TEMPENTITY, self.GetOrigin(), null );
 			exp_msg.WriteByte( TE_EXPLOSION ); //MSG type enum
 			exp_msg.WriteCoord( origin.x ); //pos
 			exp_msg.WriteCoord( origin.y ); //pos
@@ -171,7 +174,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 	void ExplodeMsg2( Vector& in origin, float scale, int framerate )
 	{
 		int iContents = g_EngineFuncs.PointContents( origin );
-		NetworkMessage exp_msg( MSG_PAS, NetworkMessages::SVC_TEMPENTITY, null );
+		NetworkMessage exp_msg( MSG_PAS, NetworkMessages::SVC_TEMPENTITY, self.GetOrigin(), null );
 			exp_msg.WriteByte( TE_EXPLOSION ); //MSG type enum
 			exp_msg.WriteCoord( origin.x ); //pos
 			exp_msg.WriteCoord( origin.y ); //pos
@@ -241,7 +244,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 				smk_msg.WriteByte( TE_SMOKE ); //MSG type enum
 				smk_msg.WriteCoord( self.GetOrigin().x ); //pos
 				smk_msg.WriteCoord( self.GetOrigin().y ); //pos
-				smk_msg.WriteCoord( self.GetOrigin().z ); //pos
+				smk_msg.WriteCoord( self.GetOrigin().z - 5.0f ); //pos
 				smk_msg.WriteShort( m_iSteamSprite );
 				smk_msg.WriteByte( 35 + Math.RandomLong( 0, 10 ) ); //scale
 				smk_msg.WriteByte( 5 ); //framerate
@@ -253,6 +256,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 
 	void Detonate()
 	{
+		self.pev.flags &= ~EF_NOINTERP;
 		TraceResult tr;
 		Vector vecSpot;// trace starts here!
 		vecSpot = self.GetOrigin() + Vector( 0, 0, 8 );
@@ -280,6 +284,7 @@ CCs16Grenade@ TossGrenade( entvars_t@ pevOwner, Vector vecStart, Vector vecVeloc
 	@cs16Grenade.pev.owner = CS16BASE::ENT( pevOwner );
 
 	cs16Grenade.pev.dmg = flDmg;
+	cs16Grenade.pev.sequence = Math.RandomLong( 3, 6 );
 
 	cs16Grenade.SetTouch( TouchFunction( cs16Grenade.BounceTouch ) );
 

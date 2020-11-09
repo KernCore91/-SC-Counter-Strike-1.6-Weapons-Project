@@ -184,7 +184,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			vecSpread = VECTOR_CONE_1DEGREES * 1.07f * (m_iShotsFired * 0.4f);
 		}
 
-		vecSpread = vecSpread * (m_iShotsFired * 0.225f);
+		vecSpread = (WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL) ? vecSpread * (m_iShotsFired * 0.225f) : vecSpread * (m_iShotsFired * 0.15f);
 
 		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL && self.m_iClip > 0 )
 		{
