@@ -45,7 +45,7 @@ void MapInit()
 
 
 	//Explosives and Equipment
-	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_HEGRENADE::WPN_NAME, CS16_HEGRENADE::GetName(), CS16_M249::WPN_PRICE, "equip" ) );
+	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_HEGRENADE::WPN_NAME, CS16_HEGRENADE::GetName(), CS16_HEGRENADE::WPN_PRICE, "equip" ) );
 
 	BuyMenu::MoneyInit();
 }
