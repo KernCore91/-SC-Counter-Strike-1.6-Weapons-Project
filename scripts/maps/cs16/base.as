@@ -710,7 +710,7 @@ mixin class MeleeWeaponBase
 				flDamage = self.m_flCustomDmg;
 			// AdamR: End
 
-			if( pEntity !is null && (pEntity.BloodColor() != DONT_BLEED || pEntity.Classify() != CLASS_MACHINE) )
+			if( pEntity !is null && pEntity.IsAlive() && !pEntity.IsBSPModel() && (pEntity.BloodColor() != DONT_BLEED || pEntity.Classify() != CLASS_MACHINE) )
 			{
 				Vector2D vec2LOS;
 				float flDot;
