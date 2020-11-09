@@ -139,7 +139,7 @@ class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		SetThink( null );
 
-		if( self.m_iClip <= 0 )
+		if( self.m_iClip <= 0 || WeaponZoomMode == CS16BASE::MODE_FOV_NORMAL )
 			return;
 
 		m_pPlayer.pev.viewmodel = CS16BASE::SCOPE_MODEL;
