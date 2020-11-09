@@ -348,6 +348,11 @@ final class BuyMenu
 	//Primary Menu
 	private CTextMenu@ m_pFirstMenu  	= null;
 	private CTextMenu@ m_pSecondMenu 	= null;
+	private CTextMenu@ m_pThirdMenu  	= null;
+	private CTextMenu@ m_pFourthMenu 	= null;
+	private CTextMenu@ m_pFifthMenu  	= null;
+	private CTextMenu@ m_pSixthMenu  	= null;
+	private CTextMenu@ m_pEquipMenu  	= null;
 
 	void RemoveItems()
 	{
@@ -403,6 +408,26 @@ final class BuyMenu
 		@m_pSecondMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
 		m_pSecondMenu.SetTitle( "Choose Handgun (Secondary Weapon)\n" );
 
+		//Third sub menu to be opened by the player
+		@m_pThirdMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pThirdMenu.SetTitle( "Choose Shotgun (Primary Weapon)\n" );
+
+		//Fourth sub menu to be opened by the player
+		@m_pFourthMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pFourthMenu.SetTitle( "Choose SMG (Primary Weapon)\n" );
+
+		//Fifth sub menu to be opened by the player
+		@m_pFifthMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pFifthMenu.SetTitle( "Choose Rifle (Primary Weapon)\n" );
+
+		//Sixth sub menu to be opened by the player
+		@m_pSixthMenu = CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		m_pSixthMenu.SetTitle( "Choose Machine Gun (Primary Weapon)\n" );
+
+		//Sixth sub menu to be opened by the player
+		@m_pEquipMenu = CTextMenu( TextMenuPlayerSlotCallback( this.EquipCallback ) );
+		m_pEquipMenu.SetTitle( "Choose Equipment\n" );
+
 		for( uint i = 0; i < m_Items.length(); i++ )
 		{
 			BuyableItem@ pItem = m_Items[i];
@@ -414,10 +439,35 @@ final class BuyMenu
 			{
 				m_pSecondMenu.AddItem( pItem.Description, any(@pItem) );
 			}
+			else if( pItem.Category == "shotgun" )
+			{
+				m_pThirdMenu.AddItem( pItem.Description, any(@pItem) );
+			}
+			else if( pItem.Category == "smg" )
+			{
+				m_pFourthMenu.AddItem( pItem.Description, any(@pItem) );
+			}
+			else if( pItem.Category == "rifle" )
+			{
+				m_pFifthMenu.AddItem( pItem.Description, any(@pItem) );
+			}
+			else if( pItem.Category == "lmg" )
+			{
+				m_pSixthMenu.AddItem( pItem.Description, any(@pItem) );
+			}
+			else if( pItem.Category == "equip" )
+			{
+				m_pEquipMenu.AddItem( pItem.Description, any(@pItem) );
+			}
 		}
 
 		m_pFirstMenu.Register();
 		m_pSecondMenu.Register();
+		m_pThirdMenu.Register();
+		m_pFourthMenu.Register();
+		m_pFifthMenu.Register();
+		m_pSixthMenu.Register();
+		m_pEquipMenu.Register();
 	}
 
 	private void MainCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
@@ -435,27 +485,45 @@ final class BuyMenu
 			}
 			else if( sChoice == szOpenTercWeapMenu )
 			{
-				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+				m_pThirdMenu.Open( 0, 0, pPlayer );
 			}
 			else if( sChoice == szOpenQuatWeapMenu )
 			{
-				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+				m_pFourthMenu.Open( 0, 0, pPlayer );
 			}
 			else if( sChoice == szOpenQuinWeapMenu )
 			{
-				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+				m_pFifthMenu.Open( 0, 0, pPlayer );
 			}
 			else if( sChoice == szOpenSenaWeapMenu )
 			{
-				//m_pSecondaryMenu.Open( 0, 0, pPlayer );
+				m_pSixthMenu.Open( 0, 0, pPlayer );
 			}
 			else if( sChoice == szOpenEquiWeapMenu )
 			{
-				//m_pEquipmentMenu.Open( 0, 0, pPlayer );
+				m_pEquipMenu.Open( 0, 0, pPlayer );
 			}
 			else if( sChoice == szOpenAmmoWeapMenu )
 			{
 				//m_pAmmoMenu.Open( 0, 0, pPlayer );
+			}
+		}
+	}
+
+	private void EquipCallback( CTextMenu@ menu, CBasePlayer@ pPlayer, int iSlot, const CTextMenuItem@ pItem )
+	{
+		if( pItem !is null )
+		{
+			BuyableItem@ pBuyItem = null;
+
+			pItem.m_pUserData.retrieve( @pBuyItem );
+
+			if( pBuyItem !is null )
+			{
+				pBuyItem.Buy( pPlayer );
+
+				if( pPlayer.m_rgAmmo( pPlayer.HasNamedPlayerItem( pBuyItem.EntityName ).GetWeaponPtr().m_iPrimaryAmmoType ) != pPlayer.GetMaxAmmo( pBuyItem.EntityName ) )
+					m_pEquipMenu.Open( 0, 0, pPlayer);
 			}
 		}
 	}
