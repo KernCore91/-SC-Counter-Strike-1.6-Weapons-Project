@@ -62,6 +62,12 @@ float RPM_BURST 	= 0.05f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_9x19mm";
 
+//Buy Menu Information
+string WPN_NAME 	= "Glock 18";
+uint WPN_PRICE  	= 150;
+string AMMO_NAME 	= "Glock 18 9mm Magazine";
+uint AMMO_PRICE  	= 10;
+
 class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer

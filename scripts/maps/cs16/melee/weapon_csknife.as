@@ -61,6 +61,10 @@ string AMMO_TYPE 	= "";
 float SLASH_DIST 	= 48.0f;
 float STAB_DIST  	= 32.0f;
 
+//Buy Menu Information
+string WPN_NAME 	= "Badlands Bowie Knife";
+uint WPN_PRICE  	= 100;
+
 class weapon_csknife : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::MeleeWeaponBase
 {
 	private CBasePlayer@ m_pPlayer

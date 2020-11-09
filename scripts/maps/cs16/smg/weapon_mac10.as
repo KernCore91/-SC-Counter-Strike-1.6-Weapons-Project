@@ -54,6 +54,12 @@ float RPM       	= 0.07f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_45acp";
 
+//Buy Menu Information
+string WPN_NAME 	= "Ingram MAC-10";
+uint WPN_PRICE  	= 320;
+string AMMO_NAME 	= "MAC-10 .45ACP Magazine";
+uint AMMO_PRICE  	= 20;
+
 class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer

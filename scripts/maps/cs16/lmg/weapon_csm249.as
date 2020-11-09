@@ -53,6 +53,12 @@ uint MAX_SHOOT_DIST	= 8192;
 float RPM       	= 0.1f;
 string AMMO_TYPE 	= "cs16_5.56x45mmAP";
 
+//Buy Menu Information
+string WPN_NAME 	= "FN M249 SAW";
+uint WPN_PRICE  	= 600;
+string AMMO_NAME 	= "M249 5.56 NATO Box";
+uint AMMO_PRICE  	= 100;
+
 class weapon_csm249 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer

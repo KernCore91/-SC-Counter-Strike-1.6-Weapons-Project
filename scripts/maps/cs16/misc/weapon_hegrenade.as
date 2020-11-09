@@ -46,6 +46,10 @@ uint POSITION   	= 4;
 string AMMO_TYPE 	= GetName();
 float TIMER      	= 1.5;
 
+//Buy Menu Information
+string WPN_NAME 	= "High Explosive Grenade";
+uint WPN_PRICE  	= 50;
+
 class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::GrenadeWeaponExplode
 {
 	private CBasePlayer@ m_pPlayer

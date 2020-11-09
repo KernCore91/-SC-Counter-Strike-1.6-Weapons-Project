@@ -52,6 +52,12 @@ float RPM_BURST  	= 0.05f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_5.56x45mm";
 
+//Buy Menu Information
+string WPN_NAME 	= "GIAT FAMAS F1";
+uint WPN_PRICE  	= 325;
+string AMMO_NAME 	= "FAMAS 5.56 NATO Magazine";
+uint AMMO_PRICE  	= 25;
+
 class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer

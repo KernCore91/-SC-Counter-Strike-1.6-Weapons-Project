@@ -55,6 +55,12 @@ string AMMO_TYPE 	= "cs16_12gauge";
 uint PELLETS    	= 9;
 Vector CONE( 0.0675f, 0.0675f, 0 );
 
+//Buy Menu Information
+string WPN_NAME 	= "Leone 12 Gauge Super";
+uint WPN_PRICE  	= 330;
+string AMMO_NAME 	= "Leone 12G 8 Shell Box";
+uint AMMO_PRICE  	= 20;
+
 class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer

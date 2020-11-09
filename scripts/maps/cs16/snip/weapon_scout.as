@@ -51,6 +51,12 @@ float RPM       	= 1.25f;
 string AMMO_TYPE 	= "cs16_7.62x39mm";
 float AIM_SPEED 	= 220;
 
+//Buy Menu Information
+string WPN_NAME 	= "Steyr Scout";
+uint WPN_PRICE  	= 335;
+string AMMO_NAME 	= "Scout 7.62 NATO Magazine";
+uint AMMO_PRICE  	= 20;
+
 class weapon_scout : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer
