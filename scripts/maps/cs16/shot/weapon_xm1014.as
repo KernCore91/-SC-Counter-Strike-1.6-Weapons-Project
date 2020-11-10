@@ -57,7 +57,7 @@ Vector CONE( 0.0725f, 0.0725f, 0 );
 
 //Buy Menu Information
 string WPN_NAME 	= "Leone YG1265 Auto Shotgun";
-uint WPN_PRICE  	= 375;
+uint WPN_PRICE  	= 400;
 string AMMO_NAME 	= "Leone 12G 7 Shell Box";
 uint AMMO_PRICE  	= 15;
 
@@ -80,6 +80,7 @@ class weapon_xm1014 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
+		self.pev.scale = 1.15;
 	}
 
 	void Precache()

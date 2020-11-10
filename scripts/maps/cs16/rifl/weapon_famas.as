@@ -50,7 +50,7 @@ uint POSITION   	= 5;
 float RPM_SINGLE 	= 0.0825;
 float RPM_BURST  	= 0.05f;
 uint MAX_SHOOT_DIST	= 8192;
-string AMMO_TYPE 	= "cs16_5.56x45mm";
+string AMMO_TYPE 	= "cs16_5.56nato";
 
 //Buy Menu Information
 string WPN_NAME 	= "GIAT FAMAS F1";

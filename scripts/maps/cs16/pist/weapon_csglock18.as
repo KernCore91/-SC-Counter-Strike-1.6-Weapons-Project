@@ -60,7 +60,7 @@ uint POSITION   	= 4;
 float RPM_SINGLE 	= 0.1f;
 float RPM_BURST 	= 0.05f;
 uint MAX_SHOOT_DIST	= 8192;
-string AMMO_TYPE 	= "cs16_9x19mm";
+string AMMO_TYPE 	= "cs16_9mm";
 
 //Buy Menu Information
 string WPN_NAME 	= "Glock 18";

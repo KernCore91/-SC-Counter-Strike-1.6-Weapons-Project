@@ -51,7 +51,7 @@ uint SLOT       	= 7;
 uint POSITION   	= 4;
 uint MAX_SHOOT_DIST	= 8192;
 float RPM       	= 0.1f;
-string AMMO_TYPE 	= "cs16_5.56x45mmAP";
+string AMMO_TYPE 	= "cs16_5.56ap";
 
 //Buy Menu Information
 string WPN_NAME 	= "FN M249 SAW";
