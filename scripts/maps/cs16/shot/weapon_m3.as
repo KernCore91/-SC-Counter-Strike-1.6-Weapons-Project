@@ -1,10 +1,10 @@
-// Counter-Strike 1.6 Leone 12 Gauge Super
+// Counter-Strike 1.6 Leone 12 Gauge Super (Benelli M3 Super 90)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, R4to0
 / Misc: Valve, D.N.I.O. 071 (Player Model Fix)
 / Script: KernCore
 */

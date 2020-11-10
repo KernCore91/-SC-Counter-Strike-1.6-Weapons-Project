@@ -1,10 +1,10 @@
-//Counter-Strike 1.6 Leone YG1265 Auto Shotgun (XM-1014)
+//Counter-Strike 1.6 Leone YG1265 Auto Shotgun (Benelli M4 Super 90)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, R4to0
 / Misc: Valve, D.N.I.O. 071 (Player Model Fix)
 / Script: KernCore
 */

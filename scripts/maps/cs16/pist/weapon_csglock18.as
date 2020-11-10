@@ -1,10 +1,10 @@
-// Counter-Strike 1.6 Glock 18
+// Counter-Strike 1.6 9×19mm Sidearm (Glock 18)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, R4to0
 / Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */

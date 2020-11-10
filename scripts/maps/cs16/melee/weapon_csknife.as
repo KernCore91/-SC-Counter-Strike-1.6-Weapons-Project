@@ -2,9 +2,9 @@
 /* Model Credits
 / Model: Valve
 / Textures: Valve
-/ Animations: Valve
+/ Animations: Valve, D.N.I.O. 071 (Wrist on Idle Fix)
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, R4to0
 / Misc: Valve, D.N.I.O. 071 (Player Model Fix)
 / Script: KernCore
 */

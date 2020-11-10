@@ -1,10 +1,10 @@
-// Counter-Strike 1.6 GIAT FAMAS F1
+// Counter-Strike 1.6 Clarion 5.56 (GIAT FAMAS F1)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, burken, R4to0
 / Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */

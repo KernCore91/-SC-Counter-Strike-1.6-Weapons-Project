@@ -1,10 +1,10 @@
-// Counter-Strike 1.6 H&K USP 45
+// Counter-Strike 1.6 K&M .45 Tactical (H&K USP .45 Tactical)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, R4to0
 / Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */

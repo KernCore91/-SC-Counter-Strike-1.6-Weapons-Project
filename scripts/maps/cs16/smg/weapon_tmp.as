@@ -1,10 +1,10 @@
-// Counter-Strike 1.6 Schmidt Machine Pistol (Steyr Taktische Maschinenpistole)
+// Counter-Strike 1.6 Schmidt Machine Pistol (Steyr TMP)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve
+/ Sprites: Valve, LeisRA, R4to0
 / Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */
