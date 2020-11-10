@@ -446,15 +446,15 @@ final class BuyMenu
 		m_pAmmoMenu.Register();
 
 		//Sets of Ammo Submenus
-		@m_pSecondAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		@m_pSecondAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallback ) );
 		m_pSecondAMenu.SetTitle( "Shop Secondary Ammo\n" );
-		@m_pThirdAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		@m_pThirdAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallback ) );
 		m_pThirdAMenu.SetTitle( "Shop Primary Ammo\n" );
-		@m_pFourthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		@m_pFourthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallback ) );
 		m_pFourthAMenu.SetTitle( "Shop Primary Ammo\n" );
-		@m_pFifthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		@m_pFifthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallback ) );
 		m_pFifthAMenu.SetTitle( "Shop Primary Ammo\n" );
-		@m_pSixthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.WeaponCallback ) );
+		@m_pSixthAMenu	= CTextMenu( TextMenuPlayerSlotCallback( this.AmmoCallback ) );
 		m_pSixthAMenu.SetTitle( "Shop Primary Ammo\n" );
 
 		for( uint i = 0; i < m_Items.length(); i++ )
@@ -609,7 +609,7 @@ final class BuyMenu
 			if( pBuyItem !is null )
 			{
 				pBuyItem.Buy( pPlayer );
-				//m_pMenu.Open( 0, 0, pPlayer);
+				menu.Open( 0, 0, pPlayer);
 			}
 		}
 	}

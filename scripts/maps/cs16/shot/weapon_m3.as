@@ -181,8 +181,15 @@ class weapon_m3 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		{
 			if( (m_pPlayer.pev.button & IN_ATTACK != 0) && m_flNextReload <= g_Engine.time )
 			{
-				self.m_flTimeWeaponIdle = g_Engine.time + m_flNextReload;
-				m_fShotgunReload = false;
+				if( self.m_iClip <= 0 )
+				{
+					self.Reload();
+				}
+				else
+				{
+					self.m_flTimeWeaponIdle = g_Engine.time + m_flNextReload;
+					m_fShotgunReload = false;
+				}
 			}
 			else if( (self.m_iClip >= MAX_CLIP && m_pPlayer.pev.button & (IN_RELOAD | IN_ATTACK2 | IN_ALT1) != 0) && m_flNextReload <= g_Engine.time )
 			{
