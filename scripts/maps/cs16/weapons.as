@@ -8,6 +8,7 @@
 #include "shot/weapon_xm1014"
 //Submachine guns
 #include "smg/weapon_mac10"
+#include "smg/weapon_tmp"
 //Explosives and Equipment
 #include "misc/weapon_hegrenade"
 //Assault Rifles
@@ -29,6 +30,7 @@ void RegisterAll()
 	CS16_XM1014::Register();
 	//Submachine guns
 	CS16_MAC10::Register();
+	CS16_TMP::Register();
 	//Explosives and Equipment
 	CS16_HEGRENADE::Register();
 	//Assault Rifles

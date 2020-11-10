@@ -47,7 +47,7 @@ int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 16;
 uint SLOT       	= 3;
-uint POSITION   	= 4;
+uint POSITION   	= 5;
 float RPM       	= 0.07f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_9mm";
@@ -58,7 +58,7 @@ uint WPN_PRICE  	= 325;
 string AMMO_NAME 	= "TMP 9mm Magazine";
 uint AMMO_PRICE  	= 15;
 
-class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
+class weapon_tmp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer
 	{
@@ -156,7 +156,7 @@ class weapon_mac10 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			vecSpread = VECTOR_CONE_2DEGREES * 1.045f * 1.45f;
 		}
 
-		vecSpread = vecSpread * (m_iShotsFired * 0.29f);
+		vecSpread = vecSpread * (m_iShotsFired * 0.25f);
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
