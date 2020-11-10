@@ -173,6 +173,10 @@ mixin class WeaponBase
 
 	void CommonSpritePrecache()
 	{
+		//MuzzleFlash
+		g_Game.PrecacheModel( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "csflashx.spr" );
+		g_Game.PrecacheGeneric( "events/" + "cs16_flashx.txt" );
+		//HUD
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "cs1024.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud7.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "crosshairs.spr" );

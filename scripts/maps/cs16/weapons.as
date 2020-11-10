@@ -5,6 +5,7 @@
 #include "pist/weapon_usp"
 //Shotguns
 #include "shot/weapon_m3"
+#include "shot/weapon_xm1014"
 //Submachine guns
 #include "smg/weapon_mac10"
 //Explosives and Equipment
@@ -25,6 +26,7 @@ void RegisterAll()
 	CS16_USP::Register();
 	//Shotguns
 	CS16_M3::Register();
+	CS16_XM1014::Register();
 	//Submachine guns
 	CS16_MAC10::Register();
 	//Explosives and Equipment

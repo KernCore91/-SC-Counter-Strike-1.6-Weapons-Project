@@ -36,8 +36,8 @@ int MAG_BDYGRP  	= 1;
 string SPR_CAT  	= "shot/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/m3/pump.wav",
-					"cs16/m3/shell.wav"
+					"hlclassic/weapons/reload3.wav",
+					"hlclassic/weapons/reload1.wav",
 };
 string SHOOT_S  	= "cs16/xm1014/shoot.wav";
 // Information
@@ -48,12 +48,12 @@ int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 15;
 uint SLOT       	= 2;
-uint POSITION   	= 4;
+uint POSITION   	= 5;
 float RPM       	= 0.25f;
 uint MAX_SHOOT_DIST	= 3048;
 string AMMO_TYPE 	= "cs16_12gauge";
 uint PELLETS    	= 6;
-Vector CONE( 0.0675f, 0.0675f, 0 );
+Vector CONE( 0.0725f, 0.0725f, 0 );
 
 //Buy Menu Information
 string WPN_NAME 	= "Leone YG1265 Auto Shotgun";
@@ -165,6 +165,115 @@ class weapon_xm1014 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		m_pPlayer.m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
 		ShellEject( m_pPlayer, m_iShell, Vector( 19, 12, -7 ), true, false, TE_BOUNCE_SHOTSHELL );
+	}
+
+	void ItemPostFrame()
+	{
+		if( m_fShotgunReload )
+		{
+			if( (m_pPlayer.pev.button & IN_ATTACK != 0) && m_flNextReload <= g_Engine.time )
+			{
+				if( self.m_iClip <= 0 )
+				{
+					self.Reload();
+				}
+				else
+				{
+					self.m_flTimeWeaponIdle = g_Engine.time + m_flNextReload;
+					m_fShotgunReload = false;
+				}
+			}
+			else if( (self.m_iClip >= MAX_CLIP && m_pPlayer.pev.button & (IN_RELOAD | IN_ATTACK2 | IN_ALT1) != 0) && m_flNextReload <= g_Engine.time )
+			{
+				// reload debounce has timed out
+				self.SendWeaponAnim( AFTER_RELOAD, 0, GetBodygroup() );
+
+				m_fShotgunReload = false;
+				self.m_flTimeWeaponIdle = g_Engine.time + 1.5f;
+			}
+		}
+		BaseClass.ItemPostFrame();
+	}
+
+	void Reload()
+	{
+		if( m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 || self.m_iClip == MAX_CLIP )
+			return;
+
+		if( m_flNextReload > WeaponTimeBase() )
+			return;
+
+		// don't reload until recoil is done
+		if( self.m_flNextPrimaryAttack > WeaponTimeBase() && !m_fShotgunReload )
+			return;
+
+		// check to see if we're ready to reload
+		if( !m_fShotgunReload )
+		{
+			self.SendWeaponAnim( START_RELOAD, 0, GetBodygroup() );
+
+			m_pPlayer.m_flNextAttack = (20.0/30.0); //Always uses a relative time due to prediction
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + (20.0/30.0);
+			m_flNextReload = self.m_flNextPrimaryAttack = WeaponTimeBase() + (20.0/30.0);
+
+			m_fShotgunReload = true;
+			return;
+		}
+		else if( m_fShotgunReload )
+		{
+			if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+				return;
+
+			if( self.m_iClip == MAX_CLIP )
+			{
+				m_fShotgunReload = false;
+				return;
+			}
+
+			self.SendWeaponAnim( INSERT, 0, GetBodygroup() );
+			m_flNextReload = self.m_flTimeWeaponIdle = self.m_flNextPrimaryAttack = WeaponTimeBase() + (35.0/95.0);
+
+			// Add them to the clip
+			self.m_iClip += 1;
+			m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType, m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) - 1 );
+
+			g_SoundSystem.EmitSoundDyn( m_pPlayer.edict(), CHAN_ITEM, (Math.RandomLong( 0, 1 ) < 0.5) ? WeaponSoundEvents[0] : WeaponSoundEvents[1], 1, ATTN_NORM, 0, 85 + Math.RandomLong( 0, 0x1f ) );
+		}
+		BaseClass.Reload();
+	}
+
+	void WeaponIdle()
+	{
+		self.ResetEmptySound();
+		m_pPlayer.GetAutoaimVector( AUTOAIM_5DEGREES );
+
+		if( self.m_flTimeWeaponIdle < g_Engine.time )
+		{
+			if( self.m_iClip <= 0 && !m_fShotgunReload && m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) != 0 )
+			{
+				self.Reload();
+			}
+			else if( m_fShotgunReload )
+			{
+				if( self.m_iClip != MAX_CLIP && m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) > 0 )
+				{
+					self.Reload();
+				}
+				else
+				{
+					// reload debounce has timed out
+					self.SendWeaponAnim( AFTER_RELOAD, 0, GetBodygroup() );
+
+					m_fShotgunReload = false;
+					self.m_flTimeWeaponIdle = g_Engine.time + 1.5f;
+				}
+			}
+			else
+			{
+				self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+				self.m_flTimeWeaponIdle = WeaponTimeBase() + (12.0/30.0);
+			}
+		}
 	}
 }
 
