@@ -105,6 +105,13 @@ enum ZOOM_OPTIONS
 	MODE_FOV_2X_ZOOM
 };
 
+//Weapon Suppressor Modes
+enum SUPPRESSOR_OPTIONS
+{
+	MODE_SUP_OFF = 0,
+	MODE_SUP_ON
+};
+
 enum CS16_Scope_Animations
 {
 	SCP_IDLE_DEFAULT = 0,
@@ -137,6 +144,7 @@ mixin class WeaponBase
 	protected int m_iShotsFired = 0;
 	protected int WeaponFireMode;
 	protected int WeaponZoomMode;
+	protected int WeaponSilMode;
 	protected int m_iShell;
 	private bool m_iDirection = true;
 	private string g_watersplash_spr = "sprites/wep_smoke_01.spr";
@@ -398,7 +406,7 @@ mixin class WeaponBase
 		}
 	}
 
-	void ShootWeapon( const string szSound, const uint uiNumShots, const Vector& in CONE, const float flMaxDist, const int iDamage, const int DmgType = DMG_GENERIC )
+	void ShootWeapon( const string szSound, const uint uiNumShots, const Vector& in CONE, const float flMaxDist, const int iDamage, const int DmgType = DMG_GENERIC, bool bIsSuppressed = false )
 	{
 		if( szSound != string_t() || szSound != "" )
 		{
@@ -415,8 +423,17 @@ mixin class WeaponBase
 		if( self.m_iClip <= 0 && m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
 			m_pPlayer.SetSuitUpdate( "!HEV_AMO0", false, 0 );
 
-		m_pPlayer.pev.effects |= EF_MUZZLEFLASH;
-		self.pev.effects |= EF_MUZZLEFLASH;
+		if( bIsSuppressed )
+		{
+			m_pPlayer.pev.effects &= ~EF_MUZZLEFLASH;
+			self.pev.effects &= ~EF_MUZZLEFLASH;
+		}
+		else
+		{
+			m_pPlayer.pev.effects |= EF_MUZZLEFLASH;
+			self.pev.effects |= EF_MUZZLEFLASH;
+		}
+
 		m_pPlayer.SetAnimation( PLAYER_ATTACK1 );
 
 		TraceResult tr;

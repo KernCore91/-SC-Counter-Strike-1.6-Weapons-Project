@@ -2,6 +2,7 @@
 #include "melee/weapon_csknife"
 //Pistols and Handguns
 #include "pist/weapon_csglock18"
+#include "pist/weapon_usp"
 //Shotguns
 #include "shot/weapon_m3"
 //Submachine guns
@@ -21,6 +22,7 @@ void RegisterAll()
 	CS16_KNIFE::Register();
 	//Pistols and Handguns
 	CS16_GLOCK18::Register();
+	CS16_USP::Register();
 	//Shotguns
 	CS16_M3::Register();
 	//Submachine guns
