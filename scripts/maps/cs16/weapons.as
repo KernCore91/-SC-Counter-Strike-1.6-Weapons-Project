@@ -15,6 +15,7 @@
 #include "rifl/weapon_famas"
 //Sniper Rifles
 #include "snip/weapon_scout"
+#include "snip/weapon_awp"
 //Light Machine Guns
 #include "lmg/weapon_csm249"
 
@@ -37,6 +38,7 @@ void RegisterAll()
 	CS16_FAMAS::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
+	CS16_AWP::Register();
 	//Light Machine Guns
 	CS16_M249::Register();
 }
