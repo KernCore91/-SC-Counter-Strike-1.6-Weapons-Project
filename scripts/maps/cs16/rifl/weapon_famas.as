@@ -172,6 +172,7 @@ class weapon_famas : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 				vecSpread = VECTOR_CONE_1DEGREES * 1.1;
 			}
 		}
+
 		vecSpread = vecSpread * (m_iShotsFired * 0.195); // do vector math calculations here to make the Spread worse
 
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );

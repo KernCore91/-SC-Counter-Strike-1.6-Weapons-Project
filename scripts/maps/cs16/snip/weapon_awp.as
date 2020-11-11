@@ -50,7 +50,7 @@ uint DAMAGE     	= 112;
 uint SLOT       	= 6;
 uint POSITION   	= 5;
 uint MAX_SHOOT_DIST	= 8192;
-float RPM       	= 1.45f;
+float RPM       	= 1.40f;
 string AMMO_TYPE 	= "cs16_.338lapua";
 float AIM_SPEED 	= 150;
 
@@ -78,7 +78,7 @@ class weapon_awp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
-		self.pev.scale = 1.15;
+		//self.pev.scale = 1.15;
 	}
 
 	void Precache()
@@ -184,13 +184,17 @@ class weapon_awp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		{
 			vecSpread = VECTOR_CONE_1DEGREES * 2.075f * (m_iShotsFired * 0.45f);
 		}
+		else if( m_pPlayer.pev.velocity.Length2D() > 10 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.07f * (m_iShotsFired * 0.4f);
+		}
 		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
 		{
 			vecSpread = VECTOR_CONE_1DEGREES;
 		}
 		else
 		{
-			vecSpread = VECTOR_CONE_1DEGREES * 1.07f * (m_iShotsFired * 0.4f);
+			vecSpread = VECTOR_CONE_1DEGREES * 1.01f * (m_iShotsFired * 0.4f);
 		}
 
 		vecSpread = (WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL) ? vecSpread * (m_iShotsFired * 0.225f) : vecSpread * (m_iShotsFired * 0.15f);
@@ -202,21 +206,23 @@ class weapon_awp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			m_pPlayer.pev.viewmodel = V_MODEL;
 			ResetFoV();
 			SetThink( ThinkFunction( this.ReApplyFoVThink ) );
-			self.pev.nextthink = g_Engine.time + (41.0/35.0);
+			self.pev.nextthink = g_Engine.time + RPM + 0.1f;
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + RPM + 0.1f;
 		}
+		else
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 2.0f;
 
 		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE, DMG_SNIPER | DMG_NEVERGIB );
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
 
 		self.m_flNextPrimaryAttack = self.m_flNextSecondaryAttack = WeaponTimeBase() + RPM;
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 2.0f;
 
 		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
 		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
 
 		m_pPlayer.pev.punchangle.x -= 2;
 
-		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.56f );
+		@CSRemoveBullet = @g_Scheduler.SetTimeout( @this, "BrassEjectThink", 0.55f );
 	}
 
 	void BrassEjectThink()
@@ -307,7 +313,7 @@ class AWP_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		self.pev.scale = 1.1;
+		//self.pev.scale = 1.1;
 	}
 
 	void Precache()

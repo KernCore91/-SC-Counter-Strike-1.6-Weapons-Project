@@ -13,6 +13,7 @@
 #include "misc/weapon_hegrenade"
 //Assault Rifles
 #include "rifl/weapon_famas"
+#include "rifl/weapon_galil"
 //Sniper Rifles
 #include "snip/weapon_scout"
 #include "snip/weapon_awp"
@@ -36,6 +37,7 @@ void RegisterAll()
 	CS16_HEGRENADE::Register();
 	//Assault Rifles
 	CS16_FAMAS::Register();
+	CS16_GALIL::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
 	CS16_AWP::Register();
