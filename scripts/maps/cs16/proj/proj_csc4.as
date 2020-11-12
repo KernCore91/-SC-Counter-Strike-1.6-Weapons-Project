@@ -141,7 +141,7 @@ class CCs16C4 : ScriptBaseEntity
 			c4_ex4.WriteByte( 17 );
 		c4_ex4.End();
 
-		g_SoundSystem.EmitSound( self.edict(), CHAN_WEAPON, EXPLODE_SOUND, 1, ATTN_NORM );
+		g_SoundSystem.EmitSound( self.edict(), CHAN_WEAPON, EXPLODE_SOUND, 1, 0 );
 		g_WeaponFuncs.RadiusDamage( self.GetOrigin(), self.pev, pevOwner, self.pev.dmg, BOMB_RADIUS, CLASS_NONE, DMG_BLAST );
 		g_Utility.DecalTrace( pTrace, (Math.RandomLong( 0, 1 ) < 0.5) ? DECAL_SCORCH1 : DECAL_SCORCH2 );
 

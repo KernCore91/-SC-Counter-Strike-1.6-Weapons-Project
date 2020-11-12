@@ -11,6 +11,7 @@
 #include "smg/weapon_tmp"
 //Explosives and Equipment
 #include "misc/weapon_hegrenade"
+#include "misc/weapon_c4"
 //Assault Rifles
 #include "rifl/weapon_famas"
 #include "rifl/weapon_galil"
@@ -35,6 +36,7 @@ void RegisterAll()
 	CS16_TMP::Register();
 	//Explosives and Equipment
 	CS16_HEGRENADE::Register();
+	CS16_C4::Register();
 	//Assault Rifles
 	CS16_FAMAS::Register();
 	CS16_GALIL::Register();

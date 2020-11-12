@@ -82,7 +82,6 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS1
 		g_Game.PrecacheModel( P_MODEL );
 		//Entities
 		g_Game.PrecacheOther( CS16GRENADEPROJECTILE::DEFAULT_PROJ_NAME );
-		//g_Game.PrecacheOther( CS16C4PROJECTILE::DEFAULT_PROJ_NAME );
 		//Sounds
 		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
