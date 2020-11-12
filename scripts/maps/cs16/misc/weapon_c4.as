@@ -38,7 +38,7 @@ array<string> 		WeaponSoundEvents = {
 };
 string PLANT_S   	= "cs16/c4/plant.wav"; //c4_plant
 // Information
-int MAX_CARRY   	= 5;
+int MAX_CARRY   	= 1;
 int MAX_CLIP    	= WEAPON_NOCLIP;
 int DEFAULT_GIVE 	= 1;
 int WEIGHT      	= 5;
@@ -49,6 +49,11 @@ uint POSITION   	= 5;
 string AMMO_TYPE 	= GetName();
 float TIMER      	= 35;
 float DELAY_FAIL 	= 1;
+
+//Buy Menu Information
+string WPN_NAME 	= "C4 Explosive";
+uint WPN_PRICE  	= 600;
+
 //Strings
 const string PLANT_AT_BOMB_SPOT      	= "C4 must be planted at a bomb site!\n";
 const string PLANT_MUST_BE_ON_GROUND 	= "You must be standing on\nthe ground to plant the C4!\n";
