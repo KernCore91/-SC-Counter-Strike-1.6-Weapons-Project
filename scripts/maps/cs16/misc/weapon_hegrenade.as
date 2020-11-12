@@ -204,11 +204,7 @@ class weapon_hegrenade : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS1
 		Vector vecSrc = m_pPlayer.pev.origin + m_pPlayer.pev.view_ofs + g_Engine.v_forward * 16;
 		Vector vecThrow = g_Engine.v_forward * flVel + m_pPlayer.pev.velocity;
 
-		//CBaseEntity@ pGrenade = g_EntityFuncs.ShootTimed( m_pPlayer.pev, vecSrc, vecThrow, TIMER );
-		//g_EntityFuncs.SetModel( pGrenade, W_MODEL );
-
 		CS16GRENADEPROJECTILE::CCs16Grenade@ pGrenade2 = CS16GRENADEPROJECTILE::TossGrenade( m_pPlayer.pev, vecSrc, vecThrow, TIMER, DAMAGE, W_MODEL );
-		//CS16C4PROJECTILE::CCs16C4@ pC4 = CS16C4PROJECTILE::PlantC4( m_pPlayer.pev, m_pPlayer.pev.origin, Vector(0, 0, 0), 35, 9999, W_MODEL );
 
 		m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType, m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) - 1 );
 		m_fAttackStart = 0;
@@ -265,7 +261,6 @@ string GetName()
 void Register()
 {
 	CS16GRENADEPROJECTILE::Register();
-	//CS16C4PROJECTILE::Register();
 	CS16BASE::RegisterCWEntityEX( "CS16_HEGRENADE::", "weapon_hegrenade", GetName(), GetName(), CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, AMMO_TYPE );
 }
 
