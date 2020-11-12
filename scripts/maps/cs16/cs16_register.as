@@ -3,6 +3,8 @@
 
 void PluginInit()
 {
+	g_Module.ScriptInfo.SetAuthor( "D.N.I.O. 071/R4to0/KernCore" );
+	g_Module.ScriptInfo.SetContactInfo( "https://discord.gg/0wtJ6aAd7XOGI6vI" );
 	BuyMenu::RegisterBuyMenuCCVars();
 }
 
