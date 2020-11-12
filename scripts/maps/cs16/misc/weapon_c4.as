@@ -238,9 +238,9 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 			if( !onGround || (!onBombZone && CS16_BOMBTARGET::USE_BOMB_ZONES) )
 			{
 				if( onBombZone && CS16_BOMBTARGET::USE_BOMB_ZONES )
-					g_PlayerFuncs.ClientPrint( m_pPlayer, HUD_PRINTCENTER, PLANT_MUST_BE_ON_GROUND );
-				else
 					g_PlayerFuncs.ClientPrint( m_pPlayer, HUD_PRINTCENTER, ARMING_CANCELLED );
+				else
+					g_PlayerFuncs.ClientPrint( m_pPlayer, HUD_PRINTCENTER, PLANT_MUST_BE_ON_GROUND );
 
 				m_bStartedArming = false;
 				self.m_flNextPrimaryAttack = g_Engine.time + 1.5f;
