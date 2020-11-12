@@ -313,7 +313,7 @@ class AWP_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		//self.pev.scale = 1.1;
+		self.pev.scale = 1.1;
 	}
 
 	void Precache()
@@ -332,7 +332,7 @@ class AWP_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 string GetAmmoName()
 {
-	return "ammo_scout";
+	return "ammo_awp";
 }
 
 string GetName()

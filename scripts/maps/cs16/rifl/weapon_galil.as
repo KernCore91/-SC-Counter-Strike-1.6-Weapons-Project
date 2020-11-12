@@ -28,7 +28,7 @@ string W_MODEL  	= "models/cs16/wpn/galil/w_galil.mdl";
 string V_MODEL  	= "models/cs16/wpn/galil/v_galil.mdl";
 string P_MODEL  	= "models/cs16/wpn/galil/p_galil.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 3;
+int MAG_BDYGRP  	= 9;
 // Sprites
 string SPR_CAT  	= "rifl/"; //Weapon category used to get the sprite's location
 // Sounds
@@ -49,13 +49,13 @@ uint SLOT       	= 5;
 uint POSITION   	= 6;
 float RPM       	= 0.0875f;
 uint MAX_SHOOT_DIST	= 8192;
-string AMMO_TYPE 	= "cs16_7.62nato";
+string AMMO_TYPE 	= "cs16_5.56nato";
 
 //Buy Menu Information
 string WPN_NAME 	= "IMI Galil";
 uint WPN_PRICE  	= 340;
-string AMMO_NAME 	= "GALIL 7.62 NATO Magazine";
-uint AMMO_PRICE  	= 25;
+string AMMO_NAME 	= "GALIL 5.56 NATO Magazine";
+uint AMMO_PRICE  	= 35;
 
 class weapon_galil : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {

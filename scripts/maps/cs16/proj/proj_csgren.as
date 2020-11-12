@@ -258,8 +258,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 	{
 		self.pev.flags &= ~EF_NOINTERP;
 		TraceResult tr;
-		Vector vecSpot;// trace starts here!
-		vecSpot = self.GetOrigin() + Vector( 0, 0, 8 );
+		Vector vecSpot = self.GetOrigin() + Vector( 0, 0, 8 ); // trace starts here!
 		g_Utility.TraceLine( vecSpot, vecSpot + Vector( 0, 0, -40 ), ignore_monsters, self.pev.pContainingEntity, tr );
 		Explode( tr );
 	}
