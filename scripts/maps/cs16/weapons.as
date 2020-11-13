@@ -17,6 +17,7 @@
 //Assault Rifles
 #include "rifl/weapon_famas"
 #include "rifl/weapon_galil"
+#include "rifl/weapon_ak47"
 //Sniper Rifles
 #include "snip/weapon_scout"
 #include "snip/weapon_awp"
@@ -44,6 +45,7 @@ void RegisterAll()
 	//Assault Rifles
 	CS16_FAMAS::Register();
 	CS16_GALIL::Register();
+	CS16_AK47::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
 	CS16_AWP::Register();
