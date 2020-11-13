@@ -165,8 +165,138 @@ final class BuyMenuCVARS
 			pParams.ShouldHide = true;
 			g_CS16Menu.Show( pPlayer );
 		}
+		else if( args.ArgC() == 3 && FirstArgChecker( args ) )
+		{
+			pParams.ShouldHide = true;
+			bool bItemFound = false;
+			string szItemName;
+			string szItemType;
+			uint uiCost;
+
+			if( args.Arg(1).ToLowercase() == "w" )
+				szItemType = "weapon";
+			else if( args.Arg(1).ToLowercase() == "a" )
+				szItemType = "ammo";
+			else
+			{
+				g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Invalid Item Type\n" );
+				return HOOK_CONTINUE;
+			}
+
+			if( g_CS16Menu.m_Items.length() > 0 )
+			{
+				for( uint i = 0; i < g_CS16Menu.m_Items.length(); i++ )
+				{
+					if( szItemType + "_" + args.Arg(2).ToLowercase() == g_CS16Menu.m_Items[i].EntityName )
+					{
+						bItemFound = true;
+						szItemName = g_CS16Menu.m_Items[i].EntityName;
+						uiCost = g_CS16Menu.m_Items[i].Cost;
+						break;
+					}
+					else
+						bItemFound = false;
+				}
+
+				if( bItemFound )
+				{
+					if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+					}
+					else if( pPlayer.HasNamedPlayerItem( szItemName ) !is null )
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] You already have this weapon: " + szItemName + "\n" );
+					}
+					else
+					{ 
+						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost )
+						{
+							BuyMenu::BuyPoints[PlayerID( pPlayer )] = uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) - uiCost;
+							ShowPointsSprite( pPlayer );
+							pPlayer.GiveNamedItem( szItemName );
+						}
+						else
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+					}
+				}
+				else
+				{
+					g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, (args.Arg(2) == string_t()) ?  "[CS16 BUYMENU] Invalid item\n" : "[CS16 BUYMENU] Invalid item: " + args.Arg(2) + "\n" );
+				}
+			}
+		}
 
 		return HOOK_CONTINUE;
+	}
+
+	void CS16_Buy( const CCommand@ args )
+	{
+		CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
+		if( args.ArgC() == 1 )
+		{
+			g_CS16Menu.Show( pPlayer );
+		}
+		else if( args.ArgC() == 3 )
+		{
+			bool bItemFound = false;
+			string szItemName;
+			string szItemType;
+			uint uiCost;
+
+			if( args.Arg(1) == "w" )
+				szItemType = "weapon";
+			else if( args.Arg(1) == "a" )
+				szItemType = "ammo";
+			else
+			{
+				g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Invalid Item Type\n" );
+				return;
+			}
+
+			if( g_CS16Menu.m_Items.length() > 0 )
+			{
+				for( uint i = 0; i < g_CS16Menu.m_Items.length(); i++ )
+				{
+					if( szItemType + "_" + args.Arg(2) == g_CS16Menu.m_Items[i].EntityName )
+					{
+						bItemFound = true;
+						szItemName = g_CS16Menu.m_Items[i].EntityName;
+						uiCost = g_CS16Menu.m_Items[i].Cost;
+						break;
+					}
+					else
+						bItemFound = false;
+				}
+
+				if( bItemFound )
+				{
+					if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+					}
+					else if( pPlayer.HasNamedPlayerItem( szItemName ) !is null )
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] You already have this weapon: " + szItemName + "\n" );
+					}
+					else
+					{ 
+						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost )
+						{
+							BuyMenu::BuyPoints[PlayerID( pPlayer )] = uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) - uiCost;
+							ShowPointsSprite( pPlayer );
+							pPlayer.GiveNamedItem( szItemName );
+						}
+						else
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+					}
+				}
+				else
+				{
+					g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, (args.Arg(2) == string_t()) ?  "[CS16 BUYMENU] Invalid item\n" : "[CS16 BUYMENU] Invalid item: " + args.Arg(2) + "\n" );
+				}
+			}
+		}
 	}
 }
 
@@ -202,6 +332,15 @@ HookReturnCode ClientSay( SayParameters@ pParams )
 	return g_CS16MenuHooks.CS16_ClientSay( pParams );
 }
 
+//Delegate Function
+void CS16_Buy( const CCommand@ args )
+{
+	BuyMenu::BuyMenuCVARS@ g_CS16MenuHooks = @BuyMenu::BuyMenuCVARS();
+	g_CS16MenuHooks.CS16_Buy( args );
+}
+
+CClientCommand _buy( "buy", "Opens the BuyMenu", @CS16_Buy );
+
 void MoneyInit()
 {
 	BuyPoints.deleteAll(); //Comment out to keep the points in map change
@@ -211,20 +350,9 @@ void MoneyInit()
 
 	g_Hooks.RegisterHook( Hooks::Player::ClientPutInServer, @ClientPutInServer );
 	g_Hooks.RegisterHook( Hooks::Player::PlayerPostThink, @PlayerPostThink );
-	//g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
+	g_Hooks.RegisterHook( Hooks::Player::ClientSay, @ClientSay );
 
 	//g_Game.AlertMessage( at_console, "Hooks Registered\n" );
-}
-
-CClientCommand _buy( "buy", "Opens the BuyMenu", @CS16_Buy );
-
-void CS16_Buy( const CCommand@ args )
-{
-	CBasePlayer@ pPlayer = g_ConCommandSystem.GetCurrentPlayer();
-	if( args.ArgC() == 1 )
-	{
-		g_CS16Menu.Show( pPlayer );
-	}
 }
 
 final class BuyableItem
