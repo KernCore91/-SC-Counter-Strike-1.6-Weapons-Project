@@ -162,7 +162,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
 
-		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE, DMG_GENERIC, true );
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
 
 		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
