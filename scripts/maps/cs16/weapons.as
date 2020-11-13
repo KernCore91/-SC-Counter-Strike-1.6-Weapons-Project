@@ -3,6 +3,7 @@
 //Pistols and Handguns
 #include "pist/weapon_csglock18"
 #include "pist/weapon_usp"
+#include "pist/weapon_p228"
 //Shotguns
 #include "shot/weapon_m3"
 #include "shot/weapon_xm1014"
@@ -28,6 +29,7 @@ void RegisterAll()
 	//Pistols and Handguns
 	CS16_GLOCK18::Register();
 	CS16_USP::Register();
+	CS16_P228::Register();
 	//Shotguns
 	CS16_M3::Register();
 	CS16_XM1014::Register();

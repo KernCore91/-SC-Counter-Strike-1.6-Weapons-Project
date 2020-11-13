@@ -24,6 +24,8 @@ void MapInit()
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_USP::WPN_NAME, CS16_USP::GetName(), CS16_USP::WPN_PRICE, "handgun" ) );
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_USP::AMMO_NAME, CS16_USP::GetAmmoName(), CS16_USP::AMMO_PRICE, "ammo", "handgun" ) );
 
+	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_P228::WPN_NAME, CS16_P228::GetName(), CS16_P228::WPN_PRICE, "handgun" ) );
+	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_P228::AMMO_NAME, CS16_P228::GetAmmoName(), CS16_P228::AMMO_PRICE, "ammo", "handgun" ) );
 
 	//Shotguns
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_M3::WPN_NAME, CS16_M3::GetName(), CS16_M3::WPN_PRICE, "shotgun" ) );

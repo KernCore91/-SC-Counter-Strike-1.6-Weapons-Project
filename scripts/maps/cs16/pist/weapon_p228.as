@@ -1,4 +1,4 @@
-// Counter-Strike 1.6 K&M .45 Tactical (H&K USP .45 Tactical)
+// Counter-Strike 1.6 228 Compact (SIG-Sauer P228)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
@@ -11,70 +11,57 @@
 
 #include "../base"
 
-namespace CS16_USP
+namespace CS16_P228
 {
 
 // Animations
-enum CS16_Usp_Animation
+enum CS16_P228_Animation
 {
 	IDLE = 0,
 	SHOOT1,
 	SHOOT2,
 	SHOOT3,
-	SHOOTLAST,
+	EMPTY,
 	RELOAD,
-	DRAW,
-	ADD_SILENCER,
-	IDLE_UNSIL,
-	SHOOT1_UNSIL,
-	SHOOT2_UNSIL,
-	SHOOT3_UNSIL,
-	SHOOTLAST_UNSIL,
-	RELOAD_UNSIL,
-	DRAW_UNSIL,
-	DETACH_SILENCER
+	DRAW
 };
 
 // Models
-string W_MODEL  	= "models/cs16/wpn/usp/w_usp.mdl";
-string V_MODEL  	= "models/cs16/wpn/usp/v_usp.mdl";
-string P_MODEL  	= "models/cs16/wpn/usp/p_usp.mdl";
+string W_MODEL  	= "models/cs16/wpn/p228/w_p228.mdl";
+string V_MODEL  	= "models/cs16/wpn/p228/v_p228.mdl";
+string P_MODEL  	= "models/cs16/wpn/p228/p_p228.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 6;
+int MAG_BDYGRP  	= 10;
 // Sprites
 string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/usp/magout.wav",
-					"cs16/usp/magin.wav",
-					"cs16/usp/sldrl.wav",
-					"cs16/usp/sldbk.wav",
-					"cs16/usp/siloff.wav",
-					"cs16/usp/silon.wav"
+					"cs16/p228/magin.wav",
+					"cs16/p228/magout.wav",
+					"cs16/p228/sldbk.wav",
+					"cs16/p228/sldrl.wav"
 };
-string SHOOT_S  	= "cs16/usp/shoot.wav";
-string SHOOT_S2 	= "cs16/usp/shoot2.wav";
+string SHOOT_S  	= "cs16/p228/shoot.wav";
 // Information
-int MAX_CARRY   	= 100;
-int MAX_CLIP    	= 12;
+int MAX_CARRY   	= 52;
+int MAX_CLIP    	= 13;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 18;
-uint DAMAGE2     	= 16;
+uint DAMAGE     	= 19;
 uint SLOT       	= 1;
-uint POSITION   	= 5;
-float RPM       	= 0.155f;
+uint POSITION   	= 6;
+float RPM       	= 0.145f;
 uint MAX_SHOOT_DIST	= 4096;
-string AMMO_TYPE 	= "cs16_45acp";
+string AMMO_TYPE 	= "cs16_.357sig";
 
 //Buy Menu Information
-string WPN_NAME 	= "H&K USP .45 Tactical";
-uint WPN_PRICE  	= 160;
-string AMMO_NAME 	= "USP .45ACP Magazine";
-uint AMMO_PRICE  	= 10;
+string WPN_NAME 	= "SIG-Sauer P228";
+uint WPN_PRICE  	= 175;
+string AMMO_NAME 	= "P228 .357SIG Magazine";
+uint AMMO_PRICE  	= 15;
 
-class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
+class weapon_p228 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer
 	{
@@ -90,7 +77,6 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	void Spawn()
 	{
 		Precache();
-		WeaponSilMode = CS16BASE::MODE_SUP_OFF;
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
 	}
 
@@ -107,7 +93,6 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
-		CS16BASE::PrecacheSound( SHOOT_S2 );
 		CS16BASE::PrecacheSound( CS16BASE::EMPTY_PISTOL_S );
 		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
@@ -138,7 +123,7 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? DRAW_UNSIL : DRAW, "onehanded", GetBodygroup(), (48.0/48.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "onehanded", GetBodygroup(), (30.0/30.0) );
 	}
 
 	bool PlayEmptySound()
@@ -167,87 +152,37 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		Vector vecSpread;
 
-		if( WeaponFireMode == CS16BASE::MODE_SUP_OFF )
+		if( m_pPlayer.pev.velocity.Length2D() > 0 )
 		{
-			if( m_pPlayer.pev.velocity.Length2D() > 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.165f;
-			}
-			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
-			{
-				vecSpread = VECTOR_CONE_2DEGREES * 2.0f;
-			}
-			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.075f;
-			}
-			else
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.1f;
-			}
+			vecSpread = VECTOR_CONE_1DEGREES * 1.255f;
+		}
+		else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_2DEGREES * 1.5f;
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.075f;
 		}
 		else
 		{
-			if( m_pPlayer.pev.velocity.Length2D() > 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.15f;
-			}
-			else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
-			{
-				vecSpread = VECTOR_CONE_2DEGREES * 1.85f;
-			}
-			else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.0f;
-			}
-			else
-			{
-				vecSpread = VECTOR_CONE_1DEGREES * 1.05f;
-			}
+			vecSpread = VECTOR_CONE_1DEGREES * 1.15f;
 		}
 
 		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
-		
-		if( WeaponSilMode == CS16BASE::MODE_SUP_ON )
-		{
-			ShootWeapon( SHOOT_S2, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE2, DMG_GENERIC, true );
-			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1 + Math.RandomLong( 0, 2 ) : SHOOTLAST, 0, GetBodygroup() );
-		}
-		else
-		{
-			ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
-			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1_UNSIL + Math.RandomLong( 0, 2 ) : SHOOTLAST_UNSIL, 0, GetBodygroup() );
-		}
 
-		m_pPlayer.m_iWeaponVolume = (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? NORMAL_GUN_VOLUME : 0;
-		m_pPlayer.m_iWeaponFlash = (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? DIM_GUN_FLASH : 0;
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
+
+		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
+		m_pPlayer.m_iWeaponFlash = DIM_GUN_FLASH;
 
 		m_pPlayer.pev.punchangle.x -= 2;
 
-		ShellEject( m_pPlayer, m_iShell, Vector( 16, 7, -6 ), true, false );
-	}
-
-	void SecondaryAttack()
-	{
-		self.m_flTimeWeaponIdle = self.m_flNextSecondaryAttack = self.m_flNextPrimaryAttack = WeaponTimeBase() + (115.0/37.0);
-		switch( WeaponSilMode )
-		{
-			case CS16BASE::MODE_SUP_OFF:
-			{
-				WeaponSilMode = CS16BASE::MODE_SUP_ON;
-				self.SendWeaponAnim( ADD_SILENCER, 0, GetBodygroup() );
-				break;
-			}
-			case CS16BASE::MODE_SUP_ON:
-			{
-				WeaponSilMode = CS16BASE::MODE_SUP_OFF;
-				self.SendWeaponAnim( DETACH_SILENCER, 0, GetBodygroup() );
-				break;
-			}
-		}
+		ShellEject( m_pPlayer, m_iShell, Vector( 17, 10, -6 ), true, false );
 	}
 
 	void Reload()
@@ -255,7 +190,7 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
 			return;
 
-		Reload( MAX_CLIP, (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? RELOAD_UNSIL : RELOAD, (100.0/37.0), GetBodygroup() );
+		Reload( MAX_CLIP, RELOAD, (95.0/35.0), GetBodygroup() );
 
 		BaseClass.Reload();
 	}
@@ -271,12 +206,12 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
 			return;
 
-		self.SendWeaponAnim( (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? IDLE_UNSIL : IDLE, 0, GetBodygroup() );
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
 		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
 }
 
-class USP_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
+class P228_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 {
 	void Spawn()
 	{
@@ -301,17 +236,17 @@ class USP_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 string GetAmmoName()
 {
-	return "ammo_usp";
+	return "ammo_p228";
 }
 
 string GetName()
 {
-	return "weapon_usp";
+	return "weapon_p228";
 }
 
 void Register()
 {
-	CS16BASE::RegisterCWEntity( "CS16_USP::", "weapon_usp", GetName(), GetAmmoName(), "USP_MAG", 
+	CS16BASE::RegisterCWEntity( "CS16_P228::", "weapon_p228", GetName(), GetAmmoName(), "P228_MAG", 
 		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
 }
 

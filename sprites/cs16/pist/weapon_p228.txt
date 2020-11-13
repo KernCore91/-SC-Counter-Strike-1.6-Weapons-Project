@@ -1,0 +1,5 @@
+4
+weapon			640 cs16/cs1024		340	0	170	45
+weapon_s		640 cs16/cs1024		340	45	170	45
+ammo			640 cs16/640hud7	120	72	24	24
+crosshair		640 cs16/crosshairs	256	0	256	256
