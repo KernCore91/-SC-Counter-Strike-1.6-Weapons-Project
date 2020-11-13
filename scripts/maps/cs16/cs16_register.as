@@ -42,6 +42,9 @@ void MapInit()
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_TMP::WPN_NAME, CS16_TMP::GetName(), CS16_TMP::WPN_PRICE, "smg" ) );
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_TMP::AMMO_NAME, CS16_TMP::GetAmmoName(), CS16_TMP::AMMO_PRICE, "ammo", "smg" ) );
 
+	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_MP5::WPN_NAME, CS16_MP5::GetName(), CS16_MP5::WPN_PRICE, "smg" ) );
+	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_MP5::AMMO_NAME, CS16_MP5::GetAmmoName(), CS16_MP5::AMMO_PRICE, "ammo", "smg" ) );
+
 
 	//Assault Rifles & Sniper Rifles
 	g_CS16Menu.AddItem( BuyMenu::BuyableItem( CS16_FAMAS::WPN_NAME, CS16_FAMAS::GetName(), CS16_FAMAS::WPN_PRICE, "rifle" ) );

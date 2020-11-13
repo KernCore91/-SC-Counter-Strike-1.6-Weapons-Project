@@ -40,7 +40,7 @@ array<string> 		WeaponSoundEvents = {
 };
 string SHOOT_S  	= "cs16/tmp/shoot.wav";
 // Information
-int MAX_CARRY   	= 100;
+int MAX_CARRY   	= 120;
 int MAX_CLIP    	= 30;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;

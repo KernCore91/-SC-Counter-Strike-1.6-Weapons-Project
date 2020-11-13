@@ -10,6 +10,7 @@
 //Submachine guns
 #include "smg/weapon_mac10"
 #include "smg/weapon_tmp"
+#include "smg/weapon_mp5navy"
 //Explosives and Equipment
 #include "misc/weapon_hegrenade"
 #include "misc/weapon_c4"
@@ -36,6 +37,7 @@ void RegisterAll()
 	//Submachine guns
 	CS16_MAC10::Register();
 	CS16_TMP::Register();
+	CS16_MP5::Register();
 	//Explosives and Equipment
 	CS16_HEGRENADE::Register();
 	CS16_C4::Register();
