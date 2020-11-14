@@ -21,6 +21,7 @@
 //Sniper Rifles
 #include "snip/weapon_scout"
 #include "snip/weapon_awp"
+#include "snip/weapon_sg550"
 //Light Machine Guns
 #include "lmg/weapon_csm249"
 
@@ -49,6 +50,7 @@ void RegisterAll()
 	//Sniper Rifles
 	CS16_SCOUT::Register();
 	CS16_AWP::Register();
+	CS16_SG550::Register();
 	//Light Machine Guns
 	CS16_M249::Register();
 }
