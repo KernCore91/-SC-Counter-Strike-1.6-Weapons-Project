@@ -55,9 +55,9 @@ float AIM_SPEED 	= 200;
 
 //Buy Menu Information
 string WPN_NAME 	= "SIG SG550";
-uint WPN_PRICE  	= 365;
+uint WPN_PRICE  	= 460;
 string AMMO_NAME 	= "SG550 5.56 NATO Magazine";
-uint AMMO_PRICE  	= 35;
+uint AMMO_PRICE  	= 30;
 
 class weapon_sg550 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
