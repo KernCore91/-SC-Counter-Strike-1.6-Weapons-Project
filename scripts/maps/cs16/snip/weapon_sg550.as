@@ -170,7 +170,7 @@ class weapon_sg550 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			m_iShotsFired = 9;
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
 
 		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 
@@ -247,7 +247,7 @@ class weapon_sg550 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.ResetEmptySound();
 		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
 
-		if( self.m_flNextPrimaryAttack + 1.0f < g_Engine.time )
+		if( self.m_flNextPrimaryAttack + 0.4f < g_Engine.time )
 			m_iShotsFired = 0;
 
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )

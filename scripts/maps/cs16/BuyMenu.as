@@ -226,6 +226,77 @@ final class BuyMenuCVARS
 				}
 			}
 		}
+		else if( args.ArgC() == 2 && FirstArgChecker( args ) )
+		{
+			if( args.Arg(1).ToLowercase() == "ammo" )
+			{
+				pParams.ShouldHide = true;
+				bool bItemFound = false;
+				string szItemName;
+				uint uiCost;
+
+				if( pPlayer.m_hActiveItem.GetEntity() !is null )
+				{
+					CBasePlayerWeapon@ pWeapon = cast<CBasePlayerWeapon@>( pPlayer.m_hActiveItem.GetEntity() );
+					string szClassname = pWeapon.pev.classname;
+
+					if( g_CS16Menu.m_Items.length() > 0 )
+					{
+						for( uint i = 0; i < g_CS16Menu.m_Items.length(); i++ )
+						{
+							//Identify the primary ammo entity first
+							if( !(pPlayer.HasNamedPlayerItem( szClassname ).iFlags() < 0) && pPlayer.HasNamedPlayerItem( szClassname ).iFlags() & ITEM_FLAG_EXHAUSTIBLE != 0 )
+							{
+								if( szClassname == g_CS16Menu.m_Items[i].EntityName )
+								{
+									bItemFound = true;
+									szItemName = g_CS16Menu.m_Items[i].EntityName;
+									uiCost = g_CS16Menu.m_Items[i].Cost;
+									break;
+								}
+							}
+							else if( "ammo_" + szClassname.Split("_")[1] == g_CS16Menu.m_Items[i].EntityName )
+							{
+								bItemFound = true;
+								szItemName = g_CS16Menu.m_Items[i].EntityName;
+								uiCost = g_CS16Menu.m_Items[i].Cost;
+								break;
+							}
+							else
+							{
+								bItemFound = false;
+							}
+						}
+					}
+
+					if( bItemFound )
+					{
+						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
+						{
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+						}
+						else
+						{ 
+							if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost )
+							{
+								pPlayer.GiveNamedItem( szItemName );
+								BuyMenu::BuyPoints[PlayerID( pPlayer )] = uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) - uiCost;
+
+								ShowPointsSprite( pPlayer );
+							}
+							else
+							{
+								g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+							}
+						}
+					}
+					else
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Invalid Weapon or Ammo entity\n" );
+					}
+				}
+			}
+		}
 
 		return HOOK_CONTINUE;
 	}
@@ -294,6 +365,76 @@ final class BuyMenuCVARS
 				else
 				{
 					g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, (args.Arg(2) == string_t()) ?  "[CS16 BUYMENU] Invalid item\n" : "[CS16 BUYMENU] Invalid item: " + args.Arg(2) + "\n" );
+				}
+			}
+		}
+		else if( args.ArgC() == 2 )
+		{
+			if( args.Arg(1).ToLowercase() == "ammo" )
+			{
+				bool bItemFound = false;
+				string szItemName;
+				uint uiCost;
+
+				if( pPlayer.m_hActiveItem.GetEntity() !is null )
+				{
+					CBasePlayerWeapon@ pWeapon = cast<CBasePlayerWeapon@>( pPlayer.m_hActiveItem.GetEntity() );
+					string szClassname = pWeapon.pev.classname;
+
+					if( g_CS16Menu.m_Items.length() > 0 )
+					{
+						for( uint i = 0; i < g_CS16Menu.m_Items.length(); i++ )
+						{
+							//Identify the primary ammo entity first
+							if( !(pPlayer.HasNamedPlayerItem( szClassname ).iFlags() < 0) && pPlayer.HasNamedPlayerItem( szClassname ).iFlags() & ITEM_FLAG_EXHAUSTIBLE != 0 )
+							{
+								if( szClassname == g_CS16Menu.m_Items[i].EntityName )
+								{
+									bItemFound = true;
+									szItemName = g_CS16Menu.m_Items[i].EntityName;
+									uiCost = g_CS16Menu.m_Items[i].Cost;
+									break;
+								}
+							}
+							else if( "ammo_" + szClassname.Split("_")[1] == g_CS16Menu.m_Items[i].EntityName )
+							{
+								bItemFound = true;
+								szItemName = g_CS16Menu.m_Items[i].EntityName;
+								uiCost = g_CS16Menu.m_Items[i].Cost;
+								break;
+							}
+							else
+							{
+								bItemFound = false;
+							}
+						}
+					}
+
+					if( bItemFound )
+					{
+						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
+						{
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+						}
+						else
+						{ 
+							if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost )
+							{
+								pPlayer.GiveNamedItem( szItemName );
+								BuyMenu::BuyPoints[PlayerID( pPlayer )] = uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) - uiCost;
+
+								ShowPointsSprite( pPlayer );
+							}
+							else
+							{
+								g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+							}
+						}
+					}
+					else
+					{
+						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Invalid Weapon or Ammo entity\n" );
+					}
 				}
 			}
 		}
