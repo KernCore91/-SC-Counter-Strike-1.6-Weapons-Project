@@ -21,7 +21,7 @@ enum CS16_P228_Animation
 	SHOOT1,
 	SHOOT2,
 	SHOOT3,
-	EMPTY,
+	SHOOT_EMPTY,
 	RELOAD,
 	DRAW
 };
@@ -171,11 +171,19 @@ class weapon_p228 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
 
-		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
-
 		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
-		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
+		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+		
+		if( self.m_iClip > 0 )
+		{
+			self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		}
+		else
+		{
+			self.SendWeaponAnim( SHOOT_EMPTY, 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 20.0f;
+		}
 
 		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
 		m_pPlayer.m_iWeaponFlash = DIM_GUN_FLASH;

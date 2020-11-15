@@ -209,8 +209,7 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
-		
+
 		if( WeaponSilMode == CS16BASE::MODE_SUP_ON )
 		{
 			ShootWeapon( SHOOT_S2, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE2, DMG_GENERIC, true );
@@ -221,6 +220,8 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1_UNSIL + Math.RandomLong( 0, 2 ) : SHOOTLAST_UNSIL, 0, GetBodygroup() );
 		}
+
+		self.m_flTimeWeaponIdle = (self.m_iClip > 0) ? WeaponTimeBase() + 1.0f : WeaponTimeBase() + 20.0f;
 
 		m_pPlayer.m_iWeaponVolume = (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? NORMAL_GUN_VOLUME : 0;
 		m_pPlayer.m_iWeaponFlash = (WeaponSilMode == CS16BASE::MODE_SUP_OFF) ? DIM_GUN_FLASH : 0;
