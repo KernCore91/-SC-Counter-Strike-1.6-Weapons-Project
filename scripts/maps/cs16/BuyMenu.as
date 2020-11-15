@@ -204,6 +204,7 @@ final class BuyMenuCVARS
 					{
 						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
 					}
+
 					else if( pPlayer.HasNamedPlayerItem( szItemName ) !is null )
 					{
 						g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] You already have this weapon: " + szItemName + "\n" );
@@ -274,6 +275,12 @@ final class BuyMenuCVARS
 						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
 						{
 							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+						}
+						//Very tedious check to see if the player already has max ammo for a exhaustible weapon
+						else if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost && pPlayer.HasNamedPlayerItem( szClassname ).iFlags() & ITEM_FLAG_EXHAUSTIBLE != 0 &&
+							pPlayer.m_rgAmmo( pPlayer.HasNamedPlayerItem( szClassname ).GetWeaponPtr().m_iPrimaryAmmoType ) == pPlayer.GetMaxAmmo( szClassname ) )
+						{
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTTALK, "[CS16 BUYMENU] Exhaustible weapon already at max ammo\n" );
 						}
 						else
 						{ 
@@ -415,6 +422,12 @@ final class BuyMenuCVARS
 						if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) <= 0 )
 						{
 							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Not enough money to buy: " + szItemName + " - Cost: $" + uiCost + "\n" );
+						}
+						//Very tedious check to see if the player already has max ammo for a exhaustible weapon
+						else if( uint(BuyMenu::BuyPoints[PlayerID( pPlayer )]) >= uiCost && pPlayer.HasNamedPlayerItem( szClassname ).iFlags() & ITEM_FLAG_EXHAUSTIBLE != 0 &&
+							pPlayer.m_rgAmmo( pPlayer.HasNamedPlayerItem( szClassname ).GetWeaponPtr().m_iPrimaryAmmoType ) == pPlayer.GetMaxAmmo( szClassname ) )
+						{
+							g_PlayerFuncs.ClientPrint( pPlayer, HUD_PRINTCONSOLE, "[CS16 BUYMENU] Exhaustible weapon already at max ammo\n" );
 						}
 						else
 						{ 
