@@ -205,7 +205,7 @@ class weapon_ak47 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		self.ResetEmptySound();
 		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
 
-		if( self.m_flNextPrimaryAttack < g_Engine.time )
+		if( self.m_flNextPrimaryAttack + 0.1 < g_Engine.time )
 			m_iShotsFired = 0;
 
 		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )

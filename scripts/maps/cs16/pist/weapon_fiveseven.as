@@ -50,7 +50,7 @@ int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 17;
 uint SLOT       	= 1;
 uint POSITION   	= 7;
-float RPM       	= 0.145f;
+float RPM       	= 0.14f;
 uint MAX_SHOOT_DIST	= 4096;
 string AMMO_TYPE 	= "cs16_5.7mm";
 
@@ -137,12 +137,67 @@ class weapon_fiveseven : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		BaseClass.Holster( skiplocal );
 	}
 
+	void PrimaryAttack()
+	{
+		if( self.m_iClip <= 0 )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+			return;
+		}
+
+		if( m_pPlayer.m_afButtonPressed & IN_ATTACK == 0 )
+			return;
+
+		Vector vecSpread;
+
+		if( m_pPlayer.pev.velocity.Length2D() > 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.255f;
+		}
+		else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_2DEGREES * 1.5f;
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.075f;
+		}
+		else
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.15f;
+		}
+
+		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
+
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE, DMG_SNIPER | DMG_NEVERGIB );
+		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+		
+		if( self.m_iClip > 0 )
+		{
+			self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 1 ), 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		}
+		else
+		{
+			self.SendWeaponAnim( SHOOT_EMPTY, 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 20.0f;
+		}
+
+		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
+		m_pPlayer.m_iWeaponFlash = DIM_GUN_FLASH;
+
+		m_pPlayer.pev.punchangle.x -= 2;
+
+		ShellEject( m_pPlayer, m_iShell, Vector( 15, 8, -6 ), true, false );
+	}
+
 	void Reload()
 	{
 		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
 			return;
 
-		Reload( MAX_CLIP, RELOAD, (95.0/35.0), GetBodygroup() );
+		Reload( MAX_CLIP, RELOAD, (96.0/30.0), GetBodygroup() );
 
 		BaseClass.Reload();
 	}
@@ -199,7 +254,7 @@ string GetName()
 
 void Register()
 {
-	CS16BASE::RegisterCWEntity( "CS16_P228::", "weapon_fiveseven", GetName(), GetAmmoName(), "FIVE7_MAG", 
+	CS16BASE::RegisterCWEntity( "CS16_57::", "weapon_fiveseven", GetName(), GetAmmoName(), "FIVE7_MAG", 
 		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
 }
 
