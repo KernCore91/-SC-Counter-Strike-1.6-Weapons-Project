@@ -30,7 +30,7 @@ string W_MODEL  	= "models/cs16/wpn/57/w_57.mdl";
 string V_MODEL  	= "models/cs16/wpn/57/v_57.mdl";
 string P_MODEL  	= "models/cs16/wpn/57/p_57.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 10;
+int MAG_BDYGRP  	= 14;
 // Sprites
 string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds

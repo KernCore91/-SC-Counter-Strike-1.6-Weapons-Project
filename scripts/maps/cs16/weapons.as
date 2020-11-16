@@ -12,6 +12,7 @@
 #include "smg/weapon_mac10"
 #include "smg/weapon_tmp"
 #include "smg/weapon_mp5navy"
+#include "smg/weapon_ump45"
 //Explosives and Equipment
 #include "misc/weapon_hegrenade"
 #include "misc/weapon_c4"
@@ -42,6 +43,7 @@ void RegisterAll()
 	CS16_MAC10::Register();
 	CS16_TMP::Register();
 	CS16_MP5::Register();
+	CS16_UMP45::Register();
 	//Explosives and Equipment
 	CS16_HEGRENADE::Register();
 	CS16_C4::Register();
