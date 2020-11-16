@@ -21,7 +21,7 @@ enum CS16_Usp_Animation
 	SHOOT1,
 	SHOOT2,
 	SHOOT3,
-	SHOOTLAST,
+	SHOOT_EMPTY,
 	RELOAD,
 	DRAW,
 	ADD_SILENCER,
@@ -29,7 +29,7 @@ enum CS16_Usp_Animation
 	SHOOT1_UNSIL,
 	SHOOT2_UNSIL,
 	SHOOT3_UNSIL,
-	SHOOTLAST_UNSIL,
+	SHOOT_EMPTY_UNSIL,
 	RELOAD_UNSIL,
 	DRAW_UNSIL,
 	DETACH_SILENCER
@@ -213,12 +213,12 @@ class weapon_usp : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( WeaponSilMode == CS16BASE::MODE_SUP_ON )
 		{
 			ShootWeapon( SHOOT_S2, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE2, DMG_GENERIC, true );
-			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1 + Math.RandomLong( 0, 2 ) : SHOOTLAST, 0, GetBodygroup() );
+			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1 + Math.RandomLong( 0, 2 ) : SHOOT_EMPTY, 0, GetBodygroup() );
 		}
 		else
 		{
 			ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
-			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1_UNSIL + Math.RandomLong( 0, 2 ) : SHOOTLAST_UNSIL, 0, GetBodygroup() );
+			self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT1_UNSIL + Math.RandomLong( 0, 2 ) : SHOOT_EMPTY_UNSIL, 0, GetBodygroup() );
 		}
 
 		self.m_flTimeWeaponIdle = (self.m_iClip > 0) ? WeaponTimeBase() + 1.0f : WeaponTimeBase() + 20.0f;

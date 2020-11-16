@@ -23,7 +23,7 @@ enum CS16_Glock18_Animations
 	SHOOT1, //Unused
 	SHOOT2, //Unused
 	SHOOT3,
-	SHOOTEMPTY,
+	SHOOT_EMPTY,
 	RELOAD,
 	DRAW,
 	HOLSTER,
@@ -194,7 +194,7 @@ class weapon_csglock18 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
 
-		self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT3 : SHOOTEMPTY, 0, GetBodygroup() );
+		self.SendWeaponAnim( (self.m_iClip > 0) ? SHOOT3 : SHOOT_EMPTY, 0, GetBodygroup() );
 
 		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
 		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
