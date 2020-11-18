@@ -55,7 +55,7 @@ string AMMO_TYPE 	= "cs16_7.62nato";
 string WPN_NAME 	= "AK-47";
 uint WPN_PRICE  	= 365;
 string AMMO_NAME 	= "AK-47 7.62 Magazine";
-uint AMMO_PRICE  	= 35;
+uint AMMO_PRICE  	= 45;
 
 class weapon_ak47 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
