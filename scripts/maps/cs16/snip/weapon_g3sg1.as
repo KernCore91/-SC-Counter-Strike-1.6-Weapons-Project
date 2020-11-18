@@ -4,7 +4,7 @@
 / Textures: Valve
 / Animations: Valve
 / Sounds: Valve
-/ Sprites: Valve, R4to0
+/ Sprites: Valve, LeisRA, R4to0
 / Misc: Valve, D.N.I.O. 071 (Magazine Model Rip, Player Model Fix)
 / Script: KernCore
 */
