@@ -125,7 +125,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 
 	void ShowC4Sprite( float flHoldTime )
 	{
-		Vector2D vec2dPos( 0, 256 );
+		Vector2D vec2dPos( 0, 300 );
 
 		HUDSpriteParams SpriteParams;
 		SpriteParams.channel = 4;
