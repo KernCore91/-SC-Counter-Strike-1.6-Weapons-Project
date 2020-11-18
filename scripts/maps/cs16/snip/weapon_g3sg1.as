@@ -179,10 +179,10 @@ class weapon_g3sg1 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
 		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
 
-		m_pPlayer.pev.punchangle.x -= g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed + 4, 0.75, 1.25 ) + m_pPlayer.pev.punchangle.x * 0.25;
+		m_pPlayer.pev.punchangle.x -= g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed + 4, 1.25, 2.75 ) + m_pPlayer.pev.punchangle.x * 0.25f;
 		m_pPlayer.pev.punchangle.y += g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed + 5, -0.75, 0.75 );
 
-		ShellEject( m_pPlayer, m_iShell, Vector( 21, 12, -9 ), true, false );
+		ShellEject( m_pPlayer, m_iShell, Vector( 17, 10, -8 ), true, false );
 	}
 
 	void SecondaryAttack()
