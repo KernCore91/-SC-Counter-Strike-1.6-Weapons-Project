@@ -286,7 +286,7 @@ class M4A1_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		self.pev.scale = 1.2;
+		self.pev.scale = 1;
 	}
 
 	void Precache()
