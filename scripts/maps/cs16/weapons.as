@@ -5,6 +5,7 @@
 #include "pist/weapon_usp"
 #include "pist/weapon_p228"
 #include "pist/weapon_fiveseven"
+#include "pist/weapon_dualelites"
 //Shotguns
 #include "shot/weapon_m3"
 #include "shot/weapon_xm1014"
@@ -38,6 +39,7 @@ void RegisterAll()
 	CS16_USP::Register();
 	CS16_P228::Register();
 	CS16_57::Register();
+	CS16_ELITES::Register();
 	//Shotguns
 	CS16_M3::Register();
 	CS16_XM1014::Register();
