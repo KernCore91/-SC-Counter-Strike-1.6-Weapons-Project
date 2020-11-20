@@ -23,6 +23,7 @@
 #include "rifl/weapon_galil"
 #include "rifl/weapon_ak47"
 #include "rifl/weapon_m4a1"
+#include "rifl/weapon_aug"
 //Sniper Rifles
 #include "snip/weapon_scout"
 #include "snip/weapon_awp"
@@ -58,6 +59,7 @@ void RegisterAll()
 	CS16_GALIL::Register();
 	CS16_AK47::Register();
 	CS16_M4A1::Register();
+	CS16_AUG::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
 	CS16_AWP::Register();
