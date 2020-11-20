@@ -78,7 +78,7 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
-		self.pev.scale = 1;
+		self.pev.scale = 1.3;
 	}
 
 	void Precache()
