@@ -1,4 +1,4 @@
-// Counter-Strike 1.6 K&M Sub-Machine Gun (H&K MP5A5-Navy)
+// Counter-Strike 1.6 ES C90 (FN P90)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
@@ -11,11 +11,11 @@
 
 #include "../base"
 
-namespace CS16_MP5
+namespace CS16_P90
 {
 
 // Animations
-enum CS16_Mp5navy_Animations
+enum CS16_P90_Animations
 {
 	IDLE = 0,
 	RELOAD,
@@ -26,40 +26,41 @@ enum CS16_Mp5navy_Animations
 };
 
 // Models
-string W_MODEL  	= "models/cs16/wpn/mp5/w_mp5.mdl";
-string V_MODEL  	= "models/cs16/wpn/mp5/v_mp5.mdl";
-string P_MODEL  	= "models/cs16/wpn/mp5/p_mp5.mdl";
+string W_MODEL  	= "models/cs16/wpn/p90/w_p90.mdl";
+string V_MODEL  	= "models/cs16/wpn/p90/v_p90.mdl";
+string P_MODEL  	= "models/cs16/wpn/p90/p_p90.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 11;
+int MAG_BDYGRP  	= 19;
 // Sprites
 string SPR_CAT  	= "smg/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/mp5/magout.wav",
-					"cs16/mp5/magin.wav",
-					"cs16/mp5/sldbk.wav"
+					"cs16/p90/bltbk.wav",
+					"cs16/p90/magin.wav",
+					"cs16/p90/magout.wav",
+					"cs16/p90/magrel.wav"
 };
-string SHOOT_S  	= "cs16/mp5/shoot.wav";
+string SHOOT_S  	= "cs16/p90/shoot.wav";
 // Information
-int MAX_CARRY   	= 120;
-int MAX_CLIP    	= 30;
+int MAX_CARRY   	= 100;
+int MAX_CLIP    	= 50;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 16;
+uint DAMAGE     	= 15;
 uint SLOT       	= 3;
-uint POSITION   	= 6;
-float RPM       	= 0.075f;
+uint POSITION   	= 8;
+float RPM       	= 0.066f;
 uint MAX_SHOOT_DIST	= 8192;
-string AMMO_TYPE 	= "cs16_9mm";
+string AMMO_TYPE 	= "cs16_5.7mm";
 
 //Buy Menu Information
-string WPN_NAME 	= "H&K MP5 Navy";
-uint WPN_PRICE  	= 335;
-string AMMO_NAME 	= "MP5 9mm Magazine";
-uint AMMO_PRICE  	= 15;
+string WPN_NAME 	= "FN P90";
+uint WPN_PRICE  	= 375;
+string AMMO_NAME 	= "P90 Magazine";
+uint AMMO_PRICE  	= 55;
 
-class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
+class weapon_p90 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer
 	{
@@ -76,7 +77,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
-		self.pev.scale = 1.1;
+		self.pev.scale = 1.2;
 	}
 
 	void Precache()
@@ -87,7 +88,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheModel( V_MODEL );
 		g_Game.PrecacheModel( P_MODEL );
 		g_Game.PrecacheModel( A_MODEL );
-		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_PISTOL );
+		m_iShell = g_Game.PrecacheModel( CS16BASE::SHELL_RIFLE );
 		//Entity
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
@@ -101,7 +102,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool GetItemInfo( ItemInfo& out info )
 	{
-		info.iMaxAmmo1 	= (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_9MM;
+		info.iMaxAmmo1 	= (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_556;
 		info.iAmmo1Drop	= MAX_CLIP;
 		info.iMaxAmmo2 	= -1;
 		info.iAmmo2Drop	= -1;
@@ -122,7 +123,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, DRAW, "mp5", GetBodygroup(), (30.0/35.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "mp5", GetBodygroup(), (30.0/30.0) );
 	}
 
 	bool PlayEmptySound()
@@ -150,42 +151,46 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
 		{
-			vecSpread = VECTOR_CONE_2DEGREES * 1.2f * 1.41f;
+			vecSpread = VECTOR_CONE_2DEGREES * 1.3f * 1.45f;
+		}
+		else if( m_pPlayer.pev.velocity.Length2D() > 170 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.115f * 1.41f;
 		}
 		else
 		{
-			vecSpread = VECTOR_CONE_1DEGREES * 1.04f * 1.41f;
+			vecSpread = VECTOR_CONE_1DEGREES * 1.045f * 1.38f;
 		}
 
 		vecSpread = vecSpread * (m_iShotsFired * 0.2f);
 
 		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
-		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.5f;
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
 
-		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE, DMG_SNIPER | DMG_NEVERGIB );
 		self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 2 ), 0, GetBodygroup() );
 
 		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
 		{
-			KickBack( 0.9, 0.475, 0.35, 0.0425, 5.0, 3.0, 6 );
+			KickBack( 0.9, 0.45, 0.35, 0.04, 5.25, 3.5, 4 );
 		}
 		else if( m_pPlayer.pev.velocity.Length2D() > 0 )
 		{
-			KickBack( 0.5, 0.275, 0.2, 0.03, 3.0, 2.0, 10 );
+			KickBack( 0.45, 0.3, 0.2, 0.0275, 4.0, 2.25, 7 );
 		}
 		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
 		{
-			KickBack( 0.225, 0.15, 0.1, 0.015, 2.0, 1.0, 10 );
+			KickBack( 0.275, 0.2, 0.125, 0.02, 3.0, 1.0, 9 );
 		}
 		else
 		{
-			KickBack( 0.25, 0.175, 0.125, 0.02, 2.25, 1.25, 10 );
+			KickBack( 0.3, 0.225, 0.125, 0.02, 3.25, 1.25, 8 );
 		}
 
 		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
 		m_pPlayer.m_iWeaponFlash = DIM_GUN_FLASH;
 
-		ShellEject( m_pPlayer, m_iShell, Vector( 15, 8, -6 ), true, false );
+		ShellEject( m_pPlayer, m_iShell, Vector( 15, 8, -5 ), false, true );
 	}
 
 	void Reload()
@@ -193,7 +198,7 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
 			return;
 
-		Reload( MAX_CLIP, RELOAD, (100.0/38.0), GetBodygroup() );
+		Reload( MAX_CLIP, RELOAD, (135.0/40.0), GetBodygroup() );
 
 		BaseClass.Reload();
 	}
@@ -214,14 +219,14 @@ class weapon_mp5navy : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	}
 }
 
-class MP5_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
+class P90_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 {
 	void Spawn()
 	{
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
-		self.pev.scale = 1.2;
+		self.pev.scale = 1;
 	}
 
 	void Precache()
@@ -234,24 +239,24 @@ class MP5_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 	bool AddAmmo( CBaseEntity@ pOther )
 	{
-		return CommonAddAmmo( pOther, MAX_CLIP, (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_9MM, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
+		return CommonAddAmmo( pOther, MAX_CLIP, (CS16BASE::ShouldUseCustomAmmo) ? MAX_CARRY : CS16BASE::DF_MAX_CARRY_556, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_556 );
 	}
 }
 
 string GetAmmoName()
 {
-	return "ammo_mp5navy";
+	return "ammo_p90";
 }
 
 string GetName()
 {
-	return "weapon_mp5navy";
+	return "weapon_p90";
 }
 
 void Register()
 {
-	CS16BASE::RegisterCWEntity( "CS16_MP5::", "weapon_mp5navy", GetName(), GetAmmoName(), "MP5_MAG", 
-		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_9MM );
+	CS16BASE::RegisterCWEntity( "CS16_P90::", "weapon_p90", GetName(), GetAmmoName(), "P90_MAG", 
+		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_556 );
 }
 
 }
