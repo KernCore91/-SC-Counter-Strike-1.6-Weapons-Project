@@ -33,3 +33,80 @@ This project is brought to you by the following super dedicated team members: D.
 * Night Hawk .50C (weapon_csdeagle)
 * Schmidt Machine Pistol (weapon_tmp)
 * Schmidt Scout (weapon_scout)
+
+## Gameplay Video
+
+Video:
+[![](http://i3.ytimg.com/vi/LyThjfNqwWs/maxresdefault.jpg)](https://www.youtube.com/watch?v=LyThjfNqwWs)
+*by VitorHunter.*
+
+## Screenshots
+[![](https://i.imgur.com/XRJbALTm.png)](https://i.imgur.com/XRJbALT.png)
+[![](https://i.imgur.com/fogrWZEm.png)](https://i.imgur.com/fogrWZE.png)
+[![](https://i.imgur.com/Rwn01Vfm.png)](https://i.imgur.com/Rwn01Vf.png)
+[![](https://i.imgur.com/84E0GqLm.png)](https://i.imgur.com/84E0GqL.png)
+[![](https://i.imgur.com/yszXhUnm.png)](https://i.imgur.com/yszXhUn.png)
+[![](https://i.imgur.com/gYkANMzm.png)](https://i.imgur.com/gYkANMz.png)
+
+## Installation Guide
+
+1. Registering the weapons as plugins (Good for server operators, and most people):
+	1. Download the pack from one of the download links below
+	2. Extract it's contents inside **`Steam\steamapps\common\Sven Co-op\svencoop_addon\`**
+	3. Open up *`default_plugins.txt`* located in **`Steam\steamapps\common\Sven Co-op\svencoop\`**
+	4. Add these lines to the file:
+	```
+	"plugin"
+	{
+		"name"          "Counter-Strike 1.6 Mod"
+		"script"        "../maps/cs16/cs16_register"
+		"concommandns"     "cs16"
+	}
+	```
+	5. Load any map of your preference;
+	6. Type in chat *\buy* or type in console give *name of the weapon* and enjoy.
+
+2. Registering the weapons as map_scripts (Good for map makers):
+	1. Download the pack from one of the download links below
+	2. Extract it's contents inside **`Steam\steamapps\common\Sven Co-op\svencoop_addon\`**
+	3. Open up any map *.cfg* (i.e: **svencoop1.cfg**) and add this line to it:
+	```
+	map_script cs16/cs16_register
+	```
+	4. Load up the map you chose;
+	5. Type in chat *\buy* or type in console give *name of the weapon* and enjoy.
+
+## Additional Content
+
+This pack includes a heavily modified Buymenu made specifically for it.
+Here are the following commands that can be used in the Buymenu:
+
+```
+// Opening the Buy menu in the chat:
+buy
+/buy
+!buy
+.buy
+\buy
+#buy
+
+// Opening the Buy menu in the console:
+.buy
+
+// Buying a specific weapon/ammo (without the weapon_ prefix) without the menu:
+<menu opening command here> <entity identifier here> <weapon name here> ie:
+!buy w p90 (will directly buy a P90 for you) or 
+/buy a p90 (will directly buy ammo for the P90 for you)
+
+// Buying ammo for the current equipped weapon:
+<menu opening command here> ammo ie:
+!buy ammo or
+/buy ammo
+```
+
+Server commands (in case you registered the weapons as a plugin):
+```
+as_command cs16.bm_maxmoney <value>
+as_command cs16.bm_moneyperscore <value>
+as_command cs16.bm_startmoney <value>
+```
