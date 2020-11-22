@@ -1,4 +1,4 @@
-// Counter-Strike 1.6 Bullpup (Steyr AUG A1)
+// Counter-Strike 1.6 Krieg 552 (SIG SG 552)
 /* Model Credits
 / Model: Valve
 / Textures: Valve
@@ -9,11 +9,11 @@
 / Script: KernCore
 */
 
-namespace CS16_AUG
+namespace CS16_SG552
 {
 
 // Animations
-enum CS16_Aug_Animations
+enum CS16_Sg552_Animations
 {
 	IDLE = 0,
 	RELOAD,
@@ -24,31 +24,29 @@ enum CS16_Aug_Animations
 };
 
 // Models
-string W_MODEL  	= "models/cs16/wpn/aug/w_aug.mdl";
-string V_MODEL  	= "models/cs16/wpn/aug/v_aug.mdl";
-string P_MODEL  	= "models/cs16/wpn/aug/p_aug.mdl";
+string W_MODEL  	= "models/cs16/wpn/sg552/w_sg552.mdl";
+string V_MODEL  	= "models/cs16/wpn/sg552/v_sg552.mdl";
+string P_MODEL  	= "models/cs16/wpn/sg552/p_sg552.mdl";
 string A_MODEL  	= "models/cs16/ammo/mags.mdl";
-int MAG_BDYGRP  	= 20;
+int MAG_BDYGRP  	= 22;
 // Sprites
 string SPR_CAT  	= "rifl/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
-					"cs16/aug/bltbk.wav",
-					"cs16/aug/bltrel.wav",
-					"cs16/aug/grip.wav",
-					"cs16/aug/magin.wav",
-					"cs16/aug/magout.wav"
+					"cs16/sg552/bltbk.wav",
+					"cs16/sg552/magin.wav",
+					"cs16/sg552/magout.wav"
 };
-string SHOOT_S  	= "cs16/aug/shoot.wav";
+string SHOOT_S  	= "cs16/sg552/shoot.wav";
 // Information
 int MAX_CARRY   	= 90;
 int MAX_CLIP    	= 30;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 24;
+uint DAMAGE     	= 26;
 uint SLOT       	= 5;
-uint POSITION   	= 9;
+uint POSITION   	= 10;
 float RPM       	= 0.0825f;
 float RPM_ZOOMED 	= 0.135f;
 uint MAX_SHOOT_DIST	= 8192;
@@ -56,12 +54,12 @@ string AMMO_TYPE 	= "cs16_5.56nato";
 float AIM_SPEED 	= 270;
 
 //Buy Menu Information
-string WPN_NAME 	= "Steyr AUG";
-uint WPN_PRICE  	= 390;
-string AMMO_NAME 	= "AUG 5.56 Magazine";
+string WPN_NAME 	= "SIG SG 552";
+uint WPN_PRICE  	= 420;
+string AMMO_NAME 	= "SG 552 5.56 Magazine";
 uint AMMO_PRICE  	= 30;
 
-class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
+class weapon_sg552 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 {
 	private CBasePlayer@ m_pPlayer
 	{
@@ -124,7 +122,7 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 	bool Deploy()
 	{
-		return Deploy( V_MODEL, P_MODEL, DRAW, "m16", GetBodygroup(), (30.0/35.0) );
+		return Deploy( V_MODEL, P_MODEL, DRAW, "m16", GetBodygroup(), (37.0/37.0) );
 	}
 
 	bool PlayEmptySound()
@@ -152,11 +150,11 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
 		{
-			vecSpread = VECTOR_CONE_1DEGREES * 1.035f * (0.07f + (m_iShotsFired * 0.2f));
+			vecSpread = VECTOR_CONE_1DEGREES * 1.035f * (0.075f + (m_iShotsFired * 0.2f));
 		}
 		else if( m_pPlayer.pev.velocity.Length2D() > 140 )
 		{
-			vecSpread = VECTOR_CONE_1DEGREES * 1.035f * (0.04f + (m_iShotsFired * 0.12f));
+			vecSpread = VECTOR_CONE_1DEGREES * 1.035f * (0.045f + (m_iShotsFired * 0.12f));
 		}
 		else
 		{
@@ -173,25 +171,25 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 
 		if( m_pPlayer.pev.velocity.Length2D() > 0 )
 		{
-			KickBack( 1.0, 0.45, 0.275, 0.05, 4.0, 2.5, 7 );
+			KickBack( 1.0, 0.45, 0.28, 0.04, 4.25, 2.5, 7 );
 		}
 		else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
 		{
-			KickBack( 1.25, 0.45, 0.22, 0.18, 5.5, 4.0, 5 );
+			KickBack( 1.25, 0.45, 0.22, 0.18, 6.0, 4.0, 5 );
 		}
 		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
 		{
-			KickBack( 0.575, 0.325, 0.2, 0.011, 3.25, 2.0, 8 );
+			KickBack( 0.6, 0.35, 0.2, 0.0125, 3.7, 2.0, 10 );
 		}
 		else
 		{
-			KickBack( 0.625, 0.375, 0.25, 0.0125, 3.5, 2.25, 8 );
+			KickBack( 0.625, 0.375, 0.25, 0.0125, 4.0, 2.25, 9 );
 		}
 
 		m_pPlayer.m_iWeaponVolume = NORMAL_GUN_VOLUME;
 		m_pPlayer.m_iWeaponFlash = BRIGHT_GUN_FLASH;
 
-		ShellEject( m_pPlayer, m_iShell, Vector( 12, 13, -10 ), false, false );
+		ShellEject( m_pPlayer, m_iShell, Vector( 18, 13, -5 ), true, false );
 	}
 
 	void SecondaryAttack()
@@ -204,14 +202,14 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_ZOOM;
 
-				ApplyFoVSniper( CS16BASE::DEFAULT_AUG_SG_ZOOM, AIM_SPEED, "m16", false );
+				ApplyFoVSniper( CS16BASE::DEFAULT_AUG_SG_ZOOM, AIM_SPEED );
 				break;
 			}
 			case CS16BASE::MODE_FOV_ZOOM:
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
 
-				ResetFoV( "m16" );
+				ResetFoV();
 				break;
 			}
 		}
@@ -225,10 +223,10 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL )
 		{
 			WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
-			ResetFoV( "m16" );
+			ResetFoV();
 		}
 
-		Reload( MAX_CLIP, RELOAD, (132.0/40.0), GetBodygroup() );
+		Reload( MAX_CLIP, RELOAD, (118.0/37.0), GetBodygroup() );
 
 		BaseClass.Reload();
 	}
@@ -249,7 +247,7 @@ class weapon_aug : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	}
 }
 
-class AUG_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
+class SG552_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 {
 	void Spawn()
 	{
@@ -275,17 +273,17 @@ class AUG_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 
 string GetAmmoName()
 {
-	return "ammo_aug";
+	return "ammo_sg552";
 }
 
 string GetName()
 {
-	return "weapon_aug";
+	return "weapon_sg552";
 }
 
 void Register()
 {
-	CS16BASE::RegisterCWEntity( "CS16_AUG::", "weapon_aug", GetName(), GetAmmoName(), "AUG_MAG", 
+	CS16BASE::RegisterCWEntity( "CS16_SG552::", "weapon_sg552", GetName(), GetAmmoName(), "SG552_MAG", 
 		CS16BASE::MAIN_CSTRIKE_DIR + SPR_CAT, (CS16BASE::ShouldUseCustomAmmo) ? AMMO_TYPE : CS16BASE::DF_AMMO_556 );
 }
 

@@ -25,6 +25,7 @@
 #include "rifl/weapon_ak47"
 #include "rifl/weapon_m4a1"
 #include "rifl/weapon_aug"
+#include "rifl/weapon_sg552"
 //Sniper Rifles
 #include "snip/weapon_scout"
 #include "snip/weapon_awp"
@@ -62,6 +63,7 @@ void RegisterAll()
 	CS16_AK47::Register();
 	CS16_M4A1::Register();
 	CS16_AUG::Register();
+	CS16_SG552::Register();
 	//Sniper Rifles
 	CS16_SCOUT::Register();
 	CS16_AWP::Register();
