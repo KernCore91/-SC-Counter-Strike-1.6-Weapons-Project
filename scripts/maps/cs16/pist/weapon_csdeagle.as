@@ -45,10 +45,10 @@ int MAX_CLIP    	= 7;
 int DEFAULT_GIVE 	= MAX_CLIP * 3;
 int WEIGHT      	= 5;
 int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
-uint DAMAGE     	= 39;
+uint DAMAGE     	= 46;
 uint SLOT       	= 1;
 uint POSITION   	= 9;
-float RPM       	= 0.14f;
+float RPM       	= 0.15f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_.50ae";
 
