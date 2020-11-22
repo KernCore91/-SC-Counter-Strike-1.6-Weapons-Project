@@ -20,7 +20,7 @@ enum CS16_Deagle_Animation
 	IDLE = 0,
 	SHOOT1,
 	SHOOT2,
-	EMPTY,
+	SHOOT_EMPTY,
 	RELOAD,
 	DRAW
 };
@@ -36,9 +36,7 @@ string SPR_CAT  	= "pist/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
 					"cs16/eagle/magin.wav",
-					"cs16/eagle/magout.wav",
-					"cs16/eagle/sldbk.wav",
-					"cs16/eagle/sldrl.wav"
+					"cs16/eagle/magout.wav"
 };
 string SHOOT_S  	= "cs16/eagle/shoot.wav";
 // Information
@@ -50,7 +48,7 @@ int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 39;
 uint SLOT       	= 1;
 uint POSITION   	= 9;
-float RPM       	= 0.145f;
+float RPM       	= 0.14f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_.50ae";
 
@@ -135,6 +133,86 @@ class weapon_csdeagle : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		CommonHolster();
 
 		BaseClass.Holster( skiplocal );
+	}
+
+	void PrimaryAttack()
+	{
+		if( self.m_iClip <= 0 )
+		{
+			self.PlayEmptySound();
+			self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+			return;
+		}
+
+		if( m_pPlayer.m_afButtonPressed & IN_ATTACK == 0 )
+			return;
+
+		Vector vecSpread;
+
+		if( m_pPlayer.pev.velocity.Length2D() > 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.25f;
+		}
+		else if( !( m_pPlayer.pev.flags & FL_ONGROUND != 0 ) )
+		{
+			vecSpread = VECTOR_CONE_2DEGREES * 1.5f;
+		}
+		else if( m_pPlayer.pev.flags & FL_DUCKING != 0 )
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.115f;
+		}
+		else
+		{
+			vecSpread = VECTOR_CONE_1DEGREES * 1.13f;
+		}
+
+		vecSpread = vecSpread * (m_iShotsFired * 0.2); // do vector math calculations here to make the Spread worse
+
+		ShootWeapon( SHOOT_S, 1, vecSpread, MAX_SHOOT_DIST, DAMAGE );
+		self.m_flNextPrimaryAttack = WeaponTimeBase() + RPM;
+		
+		if( self.m_iClip > 0 )
+		{
+			self.SendWeaponAnim( SHOOT1 + Math.RandomLong( 0, 1 ), 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 1.0f;
+		}
+		else
+		{
+			self.SendWeaponAnim( SHOOT_EMPTY, 0, GetBodygroup() );
+			self.m_flTimeWeaponIdle = WeaponTimeBase() + 20.0f;
+		}
+
+		m_pPlayer.m_iWeaponVolume = BIG_EXPLOSION_VOLUME;
+		m_pPlayer.m_iWeaponFlash = NORMAL_GUN_FLASH;
+
+		m_pPlayer.pev.punchangle.x -= 2;
+
+		ShellEject( m_pPlayer, m_iShell, Vector( 15, 10, -6 ), true, false );
+	}
+
+	void Reload()
+	{
+		if( self.m_iClip == MAX_CLIP || m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
+			return;
+
+		Reload( MAX_CLIP, RELOAD, (65.0/30.0), GetBodygroup() );
+
+		BaseClass.Reload();
+	}
+
+	void WeaponIdle()
+	{
+		self.ResetEmptySound();
+		m_pPlayer.GetAutoaimVector( AUTOAIM_10DEGREES );
+
+		if( self.m_flNextPrimaryAttack + 0.2 < g_Engine.time ) // wait 0.2 seconds before reseting how many shots the player fired
+			m_iShotsFired = 0;
+
+		if( self.m_flTimeWeaponIdle > WeaponTimeBase() )
+			return;
+
+		self.SendWeaponAnim( IDLE, 0, GetBodygroup() );
+		self.m_flTimeWeaponIdle = WeaponTimeBase() + g_PlayerFuncs.SharedRandomFloat( m_pPlayer.random_seed, 5, 7 );
 	}
 }
 
