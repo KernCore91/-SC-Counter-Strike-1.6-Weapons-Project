@@ -116,5 +116,6 @@ as_command cs16.bm_startmoney <value>
 This pack includes a *.fgd* file and a *.res* file (which shouldn't be needed).  
 There are several notable differences here compared to the old project:  
 * Organization: The project is more organized than ever before. This helps reduce the amount of clutter and resources sent to the player.
-* Original Rifle Muzzleflashes: With the knowledge obtained with past projects, we're able to bring you the original X Muzzleflash for rifles back, without conflicting with the original game. 
+* Original Rifle Muzzleflashes: With the knowledge obtained with past projects, we're able to bring you the original X shaped Muzzleflash for rifles back, without conflicting with the original game. 
+* Original HE Grenade Entity: The HE Grenade projectile thrown by the player should behave closely to the original 1.6 projectile.
 Shoutout for Solokiller for helping me initially in 2016 with this project.  
