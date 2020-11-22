@@ -268,6 +268,7 @@ class ELITES_MAG : ScriptBasePlayerAmmoEntity, CS16BASE::AmmoBase
 		Precache();
 
 		CommonSpawn( A_MODEL, MAG_BDYGRP );
+		self.pev.scale = 1;
 	}
 
 	void Precache()
