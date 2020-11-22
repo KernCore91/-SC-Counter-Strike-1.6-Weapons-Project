@@ -78,7 +78,7 @@ Video:
 
 ## Additional Content
 
-This pack includes a heavily modified Buymenu made specifically for it.
+This pack includes a heavily modified Buymenu made specifically for it.  
 Here are the following commands that can be used in the Buymenu:
 
 ```
