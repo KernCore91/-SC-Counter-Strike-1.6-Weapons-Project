@@ -15,25 +15,12 @@ namespace CS16_DEAGLE
 {
 
 // Animations
-enum CS16_DEAGLE_Animation
+enum CS16_Deagle_Animation
 {
 	IDLE = 0,
 	SHOOT1,
 	SHOOT2,
-	SHOOT3,
-	SHOOT_EMPTY,
-	RELOAD,
-	DRAW
-};
-
-// Animations
-enum CS16_P228_Animation
-{
-	IDLE = 0,
-	SHOOT1,
-	SHOOT2,
-	SHOOT3,
-	SHOOT_EMPTY,
+	EMPTY,
 	RELOAD,
 	DRAW
 };
