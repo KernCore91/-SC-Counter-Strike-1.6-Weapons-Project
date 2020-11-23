@@ -1,0 +1,198 @@
+// Counter-Strike 1.6 Weapons FGD
+
+// ------------------------------------- Base values -------------------------------------
+
+@BaseClass = Mandatory
+[
+	ondestroyfn(string) : "OnDestroy Function"
+]
+
+@BaseClass base(Mandatory) = Targetname
+[
+	targetname(target_source) : "Name"
+]
+
+@BaseClass = Appearflags
+[
+	spawnflags(Flags) =
+	[
+		2048 : "Not in Deathmatch" : 0
+	]
+]
+
+@BaseClass = Angles
+[
+	angles(string) : "Pitch Yaw Roll (X Y Z)" : "0 0 0"
+]
+
+@BaseClass = CustomRespawnDelay
+[
+	m_flCustomRespawnTime(string) : "Custom respawn time"
+]
+
+@BaseClass = Target
+[
+	target(target_destination) : "Target"
+]
+
+@BaseClass size(0 0 0, 32 32 32) color(80 0 200) base(Targetname, Appearflags, Angles) = Pickup
+[
+	spawnflags(Flags) =
+	[
+		128 : "TOUCH Only" : 0
+		256 : "USE Only" : 0
+		512 : "Can Use w/o LoS" : 0
+		1024: "Disable Respawn" : 0
+	]
+	renderfx(choices) : "Render FX" : 0 =
+	[
+		0: "Normal"
+		1: "Slow Pulse"
+		2: "Fast Pulse"
+		3: "Slow Wide Pulse"
+		4: "Fast Wide Pulse"
+		9: "Slow Strobe"
+		10: "Fast Strobe"
+		11: "Faster Strobe"
+		12: "Slow Flicker"
+		13: "Fast Flicker"
+		5: "Slow Fade Away"
+		6: "Fast Fade Away"
+		7: "Slow Become Solid"
+		8: "Fast Become Solid"
+		14: "Constant Glow"
+		15: "Distort"
+		16: "Hologram (Distort + fade)"
+	]
+	rendermode(choices) : "Render Mode" : 0 =
+	[
+		0: "Normal"
+		1: "Color"
+		2: "Texture"
+		3: "Glow"
+		4: "Solid"
+		5: "Additive"
+	]
+	renderamt(integer) : "FX Amount (1 - 255)"
+	rendercolor(color255) : "FX Color (R G B)" : "0 0 0"
+	movetype(choices) : "Gravity Setting" : 0 =
+	[
+		0: "Fall to the ground (default)"
+		5: "Hover in the air"
+	]
+]
+
+@BaseClass size(-8 -8 0, 8 8 16) color(4 128 240) base(Pickup, CustomRespawnDelay) = Ammo
+[
+	model(studio) : "Custom Model" : ""
+	body(integer) : "Body" : 0
+	skin(integer) : "Skin" : 0
+]
+
+@BaseClass size(-16 -16 0, 16 16 32) color(2 64 240) base(Pickup, CustomRespawnDelay) = Weapon
+[
+	dmg(integer) : "Custom Damage" : 0
+
+	wpn_v_model(studio) : "Custom V_Model" : ""
+	wpn_w_model(studio) : "Custom W_Model" : ""
+	wpn_p_model(studio) : "Custom P_Model" : ""
+
+	soundlist(string) : "Sound Replacement File"
+
+	CustomSpriteDir(string) : "Custom sprite directory"
+
+	IsNotAmmoItem(choices) : "Is Ammo Item" : 0 =
+	[
+		0 : "Yes"
+		1 : "No"
+	]
+]
+
+@BaseClass base(Target) = Targetx
+[
+	delay(string) : "Delay Before Trigger" : "0"
+	killtarget(target_destination) : "Kill Target"
+]
+
+@BaseClass = ExclusiveHold
+[
+	exclusivehold(choices) : "Exclusive Hold" : 0 =
+	[
+		0 : "No"
+		1 : "Yes"
+	]
+]
+
+// ------------------------------------- CS 1.6 Weapons -------------------------------------
+
+// Melee
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/knf/w_knife.mdl") = weapon_csknife : "Badlands Bowie Knife" []
+
+// Pistols and Handguns
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/g18/w_glock18.mdl") =  weapon_csglock18 : "Glock 18" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/usp/w_usp.mdl") =  weapon_usp : "H&K USP .45 Tactical" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/p228/w_p228.mdl") =  weapon_p228 : "SIG-Sauer P228" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/57/w_57.mdl") =  weapon_fiveseven : "FN Five-Seven" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/elite/w_elite.mdl") =  weapon_dualelites : "Dual Berettas" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/eagle/w_eagle.mdl") =  weapon_csdeagle : "Desert Eagle" []
+
+// Shotguns
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/m3/w_m3.mdl") =  weapon_m3 : "Leone 12 Gauge Super" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/xm1014/w_xm1014.mdl") =  weapon_xm1014 : "Leone YG1265 Auto Shotgun" []
+
+// Submachine guns
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/mac10/w_mac10.mdl") =  weapon_mac10 : "Ingram MAC-10" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/tmp/w_tmp.mdl") =  weapon_tmp : "Steyr TMP" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/mp5/w_mp5.mdl") =  weapon_mp5navy : "H&K MP5 Navy" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/ump45/w_ump45.mdl") =  weapon_ump45 : "H&K UMP45" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/p90/w_p90.mdl") =  weapon_p90 : "FN P90" []
+
+// Assault Rifles & Sniper Rifles
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/famas/w_famas.mdl") =  weapon_famas : "GIAT FAMAS F1" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/galil/w_galil.mdl") =  weapon_galil : "IMI Galil" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/ak47/w_ak47.mdl") =  weapon_ak47 : "AK-47" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/m4a1/w_m4a1.mdl") =  weapon_m4a1 : "M4A1 Carbine" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/aug/w_aug.mdl") =  weapon_aug : "Steyr AUG" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/sg552/w_sg552.mdl") =  weapon_sg552 : "SIG SG 552" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/scout/w_scout.mdl") =  weapon_scout : "Steyr Scout" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/awp/w_awp.mdl") =  weapon_awp : "Arctic Warfare Police" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/sg550/w_sg550.mdl") =  weapon_sg550 : "SIG SG550" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/g3sg1/w_g3sg1.mdl") =  weapon_g3sg1 : "G3SG1" []
+
+// Light Machine Guns
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/m249/w_m249.mdl") =  weapon_csm249 : "FN M249 SAW" []
+
+// Explosives and Equipment
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/he/w_he.mdl") =  weapon_hegrenade : "High Explosive Grenade" []
+@PointClass base(Weapon, Targetx, ExclusiveHold) studio("models/cs16/wpn/c4/w_bp.mdl") =  weapon_c4 : "C4 Explosive" []
+
+// ------------------------------------- Ammunitions -------------------------------------
+
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_csglock18 : "Glock 18 9mm Magazine" [ body(integer) : "Body" : 0 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_usp : "USP .45ACP Magazine" [ body(integer) : "Body" : 6 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_p228 : "P228 .357SIG Magazine" [ body(integer) : "Body" : 10 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_fiveseven : "Five-Seven Magazine" [ body(integer) : "Body" : 14 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_dualelites : "Berettas 9mm Magazines" [ body(integer) : "Body" : 18 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_csdeagle : "Desert Eagle .50AE Magazine" [ body(integer) : "Body" : 21 ]
+
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_m3 : "Leone 12G 8 Shell Box" [ body(integer) : "Body" : 1 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_xm1014 : "Leone 12G 7 Shell Box" [ body(integer) : "Body" : 1 ]
+
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_mac10 : "MAC-10 .45ACP Magazine" [ body(integer) : "Body" : 2 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_tmp : "TMP 9mm Magazine" [ body(integer) : "Body" : 7 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_mp5navy : "MP5 9mm Magazine" [ body(integer) : "Body" : 11 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_ump45 : "UMP45 .45ACP Magazine" [ body(integer) : "Body" : 15 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_p90 : "P90 Magazine" [ body(integer) : "Body" : 19 ]
+
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_famas : "FAMAS 5.56 NATO Magazine" [ body(integer) : "Body" : 3 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_galil : "GALIL 5.56 NATO Magazine" [ body(integer) : "Body" : 9 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_ak47 : "AK-47 7.62 Magazine" [ body(integer) : "Body" : 12 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_m4a1 : "M4A1 5.56 Magazine" [ body(integer) : "Body" : 16 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_aug : "AUG 5.56 Magazine" [ body(integer) : "Body" : 20 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_sg552 : "SG 552 5.56 Magazine" [ body(integer) : "Body" : 22 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_scout : "Scout 7.62 NATO Magazine" [ body(integer) : "Body" : 4 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_awp : "AWP .338 Lapua Magazine" [ body(integer) : "Body" : 8 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_sg550 : "SG550 5.56 NATO Magazine" [ body(integer) : "Body" : 13 ]
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_g3sg1 : "G3SG1 7.62 NATO Magazine" [ body(integer) : "Body" : 17 ]
+
+@PointClass base(Ammo, Targetx) studio("models/cs16/ammo/mags.mdl") = ammo_csm249 : "M249 5.56 NATO Box" [ body(integer) : "Body" : 5 ]
