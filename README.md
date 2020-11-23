@@ -128,8 +128,14 @@ Shoutout for Solokiller for helping me initially in 2016 with this project.
 
 ## Credits
 
-You are authorized to use any assets in this pack as you see fit, as long as you credit us and whoever contributed to the making of this pack.
+You are authorized to use any assets in this pack as you see fit, as long as you credit us and whoever contributed to the making of this pack.  
 There's a very long list of people/teams in the file: *cs16_credits.txt*, this file specifies the authors of every single asset that is being used in the making of this project.
 
-You are authorized to use any assets in this pack as you see fit, as long as:
+### You are authorized to use any assets in this pack as you see fit, as long as:
 * You credit everyone who contributed to it.
+
+### You are not permitted to:
+* Re-pack it without the project author's consent.
+* Use any assets included in this project without crediting who made them.
+* Earn money from this pack or any other assets used.
+* Upload it somewhere else without credits.
