@@ -202,14 +202,14 @@ class weapon_sg552 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_ZOOM;
 
-				ApplyFoVSniper( CS16BASE::DEFAULT_AUG_SG_ZOOM, AIM_SPEED );
+				ApplyFoVSniper( CS16BASE::DEFAULT_AUG_SG_ZOOM, AIM_SPEED, "m16", false );
 				break;
 			}
 			case CS16BASE::MODE_FOV_ZOOM:
 			{
 				WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
 
-				ResetFoV();
+				ResetFoV( "m16" );
 				break;
 			}
 		}
@@ -223,7 +223,7 @@ class weapon_sg552 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		if( WeaponZoomMode != CS16BASE::MODE_FOV_NORMAL )
 		{
 			WeaponZoomMode = CS16BASE::MODE_FOV_NORMAL;
-			ResetFoV();
+			ResetFoV( "m16" );
 		}
 
 		Reload( MAX_CLIP, RELOAD, (118.0/37.0), GetBodygroup() );
