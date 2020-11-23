@@ -41,7 +41,7 @@ Video:
 *by VitorHunter.*
 
 ## Screenshots
-[![](https://i.imgur.com/XRJbALTm.png)](https://i.imgur.com/XRJbALT.png)
+[![](https://i.imgur.com/me4gGJCm.png)](https://i.imgur.com/me4gGJC.png)
 [![](https://i.imgur.com/fogrWZEm.png)](https://i.imgur.com/fogrWZE.png)
 [![](https://i.imgur.com/Rwn01Vfm.png)](https://i.imgur.com/Rwn01Vf.png)
 [![](https://i.imgur.com/84E0GqLm.png)](https://i.imgur.com/84E0GqL.png)
