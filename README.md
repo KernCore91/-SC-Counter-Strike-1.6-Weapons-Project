@@ -125,3 +125,11 @@ There are several notable differences here compared to the old project:
 * **Buy Menu Similar to 1.6**: The menu has been redesigned to closely resemble the original Buy Menu, with the $ added as well, similarly to the Insurgency Project.  
 * **Magazine Entities for Every Weapon**: Thanks for D.N.I.O. 071 for compiling the model which includes all magazines for all weapons.  
 Shoutout for Solokiller for helping me initially in 2016 with this project.  
+
+## Credits
+
+You are authorized to use any assets in this pack as you see fit, as long as you credit us and whoever contributed to the making of this pack.
+There's a very long list of people/teams in the file: *cs16_credits.txt*, this file specifies the authors of every single asset that is being used in the making of this project.
+
+You are authorized to use any assets in this pack as you see fit, as long as:
+* You credit everyone who contributed to it.
