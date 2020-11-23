@@ -124,6 +124,7 @@ There are several notable differences here compared to the old project:
 * **Fixed Player Models**: The original 1.6 player models were fixed to fit the Sven's Playermodel skeleton, no more aiming down.  
 * **Buy Menu Similar to 1.6**: The menu has been redesigned to closely resemble the original Buy Menu, with the $ added as well, similarly to the Insurgency Project.  
 * **Magazine Entities for Every Weapon**: Thanks for D.N.I.O. 071 for compiling the model which includes all magazines for all weapons, unfortunately this means the old magazine entities no longer exist, this was necessary in order to support dropping ammo for each weapon entity.  
+* **Knife Backstabbing**: The original backstabbing functionality of the knife has been restored in this project.  
 
 Shoutout for Solokiller for helping me initially in 2016 with this project.  
 
