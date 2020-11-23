@@ -37,7 +37,7 @@ This project is brought to you by the following super dedicated team members: D.
 ## Gameplay Video
 
 Video:
-[![](http://i3.ytimg.com/vi/LyThjfNqwWs/maxresdefault.jpg)](https://www.youtube.com/watch?v=LyThjfNqwWs)
+[![](http://i3.ytimg.com/vi/zQuPdpmHvSY/maxresdefault.jpg)](https://www.youtube.com/watch?v=zQuPdpmHvSY)
 *by VitorHunter.*
 
 ## Screenshots
