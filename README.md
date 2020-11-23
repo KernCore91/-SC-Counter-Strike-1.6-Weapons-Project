@@ -139,3 +139,13 @@ There's a very long list of people/teams in the file: *cs16_credits.txt*, this f
 * Use any assets included in this project without crediting who made them.
 * Earn money from this pack or any other assets used.
 * Upload it somewhere else without credits.
+
+## Updates
+
+## Download Links
+
+(.7z) [Dropbox]()  
+(.7z) [HLDM-BR.NET]()  
+(.7z) [Mega]()  
+(.7z) [Boderman.net]()  
+(.7z) [GitHub]()
