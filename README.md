@@ -58,9 +58,9 @@ Video:
 	```
 	"plugin"
 	{
-		"name"          "Counter-Strike 1.6 Mod"
-		"script"        "../maps/cs16/cs16_register"
-		"concommandns"     "cs16"
+		"name"			"Counter-Strike 1.6 Mod"
+		"script"		"../maps/cs16/cs16_register"
+		"concommandns"	"cs16"
 	}
 	```
 	5. Load any map of your preference;
