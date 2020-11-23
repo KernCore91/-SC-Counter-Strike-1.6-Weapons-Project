@@ -75,6 +75,7 @@ class weapon_csdeagle : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 	{
 		Precache();
 		CommonSpawn( W_MODEL, DEFAULT_GIVE );
+		self.pev.scale = 1.6;
 	}
 
 	void Precache()
