@@ -115,13 +115,13 @@ as_command cs16.bm_startmoney <value>
 
 This pack includes a *.fgd* file and a *.res* file (this one which shouldn't be needed).  
 There are several notable differences here compared to the old project:  
-* **Organization**: The project is more organized than ever before. This helps reduce the amount of clutter and resources sent to the player.
-* **Original Rifle Muzzleflashes**: With the knowledge obtained with past projects, we're able to bring you the original X shaped Muzzleflash for rifles back, without conflicting with the original game. 
-* **Original HE Grenade Entity**: The HE Grenade projectile thrown by the player should behave closely to the original 1.6 projectile.
-* **Customization without modification of original scripts**: Similarly to the Insurgency Project, you're now able to modify most of the entity data, without modifying the original script, in your own map script.
-* **Original C4 Entity**: Thanks to Nero for making the original projectile, the code has been cleaned up a little bit and it allows for more customization.
-* **Original Scope for Sniper Rifles**: Thanks for D.N.I.O. 071 for making a custom scope viewmodel that fits very well with the original sprites used in 1.6.
-* **Fixed Player Models**: The original 1.6 player models were fixed to fit the Sven's Playermodel skeleton, no more aiming down.
-* **Buy Menu Similar to 1.6**: The menu has been redesigned to closely resemble the original Buy Menu, with the $ added as well, similarly to the Insurgency Project.
-* **Magazine Entities for Every Weapon**: Thanks for D.N.I.O. 071 for compiling the model which includes all magazines for all weapons.
+* **Organization**: The project is more organized than ever before. This helps reduce the amount of clutter and resources sent to the player.  
+* **Original Rifle Muzzleflashes**: With the knowledge obtained with past projects, we're able to bring you the original X shaped Muzzleflash for rifles back, without conflicting with the original game.  
+* **Original HE Grenade Entity**: The HE Grenade projectile thrown by the player should behave closely to the original 1.6 projectile.  
+* **Customization without modification of original scripts**: Similarly to the Insurgency Project, you're now able to modify most of the entity data, without modifying the original script, in your own map script.  
+* **Original C4 Entity**: Thanks to Nero for making the original projectile, the code has been cleaned up a little bit and it allows for more customization.  
+* **Original Scope for Sniper Rifles**: Thanks for D.N.I.O. 071 for making a custom scope viewmodel that fits very well with the original sprites used in 1.6.  
+* **Fixed Player Models**: The original 1.6 player models were fixed to fit the Sven's Playermodel skeleton, no more aiming down.  
+* **Buy Menu Similar to 1.6**: The menu has been redesigned to closely resemble the original Buy Menu, with the $ added as well, similarly to the Insurgency Project.  
+* **Magazine Entities for Every Weapon**: Thanks for D.N.I.O. 071 for compiling the model which includes all magazines for all weapons.  
 Shoutout for Solokiller for helping me initially in 2016 with this project.  
