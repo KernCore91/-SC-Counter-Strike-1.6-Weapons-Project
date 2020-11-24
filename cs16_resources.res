@@ -85,6 +85,7 @@
 "models/cs16/shells/rshell.mdl"
 "models/cs16/shells/rshell_big.mdl"
 "models/hlclassic/shotgunshell.mdl"
+"models/cs16/ammo/mags.mdl"
 "sprites/cs16/csflashx.spr"
 "sprites/cs16/cs1024.spr"
 "sprites/cs16/640hud7.spr"
