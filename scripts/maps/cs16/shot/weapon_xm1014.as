@@ -37,7 +37,7 @@ string SPR_CAT  	= "shot/"; //Weapon category used to get the sprite's location
 // Sounds
 array<string> 		WeaponSoundEvents = {
 					"hlclassic/weapons/reload3.wav",
-					"hlclassic/weapons/reload1.wav",
+					"hlclassic/weapons/reload1.wav"
 };
 string SHOOT_S  	= "cs16/xm1014/shoot.wav";
 // Information

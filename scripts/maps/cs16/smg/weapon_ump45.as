@@ -37,7 +37,7 @@ string SPR_CAT  	= "smg/"; //Weapon category used to get the sprite's location
 array<string> 		WeaponSoundEvents = {
 					"cs16/ump45/magout.wav",
 					"cs16/ump45/magin.wav",
-					"cs16/ump45/blt.wav",
+					"cs16/ump45/blt.wav"
 };
 string SHOOT_S  	= "cs16/ump45/shoot.wav";
 // Information

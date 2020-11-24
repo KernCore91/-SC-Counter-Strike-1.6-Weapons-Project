@@ -52,7 +52,7 @@ void PrecacheSound( const string pSound )
 {
 	g_SoundSystem.PrecacheSound( pSound );
 	g_Game.PrecacheGeneric( "sound/" + pSound );
-	//g_Game.AlertMessage( at_console, "Precached: sound/" + pSound[i] + "\n" );
+	//g_Game.AlertMessage( at_console, "Precached: sound/" + pSound + "\n" );
 }
 
 edict_t@ ENT( const entvars_t@ pev )

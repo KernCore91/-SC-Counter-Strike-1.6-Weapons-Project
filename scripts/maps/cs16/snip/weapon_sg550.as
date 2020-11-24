@@ -91,6 +91,7 @@ class weapon_sg550 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase
 		g_Game.PrecacheOther( GetAmmoName() );
 		//Sounds
 		CS16BASE::PrecacheSound( SHOOT_S );
+		CS16BASE::PrecacheSound( CS16BASE::ZOOM_SOUND );
 		CS16BASE::PrecacheSound( CS16BASE::EMPTY_RIFLE_S );
 		CS16BASE::PrecacheSounds( WeaponSoundEvents );
 		//Sprites
