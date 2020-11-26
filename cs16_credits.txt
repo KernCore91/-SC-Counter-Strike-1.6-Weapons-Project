@@ -8,6 +8,8 @@
 
 ·Shell Ejection Base: Solokiller
 
+·BuyMenu: KernCore, Solokiller, Zode
+
 ·Water Splash: w00tguy
 
 ·C4 Related Entities: Nero, KernCore (Minor Clean Up)
