@@ -1,0 +1,53 @@
+·Project Authors: D.N.I.O. 071, R4to0, KernCore
+
+<-----------------------Scripting----------------------->
+
+·Weapon Base: KernCore
+
+·Ammo Base: KernCore
+
+·Shell Ejection Base: Solokiller
+
+·Water Splash: w00tguy
+
+·C4 Related Entities: Nero, KernCore (Minor Clean Up)
+
+·HE Grenade Entity: KernCore
+
+·Magazine Entities: KernCore
+
+<-----------------------Modelling----------------------->
+
+·Models: Valve
+
+·Broken Wrist On Knife Fix: D.N.I.O. 071
+
+·Textures: Valve
+
+·Fixing P Models for Sven: D.N.I.O. 071
+
+·Magazine Models: Valve, D.N.I.O. 071
+
+·Scope Viewmodel: D.N.I.O. 071
+
+<-----------------------Sprites----------------------->
+
+·Merging Sprites Into a Single File: R4to0
+
+·Fixing Famas/Galil Sprites: burken
+
+·Fixing TMP Sprites: LeisRA
+
+·Weapon .txt File Cleanup: R4to0, KernCore
+
+·Original Rifle Muzzleflash Event: Valve, D.N.I.O. 071
+
+<-----------------------Misc----------------------->
+
+·FGD File: D.N.I.O. 071
+
+·RES File: KernCore, R4to0
+
+·Testcenter Ripent: KaLo, R4to0, KernCore
+
+·Testing: KernCore, R4to0, D.N.I.O. 071
