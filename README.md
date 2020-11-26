@@ -146,8 +146,8 @@ There's a very long list of people/teams in the file: *cs16_credits.txt*, this f
 
 ## Download Links
 
-(.7z) [Dropbox]()  
-(.7z) [HLDM-BR.NET]()  
-(.7z) [Mega]()  
-(.7z) [Boderman.net]()  
+(.7z) [Dropbox](https://www.dropbox.com/s/xxl6tk6bwv7lfrx/sven-cs16_1-0.7z?dl=0)  
+(.7z) [HLDM-BR.NET](https://cdn.hldm-br.net/files/sc/cs16/Sven-CS16_1-0.7z)  
+(.7z) [Mega](https://mega.nz/file/60FgSbTR#9mND3u4iDs4nfgZFaXaQ5aIZIyT9REWpM9lKMC9W5C4)  
+<!--(.7z) [Boderman.net]()  -->
 (.7z) [GitHub]()
