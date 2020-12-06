@@ -252,8 +252,7 @@ mixin class WeaponBase
 
 		ToggleZoom( iValue );
 
-		m_pPlayer.pev.maxspeed = flMaxSpeed;
-		//m_pPlayer.SetMaxSpeedOverride( iMaxSpeed );
+		m_pPlayer.SetMaxSpeedOverride( flMaxSpeed ); //m_pPlayer.pev.maxspeed = flMaxSpeed;
 
 		m_pPlayer.m_szAnimExtension = szAnimExtension;
 	}
@@ -263,8 +262,7 @@ mixin class WeaponBase
 		m_pPlayer.ResetVModelPos();
 		ToggleZoom( RESET_ZOOM_VALUE );
 
-		m_pPlayer.pev.maxspeed = 0;
-		//m_pPlayer.SetMaxSpeedOverride( -1 );
+		m_pPlayer.SetMaxSpeedOverride( -1 ); //m_pPlayer.pev.maxspeed = 0;
 
 		m_pPlayer.m_szAnimExtension = szAnimExtension;
 	}
