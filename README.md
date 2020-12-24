@@ -155,4 +155,4 @@ Total Size Compressed: 3.7 MB
 (.7z) [HLDM-BR.NET](https://cdn.hldm-br.net/files/sc/cs16/Sven-CS16_1-1.7z)  
 (.7z) [Mega](https://mega.nz/file/ypshQAYA#9nlnRxH9nYOmbUW-e3vglQ4bGi6dmZAD1ebJ0C1c1Yk)  
 (.7z) [Boderman.net](http://boderman.net/svencoop/Sven-CS16_1-1.7z)  
-<!--(.7z) [GitHub](https://github.com/KernCore91/-SC-Counter-Strike-1.6-Weapons-Project/releases/download/1.0/Sven-CS16_1-0.7z)-->
+(.7z) [GitHub](https://github.com/KernCore91/-SC-Counter-Strike-1.6-Weapons-Project/releases/download/v1.1/Sven-CS16_1-1.7z)
