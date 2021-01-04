@@ -52,7 +52,7 @@ uint POSITION   	= 5;
 uint MAX_SHOOT_DIST	= 8192;
 float RPM       	= 1.40f;
 string AMMO_TYPE 	= "cs16_.338lapua";
-float AIM_SPEED 	= 150;
+int AIM_SPEED   	= 150;
 
 //Buy Menu Information
 string WPN_NAME 	= "Arctic Warfare Police";

@@ -49,7 +49,7 @@ uint POSITION   	= 4;
 uint MAX_SHOOT_DIST	= 8192;
 float RPM       	= 1.25f;
 string AMMO_TYPE 	= "cs16_7.62nato";
-float AIM_SPEED 	= 220;
+int AIM_SPEED   	= 220;
 
 //Buy Menu Information
 string WPN_NAME 	= "Steyr Scout";

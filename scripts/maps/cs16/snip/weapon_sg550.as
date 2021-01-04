@@ -51,7 +51,7 @@ uint POSITION   	= 6;
 float RPM       	= 0.25f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_5.56nato";
-float AIM_SPEED 	= 200;
+int AIM_SPEED   	= 200;
 
 //Buy Menu Information
 string WPN_NAME 	= "SIG SG550";

@@ -245,7 +245,7 @@ mixin class WeaponBase
 		}
 	}
 
-	void ApplyFoVSniper( int& in iValue, float& in flMaxSpeed, string& in szAnimExtension = "sniperscope", bool bUseFixedVModelPos = true )
+	void ApplyFoVSniper( int& in iValue, int& in flMaxSpeed, string& in szAnimExtension = "sniperscope", bool bUseFixedVModelPos = true )
 	{
 		if( bUseFixedVModelPos )
 			m_pPlayer.SetVModelPos( Vector( 0, 0, 0 ) );
