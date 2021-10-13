@@ -4,7 +4,7 @@
 
 DISCLAIMER:
 The original Buy Menu script was built back in 2016 by Solokiller, and released by him for free for everyone on the Sven Co-op Forums.
-This script contains code integrates the Counter-Strike Project ONLY and if you paid money to access it, you have been scammed.
+This script contains code that integrates the Counter-Strike Project ONLY and if you paid money to access it, you have been scammed.
 
 Do not remove or change comments made by contributors in any way, shape, or form.
 Do not sell or make money in any way, shape or form from this script, be it old versions or newest releases, or any other assets from this project.
