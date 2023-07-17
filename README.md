@@ -6,6 +6,16 @@ This project is brought to you by the following super dedicated team members: D.
 
 # **DO NOT RUN THIS PLUGIN ALONG WITH ANOTHER WEAPON PLUGIN, NO SUPPORT IS GUARANTEED BETWEEN THEM**
 
+## Download Links
+
+Total Size Compressed: 3.7 MB
+
+(.7z) [Dropbox](https://www.dropbox.com/s/6gb8tt3j7vkusyc/Sven-CS16_1-1.7z?dl=0)  
+(.7z) [HLDM-BR.NET](https://cdn.hldm-br.net/files/sc/cs16/Sven-CS16_1-1.7z)  
+(.7z) [Mega](https://mega.nz/file/q8FF2agB#M1Bmh3buwhCAi-xjQch_UuyGl9KS8zdFiMbKkc04XIw)  
+(.7z) [Boderman.net](http://boderman.net/svencoop/Sven-CS16_1-1.7z)  
+(.7z) [GitHub](https://github.com/KernCore91/-SC-Counter-Strike-1.6-Weapons-Project/releases/download/v1.1/Sven-CS16_1-1.7z)
+
 ## The Weapons
 
 * .228 Compact (weapon_p228)
@@ -148,13 +158,3 @@ There's a very long list of people/teams in the file: *cs16_credits.txt*, this f
 
 ### Update 1.1:
 * Fix player's speed not being affected when aiming with Sniper Rifles.
-
-## Download Links
-
-Total Size Compressed: 3.7 MB
-
-(.7z) [Dropbox](https://www.dropbox.com/s/6gb8tt3j7vkusyc/Sven-CS16_1-1.7z?dl=0)  
-(.7z) [HLDM-BR.NET](https://cdn.hldm-br.net/files/sc/cs16/Sven-CS16_1-1.7z)  
-(.7z) [Mega](https://mega.nz/file/q8FF2agB#M1Bmh3buwhCAi-xjQch_UuyGl9KS8zdFiMbKkc04XIw)  
-(.7z) [Boderman.net](http://boderman.net/svencoop/Sven-CS16_1-1.7z)  
-(.7z) [GitHub](https://github.com/KernCore91/-SC-Counter-Strike-1.6-Weapons-Project/releases/download/v1.1/Sven-CS16_1-1.7z)
