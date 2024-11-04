@@ -147,7 +147,6 @@ mixin class WeaponBase
 	protected int WeaponSilMode;
 	protected int m_iShell;
 	private bool m_iDirection = true;
-	private string g_watersplash_spr = "sprites/wep_smoke_01.spr";
 
 	protected float WeaponTimeBase() // map time
 	{
@@ -180,7 +179,6 @@ mixin class WeaponBase
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "cs1024.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "640hud7.spr" );
 		g_Game.PrecacheGeneric( MAIN_SPRITE_DIR + MAIN_CSTRIKE_DIR + "crosshairs.spr" );
-		g_Game.PrecacheModel( g_watersplash_spr );
 	}
 
 	bool CommonAddToPlayer( CBasePlayer@ pPlayer ) // adds a weapon to the player
@@ -335,81 +333,6 @@ mixin class WeaponBase
 		}
 	}
 
-	//w00tguy - actual water spray message
-	void te_spritespray( Vector pos, Vector velocity, string sprite = "sprites/bubble.spr", uint8 count = 8, uint8 speed = 16, uint8 noise = 255 )
-	{
-		NetworkMessage SSpray( MSG_BROADCAST, NetworkMessages::SVC_TEMPENTITY, null );
-			SSpray.WriteByte( TE_SPRITE_SPRAY );
-			SSpray.WriteCoord( pos.x );
-			SSpray.WriteCoord( pos.y );
-			SSpray.WriteCoord( pos.z );
-			SSpray.WriteCoord( velocity.x );
-			SSpray.WriteCoord( velocity.y );
-			SSpray.WriteCoord( velocity.z );
-			SSpray.WriteShort( g_EngineFuncs.ModelIndex( sprite ) );
-			SSpray.WriteByte( count );
-			SSpray.WriteByte( speed );
-			SSpray.WriteByte( noise );
-		SSpray.End();
-
-		switch( Math.RandomLong( 0, 2 ) )
-		{
-			case 0: g_SoundSystem.PlaySound( self.edict(), CHAN_STREAM, "player/pl_slosh1.wav", 1, ATTN_NORM, 0, PITCH_NORM, 0, true, pos ); break;
-			case 1: g_SoundSystem.PlaySound( self.edict(), CHAN_STREAM, "player/pl_slosh2.wav", 1, ATTN_NORM, 0, PITCH_NORM, 0, true, pos ); break;
-			case 2: g_SoundSystem.PlaySound( self.edict(), CHAN_STREAM, "player/pl_slosh3.wav", 1, ATTN_NORM, 0, PITCH_NORM, 0, true, pos ); break;
-		}
-	}
-
-	//w00tguy - water splashes and bubble trails for bullets
-	void water_bullet_effects( Vector vecSrc, Vector vecEnd )
-	{
-		// bubble trails
-		bool startInWater   	= g_EngineFuncs.PointContents( vecSrc ) == CONTENTS_WATER;
-		bool endInWater     	= g_EngineFuncs.PointContents( vecEnd ) == CONTENTS_WATER;
-		if( startInWater or endInWater )
-		{
-			Vector bubbleStart	= vecSrc;
-			Vector bubbleEnd	= vecEnd;
-			Vector bubbleDir	= bubbleEnd - bubbleStart;
-			float waterLevel;
-
-			// find water level relative to trace start
-			Vector waterPos 	= (startInWater) ? bubbleStart : bubbleEnd;
-			waterLevel      	= g_Utility.WaterLevel( waterPos, waterPos.z, waterPos.z + 1024 );
-			waterLevel      	-= bubbleStart.z;
-
-			// get percentage of distance travelled through water
-			float waterDist	= 1.0f; 
-			if( !startInWater or !endInWater )
-				waterDist	-= waterLevel / (bubbleEnd.z - bubbleStart.z);
-			if( !endInWater )
-				waterDist	= 1.0f - waterDist;
-
-			// clip trace to just the water portion
-			if( !startInWater )
-				bubbleStart	= bubbleEnd - bubbleDir*waterDist;
-			else if( !endInWater )
-				bubbleEnd 	= bubbleStart + bubbleDir*waterDist;
-
-			// a shitty attempt at recreating the splash effect
-			Vector waterEntry = (endInWater) ? bubbleStart : bubbleEnd;
-			if( !startInWater or !endInWater )
-			{
-				te_spritespray( waterEntry, Vector( 0, 0, 1 ), g_watersplash_spr, 1, 64, 0);
-			}
-
-			// waterlevel must be relative to the starting point
-			if( !startInWater or !endInWater )
-				waterLevel = (bubbleStart.z > bubbleEnd.z) ? 0 : bubbleEnd.z - bubbleStart.z;
-
-			// calculate bubbles needed for an even distribution
-			int numBubbles = int( ( bubbleEnd - bubbleStart ).Length() / 128.0f );
-			numBubbles = Math.max( 1, Math.min( 255, numBubbles ) );
-
-			//te_bubbletrail( bubbleStart, bubbleEnd, "sprites/bubble.spr", waterLevel, numBubbles, 16.0f );
-		}
-	}
-
 	void ShootWeapon( const string szSound, const uint uiNumShots, const Vector& in CONE, const float flMaxDist, const int iDamage, const int DmgType = DMG_GENERIC, bool bIsSuppressed = false )
 	{
 		if( szSound != string_t() || szSound != "" )
@@ -469,13 +392,8 @@ mixin class WeaponBase
 					}
 					g_SoundSystem.PlayHitSound( tr, vecSrc, vecSrc + (vecEnd - vecSrc) * 2, BULLET_PLAYER_CUSTOMDAMAGE );
 
-					//w00tguy - play water sprite
-					if( tr.fInWater == 0.0 )
-						water_bullet_effects( vecSrc, tr.vecEndPos );
-
 					if( pHit is null || pHit.IsBSPModel() )
 					{
-						g_WeaponFuncs.DecalGunshot( tr, BULLET_PLAYER_CUSTOMDAMAGE );
 					}
 				}
 			}
