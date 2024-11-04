@@ -31,7 +31,7 @@ class CCs16Grenade : ScriptBaseMonsterEntity
 		SetThink( ThinkFunction( this.TumbleThink ) );
 		self.pev.nextthink = g_Engine.time + 0.1;
 
-		g_EntityFuncs.SetSize( self.pev, Vector( -1, -1, -1 ), Vector( 1, 1, 1 ) );
+		g_EntityFuncs.SetSize( self.pev, g_vecZero, g_vecZero );
 	}
 
 	void Precache()
