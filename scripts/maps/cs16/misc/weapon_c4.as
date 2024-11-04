@@ -182,8 +182,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 	void Holster( int skipLocal = 0 )
 	{
 		m_bStartedArming = false;
-		m_pPlayer.pev.maxspeed = 0;
-		//m_pPlayer.SetMaxSpeedOverride( -1 );
+		m_pPlayer.SetMaxSpeedOverride( -1 ); //m_pPlayer.pev.maxspeed = 0;
 
 		CommonHolster();
 
@@ -227,7 +226,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 				return;
 			}
 
-			m_pPlayer.pev.maxspeed = 1;
+			m_pPlayer.SetMaxSpeedOverride( 0 ); //m_pPlayer.pev.maxspeed = 1;
 
 			m_bStartedArming = true;
 			m_bBombPlacedAnimation = false;
@@ -249,7 +248,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 
 				m_bStartedArming = false;
 				self.m_flNextPrimaryAttack = g_Engine.time + 1.5f;
-				m_pPlayer.pev.maxspeed = 0;
+				m_pPlayer.SetMaxSpeedOverride( -1 ); //m_pPlayer.pev.maxspeed = 0;
 				//m_pPlayer.SetProgressBarTime(0);
 				//m_pPlayer.SetAnimation( PLAYER_HOLDBOMB );
 
@@ -275,7 +274,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 
 					g_SoundSystem.EmitSound( m_pPlayer.edict(), CHAN_WEAPON, PLANT_S, VOL_NORM, ATTN_NORM );
 
-					m_pPlayer.pev.maxspeed = 0;
+					m_pPlayer.SetMaxSpeedOverride( -1 ); //m_pPlayer.pev.maxspeed = 0;
 					//m_pPlayer.SetBombIcon(FALSE);
 					m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType, m_pPlayer.m_rgAmmo(self.m_iPrimaryAmmoType) - 1 );
 
@@ -316,7 +315,7 @@ class weapon_c4 : ScriptBasePlayerWeaponEntity, CS16BASE::WeaponBase, CS16BASE::
 		if( m_bStartedArming == true )
 		{
 			m_bStartedArming = false;
-			m_pPlayer.pev.maxspeed = 0;
+			m_pPlayer.SetMaxSpeedOverride( -1 ); //m_pPlayer.pev.maxspeed = 0;
 			self.m_flNextPrimaryAttack = g_Engine.time + 1;
 			//m_pPlayer.SetProgressBarTime( 0 );
 
