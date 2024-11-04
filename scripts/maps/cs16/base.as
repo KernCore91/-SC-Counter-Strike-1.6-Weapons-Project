@@ -345,7 +345,7 @@ mixin class WeaponBase
 		Vector vecSrc   	= m_pPlayer.GetGunPosition();
 		Vector vecAiming 	= m_pPlayer.GetAutoaimVector( AUTOAIM_2DEGREES );
 
-		m_pPlayer.FireBullets( uiNumShots, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, flMaxDist, BULLET_PLAYER_CUSTOMDAMAGE, 2, iDamage );
+		self.FireBullets( uiNumShots, vecSrc, vecAiming, VECTOR_CONE_1DEGREES, flMaxDist, BULLET_PLAYER_CUSTOMDAMAGE, 2, iDamage, m_pPlayer.pev );
 
 		if( self.m_iClip <= 0 && m_pPlayer.m_rgAmmo( self.m_iPrimaryAmmoType ) <= 0 )
 			m_pPlayer.SetSuitUpdate( "!HEV_AMO0", false, 0 );
@@ -394,6 +394,11 @@ mixin class WeaponBase
 
 					if( pHit is null || pHit.IsBSPModel() )
 					{
+						if( !pHit.pev.FlagBitSet( FL_WORLDBRUSH ) ) //Don't draw decals on world brushes
+						{
+							g_WeaponFuncs.DecalGunshot( tr, BULLET_PLAYER_CUSTOMDAMAGE );
+							//g_Utility.Sparks( tr.vecEndPos );
+						}
 					}
 				}
 			}
