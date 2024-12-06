@@ -48,7 +48,7 @@ int FLAGS       	= ITEM_FLAG_NOAUTOSWITCHEMPTY;
 uint DAMAGE     	= 46;
 uint SLOT       	= 1;
 uint POSITION   	= 9;
-float RPM       	= 0.15f;
+float RPM       	= 0.225f;
 uint MAX_SHOOT_DIST	= 8192;
 string AMMO_TYPE 	= "cs16_.50ae";
 
